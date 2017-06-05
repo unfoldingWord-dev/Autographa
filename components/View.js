@@ -4,8 +4,15 @@
  */
 import React from 'react'
 import { Row, Col } from 'react-bootstrap'
+import Button from 'react-bootstrap/lib/Button';
+import ChapterModal from './ChapterModal';
+
 
 class View extends React.Component {
+
+  constructor(props) {
+    super(props);
+  }
 
   saveEditVerse() {
     let {loginReducer, actions, contextIdReducer, resourcesReducer} = this.props;
@@ -32,12 +39,19 @@ class View extends React.Component {
     actions.changeCurrentContextId(contextId);
   }
 
+ 
+ 
   render() {
-    let { contextIdReducer, projectDetailsReducer, resourcesReducer } = this.props
+    let { contextIdReducer, projectDetailsReducer, resourcesReducer,  modalVisibility,
+      showModal, hideModal } = this.props
     let { reference } = contextIdReducer.contextId;
     let { targetLanguage, ULB } = resourcesReducer.bibles;
     let currentChapter = targetLanguage[reference.chapter];
-    console.log(this.props);
+    let chapters = this.props.groupsDataReducer.groupsData;
+    console.log(this.props.groupsDataReducer.groupsData)
+    console.log(this.props)
+
+    // console.log(this.props.groupsDataReducer.groupsData);
 
     const verses = (bibleId, bible) => {
       let verseNumbers = Object.keys(currentChapter);
@@ -59,11 +73,16 @@ class View extends React.Component {
       })
       return verses
     }
+    
+
 
     return (
       <div>
+        <ChapterModal  show ={ modalVisibility } onHide = { hideModal } chapters = { chapters } allProps = {this.props}/>
+        <span><Button onClick = {showModal} >Chapter</Button></span>
         <Col sm={6}>
-          <h2>English ULB1</h2>
+          <span><a href="javascript:;" data-toggle="tooltip" data-placement="bottom" title="chapters"><i className="fa fa-cog fa-2x"></i></a></span>
+          <h2>English ULB</h2>
           <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
           {verses('ULB', ULB)}
         </Col>
