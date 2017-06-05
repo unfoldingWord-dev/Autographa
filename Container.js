@@ -7,6 +7,9 @@ const NAMESPACE = "Autographa";
 class Container extends React.Component {
   constructor() {
     super();
+    this.state = {
+      modalVisibility: false,
+    };
   }
 
   view() {
@@ -15,6 +18,9 @@ class Container extends React.Component {
     if (contextId) {
       view = <View
         {...this.props}
+         modalVisibility={this.state.modalVisibility}
+          showModal={() => this.setState({ modalVisibility: true, selectedPane: false })}
+          hideModal={() => this.setState({ modalVisibility: false })}
       />
     }
     return view;
