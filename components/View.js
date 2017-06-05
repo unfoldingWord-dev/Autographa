@@ -63,7 +63,7 @@ class View extends React.Component {
     return (
       <div>
         <Col sm={6}>
-          <h2>English ULB</h2>
+          <h2>English ULB1</h2>
           <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
           {verses('ULB', ULB)}
         </Col>
