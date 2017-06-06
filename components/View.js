@@ -6,6 +6,7 @@ import React from 'react'
 import { Row, Col } from 'react-bootstrap'
 import Button from 'react-bootstrap/lib/Button';
 import ChapterModal from './ChapterModal';
+import SettingModal from './SettingsModal';
 
 
 class View extends React.Component {
@@ -42,8 +43,8 @@ class View extends React.Component {
  
  
   render() {
-    let { contextIdReducer, projectDetailsReducer, resourcesReducer,  modalVisibility,
-      showModal, hideModal } = this.props
+    let { contextIdReducer, projectDetailsReducer, resourcesReducer,  modalVisibility, modalSettingsVisibility,
+      showModal, showSettingsModal, hideModal } = this.props
     let { reference } = contextIdReducer.contextId;
     let { targetLanguage, ULB } = resourcesReducer.bibles;
     let currentChapter = targetLanguage[reference.chapter];
@@ -74,11 +75,11 @@ class View extends React.Component {
       return verses
     }
     
-
-
     return (
       <div>
+        <SettingModal  show ={ modalSettingsVisibility } onHide = { hideModal } />
         <ChapterModal  show ={ modalVisibility } onHide = { hideModal } chapters = { chapters } allProps = {this.props}/>
+        <span><Button onClick = {showSettingsModal} >Settings</Button></span>
         <span><Button onClick = {showModal} >Chapter</Button></span>
         <Col sm={6}>
           <span><a href="javascript:;" data-toggle="tooltip" data-placement="bottom" title="chapters"><i className="fa fa-cog fa-2x"></i></a></span>

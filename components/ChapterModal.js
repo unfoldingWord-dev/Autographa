@@ -40,7 +40,7 @@ class ChapterModal extends React.Component {
           </div>
         </Modal.Body>
         <Modal.Footer style={{ backgroundColor: "var(--reverse-color)" }}>
-          <Button bsStyle="prime" onClick={onHide}>Close</Button>
+          <Button onClick={onHide}>Close</Button>
         </Modal.Footer>
       </Modal>
     );

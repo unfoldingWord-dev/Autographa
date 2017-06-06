@@ -9,6 +9,7 @@ class Container extends React.Component {
     super();
     this.state = {
       modalVisibility: false,
+      modalSettingsVisibility: false,
     };
   }
 
@@ -19,8 +20,10 @@ class Container extends React.Component {
       view = <View
         {...this.props}
          modalVisibility={this.state.modalVisibility}
+         modalSettingsVisibility={this.state.modalSettingsVisibility}
           showModal={() => this.setState({ modalVisibility: true, selectedPane: false })}
-          hideModal={() => this.setState({ modalVisibility: false })}
+          showSettingsModal={() => this.setState({ modalSettingsVisibility: true, selectedPane: false })}
+          hideModal={() => this.setState({ modalVisibility: false, modalSettingsVisibility:false })}
       />
     }
     return view;
