@@ -7,12 +7,18 @@ import { Modal, Button, Col } from 'react-bootstrap';
 class ChapterModal extends React.Component {
   constructor(props){
       super(props);
-      console.log(this.props)
+      this.changeChapter = this.changeChapter.bind(this);
+  }
+
+  changeChapter(contextId){
+    console.log(contextId);
+    this.props.allProps.actions.changeCurrentContextId(contextId);
+    this.props.onHide(this);
   }
 
   render() {
      let { onHide,  show, chapters } = this.props;
-     let { groupsData } = this.props.allProps.groupsDataReducer
+     let { groupsData } = this.props.allProps.groupsDataReducer;
     
     var _this = this;
     return (
@@ -28,7 +34,7 @@ class ChapterModal extends React.Component {
             {
               
               Object.keys(chapters).map(function (chapter, index) {
-                return(<Col sm={1} key = {index} ><span><a href="javascript:void(0);"  onClick={() => _this.props.allProps.actions.changeCurrentContextId(chapters[chapter][index].contextId)}>{chapter}</a></span></Col>)
+                return(<Col sm={1} key = {index} ><span><a href="javascript:void(0);"  onClick={() => _this.changeChapter(chapters[chapter][index].contextId) }>{chapter}</a></span></Col>)
               })
           }
           </div>
