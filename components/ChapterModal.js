@@ -11,7 +11,8 @@ class ChapterModal extends React.Component {
   }
 
   changeChapter(contextId){
-    console.log(contextId);
+    contextId.reference.verse = 1;
+    console.log(contextId)
     this.props.allProps.actions.changeCurrentContextId(contextId);
     this.props.onHide(this);
   }
@@ -36,7 +37,7 @@ class ChapterModal extends React.Component {
               Object.keys(chapters).map(function (chapter, index) {
                 return(<Col sm={1} key = {index} ><span><a href="javascript:void(0);"  onClick={() => _this.changeChapter(chapters[chapter][index].contextId) }>{chapter}</a></span></Col>)
               })
-          }
+            }
           </div>
         </Modal.Body>
         <Modal.Footer style={{ backgroundColor: "var(--reverse-color)" }}>

@@ -8,7 +8,6 @@ import Button from 'react-bootstrap/lib/Button';
 import ChapterModal from './ChapterModal';
 import SettingModal from './SettingsModal';
 
-
 class View extends React.Component {
 
   constructor(props) {
@@ -39,9 +38,15 @@ class View extends React.Component {
     contextId.reference.verse = verseNumber;
     actions.changeCurrentContextId(contextId);
   }
+    highlightRef(verseNumber, e){ 
+        for (var i = 1; i < 10; i++) {
+            let content = document.getElementById('ULB' + '_verse_' + i)
+            content.style = "padding-left:0px;padding-right:0px;margin-right:0px"; 
+        }      
+        let verseText = document.getElementById('ULB' + '_verse_' + verseNumber);
+        verseText.style = "background-color: rgba(11, 130, 255, 0.1);padding-left:10px;padding-right:10px;margin-right:10px";  
+    }
 
- 
- 
   render() {
     let { contextIdReducer, projectDetailsReducer, resourcesReducer,  modalVisibility, modalSettingsVisibility,
       showModal, showSettingsModal, hideModal } = this.props
@@ -51,9 +56,7 @@ class View extends React.Component {
     let chapters = this.props.groupsDataReducer.groupsData;
     console.log(this.props.groupsDataReducer.groupsData)
     console.log(this.props)
-
-    // console.log(this.props.groupsDataReducer.groupsData);
-
+    //console.log(this.props.groupsDataReducer.groupsData);
     const verses = (bibleId, bible) => {
       let verseNumbers = Object.keys(currentChapter);
       let verses = verseNumbers.map( (verseNumber, index) => {
@@ -61,8 +64,8 @@ class View extends React.Component {
         let verseText = bible[reference.chapter][verseNumber];
         return (
           <div key={index}>
-            <span>{verseNumber} </span>
-            <span
+            <span onClick={this.highlightRef.bind(this, verseNumber)}>{verseNumber} </span>
+            <span 
             id={bibleId + '_verse_' + verseNumber}
             contentEditable={editable}
             onBlur={this.saveEditVerse.bind(this)}
@@ -77,8 +80,8 @@ class View extends React.Component {
     
     return (
       <div>
-        <SettingModal  show ={ modalSettingsVisibility } onHide = { hideModal } />
-        <ChapterModal  show ={ modalVisibility } onHide = { hideModal } chapters = { chapters } allProps = {this.props}/>
+        <SettingModal show ={ modalSettingsVisibility } onHide = { hideModal } />
+        <ChapterModal show ={ modalVisibility } onHide = { hideModal } chapters = { chapters } allProps = {this.props}/>
         <span><Button onClick = {showSettingsModal} >Settings</Button></span>
         <span><Button onClick = {showModal} >Chapter</Button></span>
         <Col sm={6}>
@@ -96,6 +99,5 @@ class View extends React.Component {
     );
   }
 }
-
 
 module.exports = View;
