@@ -9,7 +9,7 @@ import Glyphicon from "react-bootstrap/lib/Glyphicon";
 // import "*" from "font-awesome/font-awesome";
 import ChapterModal from './ChapterModal';
 import style from '../css/Style';
-
+import SettingModal from './SettingsModal';
 
 class View extends React.Component {
 
@@ -42,6 +42,14 @@ class View extends React.Component {
     contextId.reference.verse = verseNumber;
     actions.changeCurrentContextId(contextId);
   }
+    highlightRef(verseNumber, e){ 
+        for (var i = 1; i < 10; i++) {
+            let content = document.getElementById('ULB' + '_verse_' + i)
+            content.style = "padding-left:10px;padding-right:0px;margin-right:0px"; 
+        }      
+        let verseText = document.getElementById('ULB' + '_verse_' + verseNumber);
+        verseText.style = "background-color: rgba(11, 130, 255, 0.1);padding-left:10px;padding-right:10px;margin-right:10px; border-radius: 6px";  
+    }
 
     mouseEnter(){
     this.setState({hover: true});
@@ -59,27 +67,27 @@ class View extends React.Component {
     // if(iconImage){
     //     icon = <img src={iconImage} style={style.img}/>;
     //     }
-    let { contextIdReducer, projectDetailsReducer, resourcesReducer,  modalVisibility,
-      showModal, hideModal } = this.props
+    let { contextIdReducer, projectDetailsReducer, resourcesReducer,  modalVisibility, modalSettingsVisibility,
+      showModal, showSettingsModal, hideModal } = this.props
     let { reference } = contextIdReducer.contextId;
     let { targetLanguage, ULB } = resourcesReducer.bibles;
     let currentChapter = targetLanguage[reference.chapter];
     let chapters = this.props.groupsDataReducer.groupsData;
     console.log(this.props.groupsDataReducer.groupsData)
     console.log(this.props)
-
-    // console.log(this.props.groupsDataReducer.groupsData);
-
+    //console.log(this.props.groupsDataReducer.groupsData);
     const verses = (bibleId, bible) => {
       let verseNumbers = Object.keys(currentChapter);
       let verses = verseNumbers.map( (verseNumber, index) => {
         let editable = bibleId === 'target';
         let verseText = bible[reference.chapter][verseNumber];
         return (
+
           <div style={{display: "flex"}} key={index}>
             <span style={style.versenum}>{verseNumber} </span>
-            <span
-            style={{paddingLeft: "10px"}} id={bibleId + '_verse_' + verseNumber}
+            <span onClick={this.highlightRef.bind(this, verseNumber)}
+            style={{paddingLeft: "10px"}}
+            id={bibleId + '_verse_' + verseNumber}
             contentEditable={editable}
             onBlur={this.saveEditVerse.bind(this)}
             onFocus={this.changeCurrentVerse.bind(this, verseNumber)}
@@ -92,8 +100,6 @@ class View extends React.Component {
       return verses
     }
     
-
-
     return (
       <div id="test" style={{overflow: "scroll", position: "relative"}}>
           <nav className="navbar navbar-inverse navbar-fixed-top" role="navigation" style={{backgroundColor: "#0b82ff", position: "relative", marginBottom: "0"}}>
@@ -109,6 +115,7 @@ class View extends React.Component {
                             <a className="btn btn-default" style={style.book} data-toggle="tooltip" data-placement="bottom" title="Select Book"  id="book-chapter-btn">
                             Book</a>
                             <ChapterModal  show ={ modalVisibility } onHide = { hideModal } chapters = { chapters } allProps = {this.props}/>
+                            <SettingModal show ={ modalSettingsVisibility } onHide = { hideModal } />
                             <span>
                             <a className="btn btn-default" style={style.chapter} onClick = {showModal} id="chapterBtn" data-target="#myModal"  data-toggle="modal" data-placement="bottom"  title="Select Chapter" >Chapter</a>
                             </span>
@@ -134,7 +141,7 @@ class View extends React.Component {
                               <li style={linkStyle} onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} ><Glyphicon glyph="info-sign" />
                               </li>
                             
-                              <li style={linkStyle} onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} ><Glyphicon glyph="wrench" />
+                              <li style={linkStyle} onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} onClick = {showSettingsModal}><Glyphicon glyph="wrench" />
                               </li>
                             
                     </ul>
@@ -158,6 +165,5 @@ class View extends React.Component {
     );
   }
 }
-
 
 module.exports = View;
