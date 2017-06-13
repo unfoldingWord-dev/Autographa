@@ -111,9 +111,20 @@ var style = {
     fontWeight: "bold"
   },
   toggle: {
-    marginTop: "15px"
-  },
-
+      marginTop: "15px"
+    },
+    thumbOff: {
+      backgroundColor: '#03a9f4',
+    },
+    trackOff: {
+      backgroundColor: '#03a9f4',
+    },
+    thumbSwitched: {
+      backgroundColor: '#fff',
+    },
+    trackSwitched: {
+      backgroundColor: '#295482',
+    }
 };
 
 module.exports = style;

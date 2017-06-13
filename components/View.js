@@ -88,6 +88,7 @@ class View extends React.Component {
         return (
 
           <div style={{display: "flex"}} key={index}>
+
             <span style={style.versenum}>{verseNumber} </span>
             <span onClick={this.highlightRef.bind(this, verseNumber)}
             style={{paddingLeft: "10px"}}
@@ -111,7 +112,7 @@ class View extends React.Component {
             <div className="container-fluid" style={{backgroundColor: "#0b82ff"}}>
                 <div className="navbar-header">
                     <button className="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar"><span className="sr-only">Toggle navigation</span><span className="icon-bar"></span><span className="icon-bar"></span><span className="icon-bar"></span></button>
-                    <a className="navbar-brand" href="javascript:;"><img alt="Brand" src="../translationCore/tC_apps/Autographa/assets/logo.png" /></a>
+                    <a className="navbar-brand"><img alt="Brand" src="../translationCore/tC_apps/Autographa/assets/logo.png" /></a>
                 </div>
                 <div className="navbar-collapse collapse" id="navbar" style={{backgroundColor: "#0b82ff"}}>
                     <ul className="nav navbar-nav"  style={{padding: "3px 0 0 0px"}}>
@@ -134,7 +135,7 @@ class View extends React.Component {
                                     <input type="checkbox" id="switch-2" className="mdl-switch__input check-diff"/>
                                     <span className="mdl-switch__label"></span>
                                 </label>*/}
-                                <Toggle style={style.toggle}/>                               
+                                <Toggle style={style.toggle} thumbStyle={style.thumbOff} trackStyle={style.trackOff} thumbSwitchedStyle={style.thumbSwitched} trackSwitchedStyle={style.trackSwitched} labelStyle={style.labelStyle} />                            
                             </li>
                              <li style={{padding:"17px 0 0 0", color: "#fff", fontWeight: "bold"}}><span>ON</span></li>
                               
