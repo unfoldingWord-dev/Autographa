@@ -46,10 +46,11 @@ class View extends React.Component {
     actions.changeCurrentContextId(contextId);
   }
     highlightRef(verseNumber, e){ 
-        for (var i = 1; i < 10; i++) {
+        for (var i = 1; i < 10; i++) { //Currentl 10 is hard-coded to be changed when we have verse numbers
             let content = document.getElementById('ULB' + '_verse_' + i)
             content.style = "padding-left:10px;padding-right:0px;margin-right:0px"; 
-        }      
+        }
+        console.log(verseNumber)      
         let verseText = document.getElementById('ULB' + '_verse_' + verseNumber);
         verseText.style = "background-color: rgba(11, 130, 255, 0.1);padding-left:10px;padding-right:10px;margin-right:10px; border-radius: 6px";  
     }
@@ -110,7 +111,7 @@ class View extends React.Component {
             <div className="container-fluid" style={{backgroundColor: "#0b82ff"}}>
                 <div className="navbar-header">
                     <button className="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar"><span className="sr-only">Toggle navigation</span><span className="icon-bar"></span><span className="icon-bar"></span><span className="icon-bar"></span></button>
-                    <a className="navbar-brand" href="javascript:;"><img alt="Brand" src="../translationCore/tC_apps/Autographa/logos/logo.png" /></a>
+                    <a className="navbar-brand" href="javascript:;"><img alt="Brand" src="../translationCore/tC_apps/Autographa/assets/logo.png" /></a>
                 </div>
                 <div className="navbar-collapse collapse" id="navbar" style={{backgroundColor: "#0b82ff"}}>
                     <ul className="nav navbar-nav"  style={{padding: "3px 0 0 0px"}}>
@@ -118,7 +119,7 @@ class View extends React.Component {
                           <div className="btn-group navbar-btn strong verse-diff-on" role="group" aria-label="..." id="bookBtn" style={{marginLeft:"150px"}}>
                             <a className="btn btn-default" style={style.book} data-toggle="tooltip" data-placement="bottom" title="Select Book"  id="book-chapter-btn">
                             Book</a>
-                            <ChapterModal  show ={ modalVisibility } onHide = { hideModal } chapters = { chapters } allProps = {this.props}/>
+                            <ChapterModal show ={ modalVisibility } onHide = { hideModal } chapters = { chapters } allProps = {this.props}/>
                             <SettingModal show ={ modalSettingsVisibility } onHide = { hideModal } />
                             <span>
                             <a className="btn btn-default" style={style.chapter} onClick = {showModal} id="chapterBtn" data-target="#myModal"  data-toggle="modal" data-placement="bottom"  title="Select Chapter" >Chapter</a>
