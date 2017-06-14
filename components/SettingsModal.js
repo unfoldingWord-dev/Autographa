@@ -30,7 +30,7 @@ class SettingModal extends React.Component {
     let { onHide,  show } = this.props;
     var _this = this;
     return (
-      <Modal show={show} onHide={onHide} bsSize="lg" aria-labelledby="contained-modal-title-sm">
+      <Modal show={show} onHide={onHide} aria-labelledby="contained-modal-title-sm" style={{}}>
         <Modal.Header style={{ backgroundColor: "var(--accent-color-dark)" }} closeButton>
           <Modal.Title id="contained-modal-title-sm"
             style={{ textAlign: "center", color: "var(--reverse-color)" }}>
@@ -38,7 +38,7 @@ class SettingModal extends React.Component {
           </Modal.Title>
         </Modal.Header>
         
-        <Modal.Body style={{ padding: '0px', height: "550px", backgroundColor: "var(--reverse-color)", color: "var(--text-color)" }}>
+        <Modal.Body style={{ padding: '0px', backgroundColor: "var(--reverse-color)", color: "var(--text-color)" }}>
           <div style={{height: "350px", display: 'flex'}}>
              <Tab.Container id="left-tabs-example" defaultActiveKey="first">
                 <Row className="clearfix">
