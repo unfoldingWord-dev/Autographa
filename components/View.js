@@ -12,13 +12,11 @@ import style from '../css/Style';
 import SettingModal from './SettingsModal';
 import Toggle from 'material-ui/Toggle';
 
-
-
 class View extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {hover: false}
+    this.state = {hover: false,layoutDesign:1}
   }
 
   saveEditVerse() {
@@ -38,13 +36,14 @@ class View extends React.Component {
     }
   }
 
-  changeCurrentVerse(verseNumber, e) {
-    let {actions, contextIdReducer} = this.props;
-    let {contextId} = contextIdReducer;
-    contextId = JSON.parse(JSON.stringify(contextId));
-    contextId.reference.verse = verseNumber;
-    actions.changeCurrentContextId(contextId);
-  }
+    changeCurrentVerse(verseNumber, e) {
+        let {actions, contextIdReducer} = this.props;
+        let {contextId} = contextIdReducer;
+        contextId = JSON.parse(JSON.stringify(contextId));
+        contextId.reference.verse = verseNumber;
+        actions.changeCurrentContextId(contextId);
+    }
+
     highlightRef(verseNumber, e){ 
         for (var i = 1; i < 10; i++) { //Currentl 10 is hard-coded to be changed when we have verse numbers
             let content = document.getElementById('ULB' + '_verse_' + i)
@@ -56,12 +55,16 @@ class View extends React.Component {
     }
 
     mouseEnter(){
-    this.setState({hover: true});
-  }
+        this.setState({hover: true});
+    }
 
-  mouseLeave(){
-    this.setState({hover: false});
-  }
+    mouseLeave(){
+        this.setState({hover: false});
+    }
+
+   handleChange(key) {
+        this.setState({layoutDesign: key});
+    }
  
  
   render() {
@@ -72,12 +75,11 @@ class View extends React.Component {
     //     icon = <img src={iconImage} style={style.img}/>;
     //     }
     let { contextIdReducer, projectDetailsReducer, resourcesReducer,  modalVisibility, modalSettingsVisibility,
-      showModal, showSettingsModal, hideModal } = this.props
+    showModal, showSettingsModal, hideModal } = this.props
     let { reference } = contextIdReducer.contextId;
     let { targetLanguage, ULB } = resourcesReducer.bibles;
     let currentChapter = targetLanguage[reference.chapter];
     let chapters = this.props.groupsDataReducer.groupsData;
-    console.log(this.props.groupsDataReducer.groupsData)
     console.log(this.props)
     //console.log(this.props.groupsDataReducer.groupsData);
     const verses = (bibleId, bible) => {
@@ -87,8 +89,7 @@ class View extends React.Component {
         let verseText = bible[reference.chapter][verseNumber];
         return (
 
-          <div style={{display: "flex"}} key={index}>
-
+        <div style={{display: "flex"}} key={index}>
             <span style={style.versenum}>{verseNumber} </span>
             <span onClick={this.highlightRef.bind(this, verseNumber)}
             style={{paddingLeft: "10px"}}
@@ -99,14 +100,30 @@ class View extends React.Component {
             suppressContentEditableWarning={true}
             >{verseText}
             </span>
-          </div>
+        </div>
         )
       })
       return verses
     }
+
+    const layout = (i) => {
+        return (
+             <Col key={i} sm={6} style={{backgroundColor: "#f5f8fa", borderRight: "1px solid #d3e0e9", padding: "0px 20px 60px"}}>
+              <h2>English ULB</h2>
+              <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
+              <div >
+              {verses('ULB', ULB)}
+              </div>
+            </Col>      
+            )
+        }
+
+        var rows = [];
+        for (var i = 1; i <= this.state.layoutDesign; i++) {
+            rows.push(layout(i));
+        }
     
-    return (
-      
+    return (  
       <div id="test" style={{overflow: "scroll", position: "relative"}}>
           <nav className="navbar navbar-inverse navbar-fixed-top" role="navigation" style={{backgroundColor: "#0b82ff", position: "relative", marginBottom: "0"}}>
             <div className="container-fluid" style={{backgroundColor: "#0b82ff"}}>
@@ -135,8 +152,15 @@ class View extends React.Component {
                                     <input type="checkbox" id="switch-2" className="mdl-switch__input check-diff"/>
                                     <span className="mdl-switch__label"></span>
                                 </label>*/}
+                               
                                 <Toggle style={style.toggle} thumbStyle={style.thumbOff} trackStyle={style.trackOff} thumbSwitchedStyle={style.thumbSwitched} trackSwitchedStyle={style.trackSwitched} labelStyle={style.labelStyle} />                            
                             </li>
+                             <li><div className="btn-group navbar-btn layout" role="group" aria-label="...">
+                                <a className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,1)}  title="2-column layout">2x &nbsp;<i className="fa fa-columns fa-lg"></i></a>
+                                <a className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,2)} title="3-column layout">3x &nbsp;<i className="fa fa-columns fa-lg"></i>
+                                </a>
+                                <a className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,3)}  title="4-column layout">4x &nbsp;<i className="fa fa-columns fa-lg"></i></a>
+                            </div></li>
                              <li style={{padding:"17px 0 0 0", color: "#fff", fontWeight: "bold"}}><span>ON</span></li>
                               
                               <li style={linkStyle} onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} data-toggle="tooltip" data-placement="bottom" title="Find and replace" id="searchText"><Glyphicon glyph="search" />
@@ -149,21 +173,13 @@ class View extends React.Component {
                               </li>
                             
                               <li style={linkStyle} onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} onClick = {showSettingsModal}><Glyphicon glyph="wrench" />
-                              </li>
-                            
+                              </li>       
                     </ul>
                 </div>
             </div>
         </nav>
-        <Col sm={6} style={{backgroundColor: "#f5f8fa", borderRight: "1px solid #d3e0e9", padding: "0px 20px 60px"}}>
-          <span><a href="javascript:;" data-toggle="tooltip" data-placement="bottom" title="chapters"><i className="fa fa-cog fa-2x"></i></a></span>
-          <h2>English ULB</h2>
-          <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
-          <div >
-          {verses('ULB', ULB)}
-          </div>
-        </Col>
-        <Col sm={6} >
+        {rows}
+        <Col sm={6}>
           <h2>{projectDetailsReducer.manifest.target_language.name}</h2>
           <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
           {verses('target', targetLanguage)}
