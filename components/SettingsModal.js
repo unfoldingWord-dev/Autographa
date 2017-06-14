@@ -5,6 +5,8 @@
 import React from 'react';
 const { dialog } = require('electron').remote;
 import { Modal, Button, Col, Tab, Tabs, Nav, Row, NavItem } from 'react-bootstrap';
+import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
 
 class SettingModal extends React.Component {
   constructor(props){
@@ -53,10 +55,11 @@ class SettingModal extends React.Component {
                            <div className="form-group">
                                 <label htmlFor="ref-path">Path to Folder Location</label><br />
                                 {/*<input type="text" id="ref-path" placeholder="Path of folder containing USFM files" />*/}
-                                <input type="text" placeholder="Path of folder containing USFM files" value={this.state.value} onClick={(e) =>this.targetExportPath(e)} />
+                                <TextField hintText="Path of folder containing USFM files" value={this.state.value} onClick={(e) =>this.targetExportPath(e)}/>
                           </div> 
-                        {/*<button style={{float:"right", marginRight: "33px"}} className="btn btn-success" id="save-settings">Save</button>*/}
-                        <Button label="Save" onClick={onHide}>Save</Button>  
+                        {/*<button style={{float:"right", marginRight: "33px"}} className="btn btn-success" id="save-settings">Save</button>
+                        <Button label="Save" onClick={onHide}>Save</Button>*/}
+                        <RaisedButton label="Save" primary={true} onClick={onHide}/>
                           </Tab.Pane>
                         </Tab.Content>
                     </Col>

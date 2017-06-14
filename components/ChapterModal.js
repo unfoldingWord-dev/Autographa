@@ -4,6 +4,7 @@
 ******************************************************************************/
 import React from 'react';
 import { Modal, Button, Col } from 'react-bootstrap';
+import style from '../css/Style';
 class ChapterModal extends React.Component {
   constructor(props){
       super(props);
@@ -23,19 +24,19 @@ class ChapterModal extends React.Component {
     
     var _this = this;
     return (
-      <Modal show={show} onHide={onHide} bsSize="lg" aria-labelledby="contained-modal-title-sm">
+      <Modal show={show} onHide={onHide} aria-labelledby="contained-modal-title-sm" >
         <Modal.Header style={{ backgroundColor: "var(--accent-color-dark)" }} closeButton>
           <Modal.Title id="contained-modal-title-sm"
             style={{ textAlign: "center", color: "var(--reverse-color)" }}>
               Chapters
           </Modal.Title>
         </Modal.Header>
-        <Modal.Body style={{ padding: '0px', height: "550px", backgroundColor: "var(--reverse-color)", color: "var(--text-color)" }}>
+        <Modal.Body style={{ padding: '0px', backgroundColor: "var(--reverse-color)", color: "var(--text-color)" }}>
           <div style={{height: "350px", display: 'flex'}}>
             {
               
               Object.keys(chapters).map(function (chapter, index) {
-                return(<Col sm={1} key = {index} ><span><a href="javascript:void(0);"  onClick={() => _this.changeChapter(chapters[chapter][index].contextId) }>{chapter}</a></span></Col>)
+                return(<Col sm={1} key = {index} ><span><a style={style.test}  href="javascript:void(0);"  onClick={() => _this.changeChapter(chapters[chapter][index].contextId) }>{chapter}</a></span></Col>)
               })
             }
           </div>

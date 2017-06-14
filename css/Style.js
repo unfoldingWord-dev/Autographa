@@ -107,10 +107,34 @@ var style = {
     marginRight: "10px",
     marginLeft: "20px"
   },
-  versenum: {
-    fontWeight: "bold"
-  }
-
+    versenum: {
+      fontWeight: "bold"
+    },
+    toggle: {
+      marginTop: "15px"
+    },
+    thumbOff: {
+      backgroundColor: '#03a9f4',
+    },
+    trackOff: {
+      backgroundColor: '#03a9f4',
+    },
+    thumbSwitched: {
+      backgroundColor: '#fff',
+    },
+    trackSwitched: {
+      backgroundColor: '#295482',
+    },
+    test: {
+      marginTop: "10px",
+      color: "#0b63bf",
+      fontSize: "inherit", 
+      width: "42px", 
+      display: "inline-block", 
+      backgroundColor: "#f5f5f5",
+      textAlign: "center",
+     
+    },
 };
 
 module.exports = style;

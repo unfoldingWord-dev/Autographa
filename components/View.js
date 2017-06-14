@@ -10,6 +10,9 @@ import Glyphicon from "react-bootstrap/lib/Glyphicon";
 import ChapterModal from './ChapterModal';
 import style from '../css/Style';
 import SettingModal from './SettingsModal';
+import Toggle from 'material-ui/Toggle';
+
+
 
 class View extends React.Component {
 
@@ -101,6 +104,7 @@ class View extends React.Component {
     }
     
     return (
+      
       <div id="test" style={{overflow: "scroll", position: "relative"}}>
           <nav className="navbar navbar-inverse navbar-fixed-top" role="navigation" style={{backgroundColor: "#0b82ff", position: "relative", marginBottom: "0"}}>
             <div className="container-fluid" style={{backgroundColor: "#0b82ff"}}>
@@ -125,10 +129,12 @@ class View extends React.Component {
                     <ul className="nav navbar-nav navbar-right nav-pills verse-diff-on">
                             <li style={{padding: "17px 5px 0 0", color: "#fff", fontWeight: "bold"}}><span>OFF</span></li>
                             <li>
-                                <label style={{marginTop:"17px"}} className="mdl-switch mdl-js-switch mdl-js-ripple-effect" htmlFor="switch-2" id="switchLable" data-toggle='tooltip' data-placement='bottom' title="Compare mode">
+                                {/*<label style={{marginTop:"17px"}} className="mdl-switch mdl-js-switch mdl-js-ripple-effect" htmlFor="switch-2" id="switchLable" data-toggle='tooltip' data-placement='bottom' title="Compare mode">
                                     <input type="checkbox" id="switch-2" className="mdl-switch__input check-diff"/>
                                     <span className="mdl-switch__label"></span>
-                                </label>                               
+                                </label>*
+                                <Toggle style={style.toggle}/>*/}
+                                <Toggle style={style.toggle} thumbStyle={style.thumbOff} trackStyle={style.trackOff} thumbSwitchedStyle={style.thumbSwitched} trackSwitchedStyle={style.trackSwitched} labelStyle={style.labelStyle} />                               
                             </li>
                              <li style={{padding:"17px 0 0 0", color: "#fff", fontWeight: "bold"}}><span>ON</span></li>
                               
@@ -162,6 +168,7 @@ class View extends React.Component {
           {verses('target', targetLanguage)}
         </Col>
       </div>
+   
     );
   }
 }

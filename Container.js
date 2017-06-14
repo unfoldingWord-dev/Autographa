@@ -1,6 +1,7 @@
 import React from 'react';
 import View from './components/View';
 import fetchData from './FetchData/main';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 // String constants
 const NAMESPACE = "Autographa";
 
@@ -17,7 +18,7 @@ class Container extends React.Component {
     let view = <div />
     let { contextId } = this.props.contextIdReducer;
     if (contextId) {
-      view = <View
+      view = <MuiThemeProvider><View
         {...this.props}
          modalVisibility={this.state.modalVisibility}
          modalSettingsVisibility={this.state.modalSettingsVisibility}
@@ -25,6 +26,7 @@ class Container extends React.Component {
           showSettingsModal={() => this.setState({ modalSettingsVisibility: true, selectedPane: false })}
           hideModal={() => this.setState({ modalVisibility: false, modalSettingsVisibility:false })}
       />
+      </MuiThemeProvider>
     }
     return view;
   }
