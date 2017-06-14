@@ -36,27 +36,30 @@ class View extends React.Component {
     }
   }
 
-    changeCurrentVerse(verseNumber, e) {
-        let {actions, contextIdReducer} = this.props;
-        let {contextId} = contextIdReducer;
-        contextId = JSON.parse(JSON.stringify(contextId));
-        contextId.reference.verse = verseNumber;
-        actions.changeCurrentContextId(contextId);
-    }
+  changeCurrentVerse(verseNumber, e) {
+    let {actions, contextIdReducer} = this.props;
+    let {contextId} = contextIdReducer;
+    contextId = JSON.parse(JSON.stringify(contextId));
+    contextId.reference.verse = verseNumber;
+    actions.changeCurrentContextId(contextId);
+  }
+  highlightRef(verseNumber, e){ 
+    let { reference } = this.props.contextIdReducer.contextId;
+    let { targetLanguage, ULB } = this.props.resourcesReducer.bibles;
+    let currentChapter = targetLanguage[reference.chapter];
+    let verseNumbers = Object.keys(currentChapter);
+      for (var i = 1; i <= verseNumbers.length; i++) { 
+          let content = document.getElementById('ULB' + '_verse_' + i)
+          content.style = "padding-left:10px;padding-right:0px;margin-right:0px"; 
+      }
+      console.log(verseNumber)      
+      let verseText = document.getElementById('ULB' + '_verse_' + verseNumber);
+      verseText.style = "background-color: rgba(11, 130, 255, 0.1);padding-left:10px;padding-right:10px;margin-right:10px; border-radius: 6px";  
+  }
 
-    highlightRef(verseNumber, e){ 
-        for (var i = 1; i < 10; i++) { //Currentl 10 is hard-coded to be changed when we have verse numbers
-            let content = document.getElementById('ULB' + '_verse_' + i)
-            content.style = "padding-left:10px;padding-right:0px;margin-right:0px"; 
-        }
-        console.log(verseNumber)      
-        let verseText = document.getElementById('ULB' + '_verse_' + verseNumber);
-        verseText.style = "background-color: rgba(11, 130, 255, 0.1);padding-left:10px;padding-right:10px;margin-right:10px; border-radius: 6px";  
-    }
-
-    mouseEnter(){
-        this.setState({hover: true});
-    }
+  mouseEnter(){
+    this.setState({hover: true});
+  }
 
     mouseLeave(){
         this.setState({hover: false});
@@ -80,8 +83,7 @@ class View extends React.Component {
     let { targetLanguage, ULB } = resourcesReducer.bibles;
     let currentChapter = targetLanguage[reference.chapter];
     let chapters = this.props.groupsDataReducer.groupsData;
-    console.log(this.props)
-    //console.log(this.props.groupsDataReducer.groupsData);
+
     const verses = (bibleId, bible) => {
       let verseNumbers = Object.keys(currentChapter);
       let verses = verseNumbers.map( (verseNumber, index) => {
@@ -155,13 +157,13 @@ class View extends React.Component {
                                
                                 <Toggle style={style.toggle} thumbStyle={style.thumbOff} trackStyle={style.trackOff} thumbSwitchedStyle={style.thumbSwitched} trackSwitchedStyle={style.trackSwitched} labelStyle={style.labelStyle} />                            
                             </li>
+                             <li style={{padding:"17px 0 0 0", color: "#fff", fontWeight: "bold"}}><span>ON</span></li>
                              <li><div className="btn-group navbar-btn layout" role="group" aria-label="...">
                                 <a className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,1)}  title="2-column layout">2x &nbsp;<i className="fa fa-columns fa-lg"></i></a>
                                 <a className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,2)} title="3-column layout">3x &nbsp;<i className="fa fa-columns fa-lg"></i>
                                 </a>
                                 <a className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,3)}  title="4-column layout">4x &nbsp;<i className="fa fa-columns fa-lg"></i></a>
                             </div></li>
-                             <li style={{padding:"17px 0 0 0", color: "#fff", fontWeight: "bold"}}><span>ON</span></li>
                               
                               <li style={linkStyle} onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} data-toggle="tooltip" data-placement="bottom" title="Find and replace" id="searchText"><Glyphicon glyph="search" />
                               </li>
