@@ -110,7 +110,7 @@ var style = {
     versenum: {
       fontWeight: "bold"
     },
-    toggle: {
+  toggle: {
       marginTop: "15px"
     },
     thumbOff: {
@@ -125,7 +125,7 @@ var style = {
     trackSwitched: {
       backgroundColor: '#295482',
     },
-    test: {
+    chapmodal: {
       marginTop: "10px",
       color: "#0b63bf",
       fontSize: "inherit", 
