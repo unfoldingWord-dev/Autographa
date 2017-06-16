@@ -73,11 +73,6 @@ class View extends React.Component {
  
   render() {
     const linkStyle = this.state.hover ? style.hover : style.button;
-    // const iconImage = this.state.hover ? this.props.hoverImage : this.props.imageName;
-    // let icon; 
-    // if(iconImage){
-    //     icon = <img src={iconImage} style={style.img}/>;
-    //     }
     let { contextIdReducer, projectDetailsReducer, resourcesReducer,  modalVisibility, modalSettingsVisibility,
     showModal, showSettingsModal, hideModal } = this.props
     let { reference } = contextIdReducer.contextId;
@@ -93,7 +88,7 @@ class View extends React.Component {
         return (
 
 
-        <div style={{display: "flex"}} key={index}>
+        <div style={{display: "flex", wordSpacing: "5px"}} key={index}>
             <span style={style.versenum}>{verseNumber} </span>
             <span onClick={this.highlightRef.bind(this, verseNumber)}
             style={{paddingLeft: "10px"}}
@@ -134,10 +129,7 @@ class View extends React.Component {
               <div>
               {verses('ULB', ULB)}
               </div>
-            </Col> 
-
-             
-            )
+            </Col> )
        } 
 
         var rows = [];
@@ -179,7 +171,6 @@ class View extends React.Component {
                                 <Toggle style={style.toggle}/>
                                 <Toggle style={style.toggle} thumbStyle={style.thumbOff} trackStyle={style.trackOff} thumbSwitchedStyle={style.thumbSwitched} trackSwitchedStyle={style.trackSwitched} labelStyle={style.labelStyle} />                               
                                 </label>*/}
-                               
                                 <Toggle style={style.toggle} thumbStyle={style.thumbOff} trackStyle={style.trackOff} thumbSwitchedStyle={style.thumbSwitched} trackSwitchedStyle={style.trackSwitched} labelStyle={style.labelStyle} />                            
                             </li>
                              <li style={{padding:"17px 0 0 0", color: "#fff", fontWeight: "bold"}}><span>ON</span></li>
@@ -202,27 +193,23 @@ class View extends React.Component {
         </nav>
         {rows}
         { this.state.layoutDesign == 1 &&
-                       <Col lg={6}>
-          <h2>{projectDetailsReducer.manifest.target_language.name}</h2>
-          <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
-          {verses('target', targetLanguage)}
-        </Col>
-                    
-                }
+          <Col lg={6}>
+            <h2>{projectDetailsReducer.manifest.target_language.name}</h2>
+            <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
+            {verses('target', targetLanguage)}
+          </Col>}
                       { this.state.layoutDesign == 2 &&
-                       <Col lg={4}>
-          <h2>{projectDetailsReducer.manifest.target_language.name}</h2>
-          <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
-          {verses('target', targetLanguage)}
-        </Col>}
+          <Col lg={4}>
+            <h2>{projectDetailsReducer.manifest.target_language.name}</h2>
+            <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
+            {verses('target', targetLanguage)}
+          </Col>}
                       { this.state.layoutDesign == 3 &&
-            <Col lg={3}>
-          <h2>{projectDetailsReducer.manifest.target_language.name}</h2>
-          <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
-          {verses('target', targetLanguage)}
-        </Col>}
-
-
+          <Col lg={3}>
+            <h2>{projectDetailsReducer.manifest.target_language.name}</h2>
+            <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
+            {verses('target', targetLanguage)}
+          </Col>}
             <nav className="navbar navbar-default navbar-fixed-bottom" style={{left:"250px"}}>
              <div className = "container"> 
 
@@ -237,12 +224,8 @@ class View extends React.Component {
                     <div className="nav navbar-nav navbar-center verse-diff-on" style={{marginLeft: "350px"}}>
                         <div className="btn-group navbar-btn layout" role="group" aria-label="...">
                                 <a style={style.layoutButton} className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,1)}  title="2-column layout">2x &nbsp;<i className="fa fa-columns fa-lg"></i></a>
-                                <a style={style.layoutButton} className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,2)} title="3-column layout">3x &nbsp;<i className="fa fa-columns fa-lg"></i>
-                                </a>
+                                <a style={style.layoutButton} className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,2)} title="3-column layout">3x &nbsp;<i className="fa fa-columns fa-lg"></i></a>
                                 <a style={style.layoutButton} className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,3)}  title="4-column layout">4x &nbsp;<i className="fa fa-columns fa-lg"></i></a>
-                        
-
-
                         </div>
                     </div>
                     {/*<span id="saved-time"></span>
