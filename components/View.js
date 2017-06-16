@@ -88,7 +88,7 @@ class View extends React.Component {
         return (
 
 
-        <div style={{display: "flex", wordSpacing: "5px"}} key={index}>
+        <div style={{display: "flex", lineHeight: "25px"}} key={index}>
             <span style={style.versenum}>{verseNumber} </span>
             <span onClick={this.highlightRef.bind(this, verseNumber)}
             style={{paddingLeft: "10px"}}
