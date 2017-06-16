@@ -12,13 +12,11 @@ import style from '../css/Style';
 import SettingModal from './SettingsModal';
 import Toggle from 'material-ui/Toggle';
 
-
-
 class View extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {hover: false}
+    this.state = {hover: false,layoutDesign:1}
   }
 
   saveEditVerse() {
@@ -45,22 +43,31 @@ class View extends React.Component {
     contextId.reference.verse = verseNumber;
     actions.changeCurrentContextId(contextId);
   }
-    highlightRef(verseNumber, e){ 
-        for (var i = 1; i < 10; i++) {
-            let content = document.getElementById('ULB' + '_verse_' + i)
-            content.style = "padding-left:10px;padding-right:0px;margin-right:0px"; 
-        }      
-        let verseText = document.getElementById('ULB' + '_verse_' + verseNumber);
-        verseText.style = "background-color: rgba(11, 130, 255, 0.1);padding-left:10px;padding-right:10px;margin-right:10px; border-radius: 6px";  
-    }
+  highlightRef(verseNumber, e){ 
+    let { reference } = this.props.contextIdReducer.contextId;
+    let { targetLanguage, ULB } = this.props.resourcesReducer.bibles;
+    let currentChapter = targetLanguage[reference.chapter];
+    let verseNumbers = Object.keys(currentChapter);
+      for (var i = 1; i <= verseNumbers.length; i++) { 
+          let content = document.getElementById('ULB' + '_verse_' + i)
+          content.style = "padding-left:10px;padding-right:0px;margin-right:0px"; 
+      }
+      console.log(verseNumber)      
+      let verseText = document.getElementById('ULB' + '_verse_' + verseNumber);
+      verseText.style = "background-color: rgba(11, 130, 255, 0.1);padding-left:10px;padding-right:10px;margin-right:10px; border-radius: 6px";  
+  }
 
-    mouseEnter(){
+  mouseEnter(){
     this.setState({hover: true});
   }
 
-  mouseLeave(){
-    this.setState({hover: false});
-  }
+    mouseLeave(){
+        this.setState({hover: false});
+    }
+
+   handleChange(key) {
+        this.setState({layoutDesign: key});
+    }
  
  
   render() {
@@ -71,14 +78,12 @@ class View extends React.Component {
     //     icon = <img src={iconImage} style={style.img}/>;
     //     }
     let { contextIdReducer, projectDetailsReducer, resourcesReducer,  modalVisibility, modalSettingsVisibility,
-      showModal, showSettingsModal, hideModal } = this.props
+    showModal, showSettingsModal, hideModal } = this.props
     let { reference } = contextIdReducer.contextId;
     let { targetLanguage, ULB } = resourcesReducer.bibles;
     let currentChapter = targetLanguage[reference.chapter];
     let chapters = this.props.groupsDataReducer.groupsData;
-    console.log(this.props.groupsDataReducer.groupsData)
-    console.log(this.props)
-    //console.log(this.props.groupsDataReducer.groupsData);
+
     const verses = (bibleId, bible) => {
       let verseNumbers = Object.keys(currentChapter);
       let verses = verseNumbers.map( (verseNumber, index) => {
@@ -86,7 +91,7 @@ class View extends React.Component {
         let verseText = bible[reference.chapter][verseNumber];
         return (
 
-          <div style={{display: "flex"}} key={index}>
+        <div style={{display: "flex"}} key={index}>
             <span style={style.versenum}>{verseNumber} </span>
             <span onClick={this.highlightRef.bind(this, verseNumber)}
             style={{paddingLeft: "10px"}}
@@ -97,20 +102,36 @@ class View extends React.Component {
             suppressContentEditableWarning={true}
             >{verseText}
             </span>
-          </div>
+        </div>
         )
       })
       return verses
     }
+
+    const layout = (i) => {
+        return (
+             <Col key={i} sm={6} style={{backgroundColor: "#f5f8fa", borderRight: "1px solid #d3e0e9", padding: "0px 20px 60px"}}>
+              <h2>English ULB</h2>
+              <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
+              <div >
+              {verses('ULB', ULB)}
+              </div>
+            </Col>      
+            )
+        }
+
+        var rows = [];
+        for (var i = 1; i <= this.state.layoutDesign; i++) {
+            rows.push(layout(i));
+        }
     
-    return (
-      
+    return (  
       <div id="test" style={{overflow: "scroll", position: "relative"}}>
           <nav className="navbar navbar-inverse navbar-fixed-top" role="navigation" style={{backgroundColor: "#0b82ff", position: "relative", marginBottom: "0"}}>
             <div className="container-fluid" style={{backgroundColor: "#0b82ff"}}>
                 <div className="navbar-header">
                     <button className="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar"><span className="sr-only">Toggle navigation</span><span className="icon-bar"></span><span className="icon-bar"></span><span className="icon-bar"></span></button>
-                    <a className="navbar-brand" href="javascript:;"><img alt="Brand" src="../translationCore/tC_apps/Autographa/logos/logo.png" /></a>
+                    <a className="navbar-brand"><img alt="Brand" src="../translationCore/tC_apps/Autographa/assets/logo.png" /></a>
                 </div>
                 <div className="navbar-collapse collapse" id="navbar" style={{backgroundColor: "#0b82ff"}}>
                     <ul className="nav navbar-nav"  style={{padding: "3px 0 0 0px"}}>
@@ -118,7 +139,7 @@ class View extends React.Component {
                           <div className="btn-group navbar-btn strong verse-diff-on" role="group" aria-label="..." id="bookBtn" style={{marginLeft:"150px"}}>
                             <a className="btn btn-default" style={style.book} data-toggle="tooltip" data-placement="bottom" title="Select Book"  id="book-chapter-btn">
                             Book</a>
-                            <ChapterModal  show ={ modalVisibility } onHide = { hideModal } chapters = { chapters } allProps = {this.props}/>
+                            <ChapterModal show ={ modalVisibility } onHide = { hideModal } chapters = { chapters } allProps = {this.props}/>
                             <SettingModal show ={ modalSettingsVisibility } onHide = { hideModal } />
                             <span>
                             <a className="btn btn-default" style={style.chapter} onClick = {showModal} id="chapterBtn" data-target="#myModal"  data-toggle="modal" data-placement="bottom"  title="Select Chapter" >Chapter</a>
@@ -133,9 +154,16 @@ class View extends React.Component {
                                     <input type="checkbox" id="switch-2" className="mdl-switch__input check-diff"/>
                                     <span className="mdl-switch__label"></span>
                                 </label>*/}
-                                <Toggle style={style.toggle}/>                               
+                               
+                                <Toggle style={style.toggle} thumbStyle={style.thumbOff} trackStyle={style.trackOff} thumbSwitchedStyle={style.thumbSwitched} trackSwitchedStyle={style.trackSwitched} labelStyle={style.labelStyle} />                            
                             </li>
                              <li style={{padding:"17px 0 0 0", color: "#fff", fontWeight: "bold"}}><span>ON</span></li>
+                             <li><div className="btn-group navbar-btn layout" role="group" aria-label="...">
+                                <a className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,1)}  title="2-column layout">2x &nbsp;<i className="fa fa-columns fa-lg"></i></a>
+                                <a className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,2)} title="3-column layout">3x &nbsp;<i className="fa fa-columns fa-lg"></i>
+                                </a>
+                                <a className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,3)}  title="4-column layout">4x &nbsp;<i className="fa fa-columns fa-lg"></i></a>
+                            </div></li>
                               
                               <li style={linkStyle} onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} data-toggle="tooltip" data-placement="bottom" title="Find and replace" id="searchText"><Glyphicon glyph="search" />
                               </li>
@@ -147,21 +175,13 @@ class View extends React.Component {
                               </li>
                             
                               <li style={linkStyle} onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} onClick = {showSettingsModal}><Glyphicon glyph="wrench" />
-                              </li>
-                            
+                              </li>       
                     </ul>
                 </div>
             </div>
         </nav>
-        <Col sm={6} style={{backgroundColor: "#f5f8fa", borderRight: "1px solid #d3e0e9", padding: "0px 20px 60px"}}>
-          <span><a href="javascript:;" data-toggle="tooltip" data-placement="bottom" title="chapters"><i className="fa fa-cog fa-2x"></i></a></span>
-          <h2>English ULB</h2>
-          <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
-          <div >
-          {verses('ULB', ULB)}
-          </div>
-        </Col>
-        <Col sm={6} >
+        {rows}
+        <Col sm={6}>
           <h2>{projectDetailsReducer.manifest.target_language.name}</h2>
           <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
           {verses('target', targetLanguage)}
