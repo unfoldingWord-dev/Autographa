@@ -108,7 +108,9 @@ var style = {
     marginLeft: "20px"
   },
     versenum: {
-      fontWeight: "bold"
+      paddingTop: "1px",
+      fontWeight: "bold",
+      fontSize: "12px"
     },
   toggle: {
       marginTop: "15px"
