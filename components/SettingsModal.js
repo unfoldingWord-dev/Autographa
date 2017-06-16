@@ -62,6 +62,8 @@ class SettingModal extends React.Component {
                         <RaisedButton label="Save" primary={true} onClick={onHide}/>
                           </Tab.Pane>
                         </Tab.Content>
+
+                        
                     </Col>
                 </Row>
             </Tab.Container>

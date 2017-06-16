@@ -137,6 +137,8 @@ var style = {
     layoutButton: {
       backgroundImage: "linear-gradient(to bottom,#0b82ff 0,#0b82ff 100%)",
     }
+
+    
 };
 
 module.exports = style;

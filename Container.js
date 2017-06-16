@@ -26,6 +26,8 @@ class Container extends React.Component {
           showSettingsModal={() => this.setState({ modalSettingsVisibility: true, selectedPane: false })}
           hideModal={() => this.setState({ modalVisibility: false, modalSettingsVisibility:false })}
       />
+
+      
       </MuiThemeProvider>
     }
     return view;

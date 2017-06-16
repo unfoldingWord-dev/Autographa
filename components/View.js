@@ -240,6 +240,9 @@ class View extends React.Component {
                                 <a style={style.layoutButton} className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,2)} title="3-column layout">3x &nbsp;<i className="fa fa-columns fa-lg"></i>
                                 </a>
                                 <a style={style.layoutButton} className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,3)}  title="4-column layout">4x &nbsp;<i className="fa fa-columns fa-lg"></i></a>
+                        
+
+
                         </div>
                     </div>
                     {/*<span id="saved-time"></span>
