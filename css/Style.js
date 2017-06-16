@@ -133,8 +133,10 @@ var style = {
       display: "inline-block", 
       backgroundColor: "#f5f5f5",
       textAlign: "center",
-     
     },
+    layoutButton: {
+      backgroundImage: "linear-gradient(to bottom,#0b82ff 0,#0b82ff 100%)",
+    }
 };
 
 module.exports = style;
