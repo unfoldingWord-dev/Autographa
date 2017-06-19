@@ -35,7 +35,7 @@ class ChapterModal extends React.Component {
             {
               
               Object.keys(chapters).map(function (chapter, index) {
-                return(<Col sm={1} key = {index} ><span><a href="javascript:void(0);"  onClick={() => _this.changeChapter(chapters[chapter][index].contextId) }>{chapter}</a></span></Col>)
+                return(<Col sm={1} key = {index} ><span><a onClick={() => _this.changeChapter(chapters[chapter][index].contextId) }>{chapter}</a></span></Col>)
               })
             }
           </div>

@@ -16,7 +16,7 @@ class View extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {hover: false,layoutDesign:1}
+    this.state = {hover: false,layoutDesign:1, reflists:[{option:"English-ULB", value:"ULB"},{option:"English-UDB",value:"UDB"},{option:"Hindi-ULB",value:"hin_ulb"}],defaultRef:"ULB"} //values has been changed, Hindi lang currently not changed
   }
 
   saveEditVerse() {
@@ -43,6 +43,7 @@ class View extends React.Component {
     contextId.reference.verse = verseNumber;
     actions.changeCurrentContextId(contextId);
   }
+
   highlightRef(verseNumber, e){ 
     let { reference } = this.props.contextIdReducer.contextId;
     let { targetLanguage, ULB } = this.props.resourcesReducer.bibles;
@@ -52,7 +53,6 @@ class View extends React.Component {
           let content = document.getElementById('ULB' + '_verse_' + i)
           content.style = "padding-left:10px;padding-right:0px;margin-right:0px"; 
       }
-      console.log(verseNumber)      
       let verseText = document.getElementById('ULB' + '_verse_' + verseNumber);
       verseText.style = "background-color: rgba(11, 130, 255, 0.1);padding-left:10px;padding-right:10px;margin-right:10px; border-radius: 6px";  
   }
@@ -68,9 +68,32 @@ class View extends React.Component {
    handleChange(key) {
         this.setState({layoutDesign: key});
     }
- 
+
+    handleRefChange(event) {
+        event.persist()
+        this.setState({defaultRef: event.target.value})
+        alert("box 1")
+    } 
+
+    handleRefChangeTwo(event) {
+        event.persist()
+        this.setState({defaultRefTwo: event.target.value})
+        alert("box 2")
+    }
+
+    handleRefChangeThree(event) {
+        event.persist()
+        this.setState({defaultRefThree: event.target.value})
+        alert("box 3")
+    } 
  
   render() {
+    const dropdownOne = this.state.reflists.map(function(refDoc, index){
+        return(
+         <option value={refDoc.value}  key={index} >{refDoc.option}</option>
+        )
+    })            
+
     const linkStyle = this.state.hover ? style.hover : style.button;
     // const iconImage = this.state.hover ? this.props.hoverImage : this.props.imageName;
     // let icon; 
@@ -110,11 +133,11 @@ class View extends React.Component {
 
     const layout = (i) => {
         return (
-             <Col key={i} sm={6} style={{backgroundColor: "#f5f8fa", borderRight: "1px solid #d3e0e9", padding: "0px 20px 60px"}}>
+             <Col key={i} keyProp={i} sm={6} style={{backgroundColor: "#f5f8fa", borderRight: "1px solid #d3e0e9", padding: "0px 20px 60px"}}>
               <h2>English ULB</h2>
               <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
               <div >
-              {verses('ULB', ULB)}
+              {verses(this.state.defaultRef, ULB)}
               </div>
             </Col>      
             )
@@ -125,8 +148,7 @@ class View extends React.Component {
             rows.push(layout(i));
         }
     
-    return (  
-      <div id="test" style={{overflow: "scroll", position: "relative"}}>
+    return ( <div id="test" style={{overflow: "scroll", position: "relative"}}>
           <nav className="navbar navbar-inverse navbar-fixed-top" role="navigation" style={{backgroundColor: "#0b82ff", position: "relative", marginBottom: "0"}}>
             <div className="container-fluid" style={{backgroundColor: "#0b82ff"}}>
                 <div className="navbar-header">
@@ -157,7 +179,7 @@ class View extends React.Component {
                                
                                 <Toggle style={style.toggle} thumbStyle={style.thumbOff} trackStyle={style.trackOff} thumbSwitchedStyle={style.thumbSwitched} trackSwitchedStyle={style.trackSwitched} labelStyle={style.labelStyle} />                            
                             </li>
-                             <li style={{padding:"17px 0 0 0", color: "#fff", fontWeight: "bold"}}><span>ON</span></li>
+                            <li style={{padding:"17px 0 0 0", color: "#fff", fontWeight: "bold"}}><span>ON</span></li>
                              <li><div className="btn-group navbar-btn layout" role="group" aria-label="...">
                                 <a className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,1)}  title="2-column layout">2x &nbsp;<i className="fa fa-columns fa-lg"></i></a>
                                 <a className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,2)} title="3-column layout">3x &nbsp;<i className="fa fa-columns fa-lg"></i>
@@ -180,7 +202,73 @@ class View extends React.Component {
                 </div>
             </div>
         </nav>
-        {rows}
+         {this.state.layoutDesign == 1 &&
+          <Col key={1}  sm={6} style={{backgroundColor: "#f5f8fa", borderRight: "1px solid #d3e0e9", padding: "0px 20px 60px"}}>
+                       <h2>English ULB</h2>
+                       <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
+                        <select title="Select Reference Text" onChange={this.handleRefChange.bind(this)} value ={this.state.defaultRef}>
+                            {dropdownOne}
+                        </select>
+                       <div >
+                       {verses(this.state.defaultRef, ULB)}
+                       </div>
+                     </Col> }
+                     {this.state.layoutDesign == 2 &&
+                      <div>
+          <Col key={2} sm={6} style={{backgroundColor: "#f5f8fa", borderRight: "1px solid #d3e0e9", padding: "0px 20px 60px"}}>
+                       <h2>English ULB</h2>
+                       <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
+                        <select title="Select Reference Text" onChange={this.handleRefChange.bind(this)} value ={this.state.defaultRef}>
+                            {dropdownOne}
+                        </select>
+                       <div >
+                       {verses(this.state.defaultRef, ULB)}
+                       </div>
+                     </Col> 
+                     <Col key={3} sm={6} style={{backgroundColor: "#f5f8fa", borderRight: "1px solid #d3e0e9", padding: "0px 20px 60px"}}>
+                       <h2>English ULB</h2>
+                       <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
+                        <select title="Select Reference Text" onChange={this.handleRefChangeTwo.bind(this)} value ={this.state.defaultRefTwo}>
+                            {dropdownOne}
+                        </select>
+                       <div >
+                       {verses(this.state.defaultRefTwo, ULB)}
+                       </div>
+                     </Col>
+                     </div> }
+                     {this.state.layoutDesign == 3 &&
+                        <div>
+          <Col key={3} sm={6} style={{backgroundColor: "#f5f8fa", borderRight: "1px solid #d3e0e9", padding: "0px 20px 60px"}}>
+                       <h2>English ULB</h2>
+                       <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
+                        <select title="Select Reference Text" onChange={this.handleRefChange.bind(this)} value ={this.state.defaultRef}>
+                            {dropdownOne}
+                        </select>
+                       <div >
+                       {verses(this.state.defaultRef, ULB)}
+                       </div>
+                     </Col>
+                     <Col key={4}  sm={6} style={{backgroundColor: "#f5f8fa", borderRight: "1px solid #d3e0e9", padding: "0px 20px 60px"}}>
+                       <h2>English ULB</h2>
+                       <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
+                        <select title="Select Reference Text" onChange={this.handleRefChangeTwo.bind(this)} value ={this.state.defaultRefTwo}>
+                            {dropdownOne}
+                        </select>
+                       <div >
+                       {verses(this.state.defaultRefTwo, ULB)}
+                       </div>
+                     </Col>
+                     <Col key={5}  sm={6} style={{backgroundColor: "#f5f8fa", borderRight: "1px solid #d3e0e9", padding: "0px 20px 60px"}}>
+                       <h2>English ULB</h2>
+                       <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
+                        <select title="Select Reference Text" onChange={this.handleRefChangeThree.bind(this)} value ={this.state.defaultRefThree}>
+                            {dropdownOne}
+                        </select>
+                       <div >
+                       {verses(this.state.defaultRefThree, ULB)}
+                       </div>
+                     </Col></div> }
+
         <Col sm={6}>
           <h2>{projectDetailsReducer.manifest.target_language.name}</h2>
           <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
