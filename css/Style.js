@@ -138,9 +138,26 @@ var style = {
     },
     layoutButton: {
       backgroundImage: "linear-gradient(to bottom,#0b82ff 0,#0b82ff 100%)",
-    }
-
-    
+    },
+    sliderHorizontal: {
+      width: "50px",
+    },
+    fontButtonMinus: {
+        backgroundImage: "linear-gradient(to bottom,#fbfbfb 0,#fbfbfb 100%)",
+        WebkitBoxShadow: "none",
+        border: "none", 
+        fontWeight: "bold", 
+        color: "#0b82ff", 
+        fontSize: "15px"
+    },
+     fontButtonPlus: {
+        backgroundImage: "linear-gradient(to bottom,#fbfbfb 0,#fbfbfb 100%)",
+        WebkitBoxShadow: "none",
+        border: "none", 
+        fontWeight: "bold", 
+        color: "#0b82ff", 
+        fontSize: "20px"
+    }   
 };
 
 module.exports = style;
