@@ -84,19 +84,11 @@ var style = {
     marginRight: "10px",
     marginLeft: "20px"
   },
-  book: {
-       borderBottomRightRadius: "0",
-       borderTopRightRadius: "0",
-       color: "#0b82ff",
-       fontWeight: "bold",
-       backgroundColor: "#fff"
-  },
   chapter: {
-       borderBottomLeftRadius: "0",
-       borderTopLeftRadius: "0",
        color: "#0b82ff",
        fontWeight: "bold",
-       backgroundColor: "#fff"
+       backgroundColor: "#fff",
+       marginLeft: "210px"
   },
    hover: {
     color: "#fff",

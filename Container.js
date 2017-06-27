@@ -2,6 +2,7 @@ import React from 'react';
 import View from './components/View';
 import fetchData from './FetchData/main';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+
 // String constants
 const NAMESPACE = "Autographa";
 
