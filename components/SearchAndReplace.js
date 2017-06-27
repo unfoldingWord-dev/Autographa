@@ -3,19 +3,12 @@ import { Modal, Button, Col, Radio, FormGroup } from 'react-bootstrap';
 import TextField from 'material-ui/TextField';
 
 class SearchAndReplace extends React.Component {
-  constructor(props){
-      super(props);
-      this.state = {targetContent:this.props.allProps.resourcesReducer.bibles.targetLanguage, find:"", replace:"",replaceCount:0}
-      console.log(this.props)
-  }
+    constructor(props){
+        super(props);
+        this.state = {targetContent:this.props.allProps.resourcesReducer.bibles.targetLanguage, find:"", replace:"",replaceCount:0}
+        console.log(this.props)
+    }
 
-  /*  findAndReplaceText(searchText){
-        if (this.refs.searchText !== null) {
-            var input = this.refs.searchText;
-            var inputValue = input.value;
-            console.log(input)
-        }
-    }*/
     escapeRegExp(str) {
       return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
     }
@@ -29,47 +22,25 @@ class SearchAndReplace extends React.Component {
     }
 
     findAndReplaceText() {
-        var a = [];
-        var verses_arr = []; 
-        var replacedVerse = {};
-        var chapter_hash = {};
+        let reference = this.props.allProps.contextIdReducer.contextId;
+        let currentChapter = reference.reference.chapter;
+        var size = Object.keys(this.props.allProps.resourcesReducer.bibles.targetLanguage[currentChapter]).length
         var searchVal = this.state.find.toString().toLowerCase();
-        console.log(searchVal);
         var replaceVal = this.state.replace;
-        var targetContent = this.state.targetContent;
-        //console.log(targetContent)
-        for (var i = 1; i < 7; i++) {
-          a.push(targetContent[i]);
-          //console.log(targetContent)
+        var targetContent = this.props.allProps.resourcesReducer.bibles.targetLanguage[currentChapter];
+        for (var i = 1; i < size; i++) {
           var originalVerse = targetContent[i]
-          //console.log(originalVerse)
-           if (originalVerse[i].search(new RegExp(this.escapeRegExp(searchVal), 'g')) >= 0) {
-                var modifiedVerse = originalVerse[i].replace(searchVal, replaceVal);
+           if (originalVerse.search(new RegExp(this.escapeRegExp(searchVal), 'g')) >= 0) {
+                var modifiedVerse = originalVerse.replace(searchVal, replaceVal);
                 console.log(modifiedVerse)
                 this.setState({targetContent:modifiedVerse})
                //var replaceCount += originalVerse.match(new RegExp(escapeRegExp(searchVal), 'g')).length;
                
+            }
         }
     }
-
-          //let matches = targetContent[4][1].filter(searchVal);
-       
-           /* if (targetContent[4].search(new RegExp(this.escapeRegExp(searchVal), 'g')) >= 0 ){
-                console.log(searchVal)
-            }*/
-        
-               
-        /*let { reference } = contextIdReducer.contextId;
-        let { targetLanguage, ULB } = resourcesReducer.bibles;
-        let currentChapter = targetLanguage[reference.chapter];
-        let chapters = this.props.groupsDataReducer.groupsData;
-        const verses = (bibleId, bible) => {
-        let verseNumbers = Object.keys(currentChapter);
-        let verses = verseNumbers.map( (verseNumber, index) => {
-        let editable = bibleId === 'target';
-        let verseText = bible[reference.chapter][verseNumber];*/
-        console.log("Find:"+ this.state.find);
-        console.log("Replace:"+ this.state.replace);
+    selectRadioButton(e){
+        console.log(e.target.value)
     }
 
   render() {
@@ -82,11 +53,11 @@ class SearchAndReplace extends React.Component {
           </Modal.Header>
           <Modal.Body>
             <FormGroup>
-              <Radio name="radioGroup" inline>
+              <Radio name="radioGroup" inline onChange={this.selectRadioButton.bind(this)}>
                 Current Chapter
               </Radio>
               {' '}
-              <Radio name="radioGroup" inline>
+              <Radio name="radioGroup" inline onChange={this.selectRadioButton.bind(this)}>
                 Current Book
               </Radio>
               {' '}
