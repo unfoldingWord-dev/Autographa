@@ -29,10 +29,6 @@ class SearchAndReplace extends React.Component {
     }
 
     findAndReplaceText() {
-    let reference = this.props.allProps.contextIdReducer.contextId;
-    console.log(reference);
-    let currentChapter = reference.reference.chapter;
-        console.log(currentChapter);
         var a = [];
         var verses_arr = []; 
         var replacedVerse = {};
@@ -41,16 +37,12 @@ class SearchAndReplace extends React.Component {
         console.log(searchVal);
         var replaceVal = this.state.replace;
         var targetContent = this.state.targetContent;
-        console.log(targetContent)
+        //console.log(targetContent)
         for (var i = 1; i < 7; i++) {
           a.push(targetContent[i]);
-          console.log(a)
-        }
-        /*for (var i = 0; i < a.length; i++) {
-            a[i]
-        }*/
+          //console.log(targetContent)
           var originalVerse = targetContent[i]
-          console.log(originalVerse[i])
+          //console.log(originalVerse)
            if (originalVerse[i].search(new RegExp(this.escapeRegExp(searchVal), 'g')) >= 0) {
                 var modifiedVerse = originalVerse[i].replace(searchVal, replaceVal);
                 console.log(modifiedVerse)
@@ -58,7 +50,7 @@ class SearchAndReplace extends React.Component {
                //var replaceCount += originalVerse.match(new RegExp(escapeRegExp(searchVal), 'g')).length;
                
         }
-    
+    }
 
           //let matches = targetContent[4][1].filter(searchVal);
        
