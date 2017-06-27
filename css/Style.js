@@ -107,9 +107,11 @@ var style = {
     marginRight: "10px",
     marginLeft: "20px"
   },
-  versenum: {
-    fontWeight: "bold"
-  },
+    versenum: {
+      paddingTop: "1px",
+      fontWeight: "bold",
+      fontSize: "12px"
+    },
   toggle: {
       marginTop: "15px"
     },
@@ -124,7 +126,38 @@ var style = {
     },
     trackSwitched: {
       backgroundColor: '#295482',
-    }
+    },
+    chapmodal: {
+      marginTop: "10px",
+      color: "#0b63bf",
+      fontSize: "inherit", 
+      width: "42px", 
+      display: "inline-block", 
+      backgroundColor: "#f5f5f5",
+      textAlign: "center",
+    },
+    layoutButton: {
+      backgroundImage: "linear-gradient(to bottom,#0b82ff 0,#0b82ff 100%)",
+    },
+    sliderHorizontal: {
+      width: "50px",
+    },
+    fontButtonMinus: {
+        backgroundImage: "linear-gradient(to bottom,#fbfbfb 0,#fbfbfb 100%)",
+        WebkitBoxShadow: "none",
+        border: "none", 
+        fontWeight: "bold", 
+        color: "#0b82ff", 
+        fontSize: "15px"
+    },
+     fontButtonPlus: {
+        backgroundImage: "linear-gradient(to bottom,#fbfbfb 0,#fbfbfb 100%)",
+        WebkitBoxShadow: "none",
+        border: "none", 
+        fontWeight: "bold", 
+        color: "#0b82ff", 
+        fontSize: "20px"
+    }   
 };
 
 module.exports = style;

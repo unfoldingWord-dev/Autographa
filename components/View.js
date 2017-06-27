@@ -17,7 +17,17 @@ class View extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {hover: false,layoutDesign:1, reflists:[{option:"English-ULB", value:"ULB"},{option:"English-UDB",value:"UDB"},{option:"Hindi-ULB",value:"hin_ulb"}],defaultRef:"ULB"} //values has been changed, Hindi lang currently not changed
+    this.state = {hover: false, 
+                  layoutDesign:1, 
+                  fontMin: 14, 
+                  fontMax: 26, 
+                  currentFontValue: 10, 
+                  fontStep: 2,
+                  fontSize: 14,
+                  reflists:[{option:"English-ULB", value:"ULB"},{option:"English-UDB",value:"UDB"},{option:"Hindi-ULB",value:"hin_ulb"}],
+                  defaultRef:"ULB" //values has been changed, Hindi lang currently not changed
+          }
+
   }
 
   saveEditVerse() {
@@ -87,6 +97,36 @@ class View extends React.Component {
         this.setState({defaultRefThree: event.target.value})
         alert("box 3")
     } 
+
+
+
+    fontChange(multiplier) {
+        let fontSize = this.state.fontMin;
+        if (document.getElementsByClassName("test")[0].style.fontSize == "") {
+            document.getElementsByClassName("test")[0].style.fontSize = "14px";
+        }else{
+            fontSize = parseInt(document.getElementsByClassName("test")[0].style.fontSize)
+        }
+        if(multiplier < 0){
+            if((multiplier+fontSize) <= this.state.fontMin ){
+                fontSize = this.state.fontMin
+            }else{
+                fontSize = multiplier + fontSize
+            }
+        }else{
+            if((multiplier+fontSize) >= this.state.fontMax ){
+                fontSize = this.state.fontMax
+            }else{
+                fontSize = multiplier + fontSize
+            }
+        }
+         this.setState({currentFontValue: fontSize})
+        document.getElementsByClassName("test")[0].style.fontSize = fontSize + "px";
+    }
+    sliderFontChange(obj){
+        document.getElementsByClassName("test")[0].style.fontSize = obj.target.value + "px";
+    }
+ 
  
   render() {
     const dropdownOne = this.state.reflists.map(function(refDoc, index){
@@ -96,13 +136,9 @@ class View extends React.Component {
     })            
 
     const linkStyle = this.state.hover ? style.hover : style.button;
-    // const iconImage = this.state.hover ? this.props.hoverImage : this.props.imageName;
-    // let icon; 
-    // if(iconImage){
-    //     icon = <img src={iconImage} style={style.img}/>;
-    //     }
-    let { contextIdReducer, projectDetailsReducer, resourcesReducer,  modalVisibility, modalSettingsVisibility, modalSearchVisibility,
-    showModal, showSettingsModal, showSearchReplaceModal, hideModal } = this.props
+
+    let { contextIdReducer, projectDetailsReducer, resourcesReducer,  modalVisibility, modalSettingsVisibility,
+    showModal, showSettingsModal, hideModal,modalSearchVisibility,showSearchReplaceModal } = this.props
     let { reference } = contextIdReducer.contextId;
     let { targetLanguage, ULB } = resourcesReducer.bibles;
     let currentChapter = targetLanguage[reference.chapter];
@@ -114,17 +150,20 @@ class View extends React.Component {
         let editable = bibleId === 'target';
         let verseText = bible[reference.chapter][verseNumber];
         return (
-        <div style={{display: "flex"}} key={index}>
-            <span style={style.versenum}>{verseNumber} </span>
-            <span onClick={this.highlightRef.bind(this, verseNumber)}
-            style={{paddingLeft: "10px"}}
-            id={bibleId + '_verse_' + verseNumber}
-            contentEditable={editable}
-            onBlur={this.saveEditVerse.bind(this)}
-            onFocus={this.changeCurrentVerse.bind(this, verseNumber)}
-            suppressContentEditableWarning={true}
-            >{verseText}
-            </span>
+
+
+
+          <div style={{display: "flex", lineHeight: "25px"}} key={index}>
+              <span style={style.versenum}>{verseNumber} </span>
+              <span onClick={this.highlightRef.bind(this, verseNumber)}
+              style={{paddingLeft: "10px"}}
+              id={bibleId + '_verse_' + verseNumber}
+              contentEditable={editable}
+              onBlur={this.saveEditVerse.bind(this)}
+              onFocus={this.changeCurrentVerse.bind(this, verseNumber)}
+              suppressContentEditableWarning={true}
+              >{verseText}
+          </span>
         </div>
         )
       })
@@ -132,28 +171,48 @@ class View extends React.Component {
     }
 
     const layout = (i) => {
-        return (
-             <Col key={i} keyProp={i} sm={6} style={{backgroundColor: "#f5f8fa", borderRight: "1px solid #d3e0e9", padding: "0px 20px 60px"}}>
+        
+
+      if(this.state.layoutDesign == 2) {
+        console.log(this.state.layoutDesign == 2)
+        var j = 4 
+     
+      }
+      else if (this.state.layoutDesign == 3) {
+        console.log(this.state.layoutDesign == 3)
+        var j = 3
+       
+      }
+      else {
+      console.log(this.state.layoutDesign == 1)
+
+      var j =  6
+      }
+    
+         return (
+             <Col key={i} lg={j}style={{backgroundColor: "#f5f8fa", borderRight: "1px solid #d3e0e9", padding: "0px 20px 60px"}}>
               <h2>English ULB</h2>
               <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
-              <div >
-              {verses(this.state.defaultRef, ULB)}
+              <div>
+              {verses('ULB', ULB)}
               </div>
-            </Col>      
-            )
-        }
+            </Col> )
+       } 
 
         var rows = [];
         for (var i = 1; i <= this.state.layoutDesign; i++) {
             rows.push(layout(i));
         }
-    
-    return ( <div id="test" style={{overflow: "scroll", position: "relative"}}>
+
+
+
+    return (  
+      <div style={{overflow: "scroll", position: "relative"}}>
           <nav className="navbar navbar-inverse navbar-fixed-top" role="navigation" style={{backgroundColor: "#0b82ff", position: "relative", marginBottom: "0"}}>
             <div className="container-fluid" style={{backgroundColor: "#0b82ff"}}>
                 <div className="navbar-header">
                     <button className="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar"><span className="sr-only">Toggle navigation</span><span className="icon-bar"></span><span className="icon-bar"></span><span className="icon-bar"></span></button>
-                    <a className="navbar-brand"><img alt="Brand" src="../translationCore/tC_apps/Autographa/assets/logo.png" /></a>
+                    <a className="navbar-brand" href="javascript:;"><img alt="Brand" src="../translationCore/tC_apps/Autographa/logos/logo.png" /></a>
                 </div>
                 <div className="navbar-collapse collapse" id="navbar" style={{backgroundColor: "#0b82ff"}}>
                     <ul className="nav navbar-nav"  style={{padding: "3px 0 0 0px"}}>
@@ -161,7 +220,7 @@ class View extends React.Component {
                           <div className="btn-group navbar-btn strong verse-diff-on" role="group" aria-label="..." id="bookBtn" style={{marginLeft:"150px"}}>
                             <a className="btn btn-default" style={style.book} data-toggle="tooltip" data-placement="bottom" title="Select Book"  id="book-chapter-btn">
                             Book</a>
-                            <ChapterModal show ={ modalVisibility } onHide = { hideModal } chapters = { chapters } allProps = {this.props}/>
+                            <ChapterModal  show ={ modalVisibility } onHide = { hideModal } chapters = { chapters } allProps = {this.props}/>
                             <SettingModal show ={ modalSettingsVisibility } onHide = { hideModal } />
                             <SearchAndReplace show ={ modalSearchVisibility } onHide = { hideModal } allProps = {this.props} versetext={verses('target', targetLanguage)}/>
                             <span>
@@ -173,21 +232,10 @@ class View extends React.Component {
                     <ul className="nav navbar-nav navbar-right nav-pills verse-diff-on">
                             <li style={{padding: "17px 5px 0 0", color: "#fff", fontWeight: "bold"}}><span>OFF</span></li>
                             <li>
-                                {/*<label style={{marginTop:"17px"}} className="mdl-switch mdl-js-switch mdl-js-ripple-effect" htmlFor="switch-2" id="switchLable" data-toggle='tooltip' data-placement='bottom' title="Compare mode">
-                                    <input type="checkbox" id="switch-2" className="mdl-switch__input check-diff"/>
-                                    <span className="mdl-switch__label"></span>
-                                </label>*/}
-                               
                                 <Toggle style={style.toggle} thumbStyle={style.thumbOff} trackStyle={style.trackOff} thumbSwitchedStyle={style.thumbSwitched} trackSwitchedStyle={style.trackSwitched} labelStyle={style.labelStyle} />                            
                             </li>
-                            <li style={{padding:"17px 0 0 0", color: "#fff", fontWeight: "bold"}}><span>ON</span></li>
-                             <li><div className="btn-group navbar-btn layout" role="group" aria-label="...">
-                                <a className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,1)}  title="2-column layout">2x &nbsp;<i className="fa fa-columns fa-lg"></i></a>
-                                <a className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,2)} title="3-column layout">3x &nbsp;<i className="fa fa-columns fa-lg"></i>
-                                </a>
-                                <a className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,3)}  title="4-column layout">4x &nbsp;<i className="fa fa-columns fa-lg"></i></a>
-                            </div></li>
-                              
+                             <li style={{padding:"17px 0 0 0", color: "#fff", fontWeight: "bold"}}><span>ON</span></li>
+                             <li></li>                              
                               <li style={linkStyle} onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} title="Find and replace" id="searchText" onClick = {showSearchReplaceModal}><Glyphicon glyph="search" />
                               </li>
                             
@@ -203,8 +251,10 @@ class View extends React.Component {
                 </div>
             </div>
         </nav>
-{this.state.layoutDesign == 1 &&
-          <Col key={1}  sm={6} style={{backgroundColor: "#f5f8fa", borderRight: "1px solid #d3e0e9", padding: "0px 20px 60px"}}>
+          <div className="test">
+
+{   this.state.layoutDesign == 1 &&
+          <Col key={1}  lg={6} style={{backgroundColor: "#f5f8fa", borderRight: "1px solid #d3e0e9", padding: "0px 20px 60px"}}>
                        <h2>English ULB</h2>
                        <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
                         <select title="Select Reference Text" onChange={this.handleRefChange.bind(this)} value ={this.state.defaultRef}>
@@ -216,7 +266,7 @@ class View extends React.Component {
                      </Col> }
                      {this.state.layoutDesign == 2 &&
                       <div>
-          <Col key={2} sm={6} style={{backgroundColor: "#f5f8fa", borderRight: "1px solid #d3e0e9", padding: "0px 20px 60px"}}>
+          <Col key={2} lg={4} style={{backgroundColor: "#f5f8fa", borderRight: "1px solid #d3e0e9", padding: "0px 20px 60px"}}>
                        <h2>English ULB</h2>
                        <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
                         <select title="Select Reference Text" onChange={this.handleRefChange.bind(this)} value ={this.state.defaultRef}>
@@ -226,7 +276,7 @@ class View extends React.Component {
                        {verses(this.state.defaultRef, ULB)}
                        </div>
                      </Col> 
-                     <Col key={3} sm={6} style={{backgroundColor: "#f5f8fa", borderRight: "1px solid #d3e0e9", padding: "0px 20px 60px"}}>
+                     <Col key={3} lg={4} style={{backgroundColor: "#f5f8fa", borderRight: "1px solid #d3e0e9", padding: "0px 20px 60px"}}>
                        <h2>English ULB</h2>
                        <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
                         <select title="Select Reference Text" onChange={this.handleRefChangeTwo.bind(this)} value ={this.state.defaultRefTwo}>
@@ -239,7 +289,7 @@ class View extends React.Component {
                      </div> }
                      {this.state.layoutDesign == 3 &&
                         <div>
-          <Col key={3} sm={6} style={{backgroundColor: "#f5f8fa", borderRight: "1px solid #d3e0e9", padding: "0px 20px 60px"}}>
+          <Col key={3} lg={3} style={{backgroundColor: "#f5f8fa", borderRight: "1px solid #d3e0e9", padding: "0px 20px 60px"}}>
                        <h2>English ULB</h2>
                        <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
                         <select title="Select Reference Text" onChange={this.handleRefChange.bind(this)} value ={this.state.defaultRef}>
@@ -249,7 +299,7 @@ class View extends React.Component {
                        {verses(this.state.defaultRef, ULB)}
                        </div>
                      </Col>
-                     <Col key={4}  sm={6} style={{backgroundColor: "#f5f8fa", borderRight: "1px solid #d3e0e9", padding: "0px 20px 60px"}}>
+                     <Col key={4}  lg={3} style={{backgroundColor: "#f5f8fa", borderRight: "1px solid #d3e0e9", padding: "0px 20px 60px"}}>
                        <h2>English ULB</h2>
                        <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
                         <select title="Select Reference Text" onChange={this.handleRefChangeTwo.bind(this)} value ={this.state.defaultRefTwo}>
@@ -259,7 +309,7 @@ class View extends React.Component {
                        {verses(this.state.defaultRefTwo, ULB)}
                        </div>
                      </Col>
-                     <Col key={5}  sm={6} style={{backgroundColor: "#f5f8fa", borderRight: "1px solid #d3e0e9", padding: "0px 20px 60px"}}>
+                     <Col key={5}  lg={3} style={{backgroundColor: "#f5f8fa", borderRight: "1px solid #d3e0e9", padding: "0px 20px 60px"}}>
                        <h2>English ULB</h2>
                        <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
                         <select title="Select Reference Text" onChange={this.handleRefChangeThree.bind(this)} value ={this.state.defaultRefThree}>
@@ -268,12 +318,35 @@ class View extends React.Component {
                        <div >
                        {verses(this.state.defaultRefThree, ULB)}
                        </div>
-                     </Col></div> } 
+                     </Col></div> }
+                     </div> 
         <Col sm={6}>
           <h2>{projectDetailsReducer.manifest.target_language.name}</h2>
           <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
           {verses('target', targetLanguage)}
         </Col>
+
+            <nav className="navbar navbar-default navbar-fixed-bottom" style={{left:"250px"}}>
+             <div className="nav navbar-nav navbar-center verse-diff-on"> 
+
+                        <div style={{float:"left"}} className="btn-group navbar-btn verse-diff-on" role="group" aria-label="...">
+                            <span>
+                                <a style={style.fontButtonMinus} className="btn btn-default font-button minus" data-toggle="tooltip" data-placement="top" title="Decrease font size" onClick= {this.fontChange.bind(this, (-2))}>A-</a>
+                            </span>
+                            <span>
+                                <a style={style.fontButtonPlus} className="btn btn-default font-button plus" data-toggle="tooltip" data-placement="top" title="Increase font size" onClick= {this.fontChange.bind(this, (+2))}>A+</a>
+                            </span>
+                        </div>
+
+                    <div className="nav navbar-nav navbar-center verse-diff-on" style={{marginLeft: "150px"}}>
+                        <div className="btn-group navbar-btn layout" role="group" aria-label="...">
+                                <a style={style.layoutButton} className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,1)}  title="2-column layout">2x &nbsp;<i className="fa fa-columns fa-lg"></i></a>
+                                <a style={style.layoutButton} className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,2)} title="3-column layout">3x &nbsp;<i className="fa fa-columns fa-lg"></i></a>
+                                <a style={style.layoutButton} className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,3)}  title="4-column layout">4x &nbsp;<i className="fa fa-columns fa-lg"></i></a>
+                        </div>
+                    </div>
+          </div>
+        </nav>
       </div>
    
     );
