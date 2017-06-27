@@ -11,6 +11,7 @@ import ChapterModal from './ChapterModal';
 import style from '../css/Style';
 import SettingModal from './SettingsModal';
 import Toggle from 'material-ui/Toggle';
+import SearchAndReplace from './SearchAndReplace';
 
 class View extends React.Component {
 
@@ -100,8 +101,8 @@ class View extends React.Component {
     // if(iconImage){
     //     icon = <img src={iconImage} style={style.img}/>;
     //     }
-    let { contextIdReducer, projectDetailsReducer, resourcesReducer,  modalVisibility, modalSettingsVisibility,
-    showModal, showSettingsModal, hideModal } = this.props
+    let { contextIdReducer, projectDetailsReducer, resourcesReducer,  modalVisibility, modalSettingsVisibility, modalSearchVisibility,
+    showModal, showSettingsModal, showSearchReplaceModal, hideModal } = this.props
     let { reference } = contextIdReducer.contextId;
     let { targetLanguage, ULB } = resourcesReducer.bibles;
     let currentChapter = targetLanguage[reference.chapter];
@@ -113,7 +114,6 @@ class View extends React.Component {
         let editable = bibleId === 'target';
         let verseText = bible[reference.chapter][verseNumber];
         return (
-
         <div style={{display: "flex"}} key={index}>
             <span style={style.versenum}>{verseNumber} </span>
             <span onClick={this.highlightRef.bind(this, verseNumber)}
@@ -163,6 +163,7 @@ class View extends React.Component {
                             Book</a>
                             <ChapterModal show ={ modalVisibility } onHide = { hideModal } chapters = { chapters } allProps = {this.props}/>
                             <SettingModal show ={ modalSettingsVisibility } onHide = { hideModal } />
+                            <SearchAndReplace show ={ modalSearchVisibility } onHide = { hideModal } allProps = {this.props} versetext={verses('target', targetLanguage)}/>
                             <span>
                             <a className="btn btn-default" style={style.chapter} onClick = {showModal} id="chapterBtn" data-target="#myModal"  data-toggle="modal" data-placement="bottom"  title="Select Chapter" >Chapter</a>
                             </span>
@@ -187,7 +188,7 @@ class View extends React.Component {
                                 <a className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,3)}  title="4-column layout">4x &nbsp;<i className="fa fa-columns fa-lg"></i></a>
                             </div></li>
                               
-                              <li style={linkStyle} onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} data-toggle="tooltip" data-placement="bottom" title="Find and replace" id="searchText"><Glyphicon glyph="search" />
+                              <li style={linkStyle} onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} title="Find and replace" id="searchText" onClick = {showSearchReplaceModal}><Glyphicon glyph="search" />
                               </li>
                             
                               <li style={linkStyle} onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} ><Glyphicon glyph="cloud-download" />
@@ -202,7 +203,7 @@ class View extends React.Component {
                 </div>
             </div>
         </nav>
-         {this.state.layoutDesign == 1 &&
+{this.state.layoutDesign == 1 &&
           <Col key={1}  sm={6} style={{backgroundColor: "#f5f8fa", borderRight: "1px solid #d3e0e9", padding: "0px 20px 60px"}}>
                        <h2>English ULB</h2>
                        <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
@@ -267,8 +268,7 @@ class View extends React.Component {
                        <div >
                        {verses(this.state.defaultRefThree, ULB)}
                        </div>
-                     </Col></div> }
-
+                     </Col></div> } 
         <Col sm={6}>
           <h2>{projectDetailsReducer.manifest.target_language.name}</h2>
           <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>

@@ -11,6 +11,7 @@ class Container extends React.Component {
     this.state = {
       modalVisibility: false,
       modalSettingsVisibility: false,
+      modalSearchVisibility: false
     };
   }
 
@@ -20,11 +21,13 @@ class Container extends React.Component {
     if (contextId) {
       view = <MuiThemeProvider><View
         {...this.props}
-         modalVisibility={this.state.modalVisibility}
-         modalSettingsVisibility={this.state.modalSettingsVisibility}
-          showModal={() => this.setState({ modalVisibility: true, selectedPane: false })}
-          showSettingsModal={() => this.setState({ modalSettingsVisibility: true, selectedPane: false })}
-          hideModal={() => this.setState({ modalVisibility: false, modalSettingsVisibility:false })}
+            modalVisibility={this.state.modalVisibility}
+            modalSettingsVisibility={this.state.modalSettingsVisibility}
+            modalSearchVisibility={this.state.modalSearchVisibility}
+            showModal={() => this.setState({ modalVisibility: true, selectedPane: false })}
+            showSettingsModal={() => this.setState({ modalSettingsVisibility: true })}
+            hideModal={() => this.setState({ modalVisibility: false, modalSettingsVisibility:false,modalSearchVisibility:false })}
+            showSearchReplaceModal ={() => this.setState({ modalSearchVisibility: true })}
       />
       </MuiThemeProvider>
     }
