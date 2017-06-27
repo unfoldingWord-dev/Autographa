@@ -149,7 +149,16 @@ var style = {
         fontWeight: "bold", 
         color: "#0b82ff", 
         fontSize: "20px"
-    }   
+    },
+     dropdown: {
+          backgroundColor: "#0b82ff",
+          color: "#ffffff",
+          fontWeight: "bold",
+          width: "166px",
+          borderRadius: "6px",
+          height: "34px",
+          paddingLeft: "9px",
+     }   
 };
 
 module.exports = style;
