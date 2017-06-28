@@ -153,7 +153,7 @@ class View extends React.Component {
         let editable = bibleId === 'target';
           let verseText = bible[reference.chapter][verseNumber];
           return (
-          <div style={{display: "flex", lineHeight: "25px"}} key={index}>
+          <div className="fontZoom" style={{display: "flex", lineHeight: "25px"}} key={index}>
               <span style={style.versenum}>{verseNumber} </span>
               <span onClick={this.highlightRef.bind(this, verseNumber)}
               style={{paddingLeft: "10px"}}
