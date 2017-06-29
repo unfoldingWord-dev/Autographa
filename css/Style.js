@@ -166,7 +166,11 @@ var style = {
           borderColor: "#204d74",
           float: "right",
           marginRight: "50px",
-        },   
-};
+        },
+     imagecss: {
+          marginLeft: "20px",
+          border: "5px solid #0b82ff",  
+      },
+    }
 
 module.exports = style;

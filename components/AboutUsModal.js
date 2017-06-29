@@ -30,7 +30,7 @@ class AboutUsModal extends React.Component {
                 <Tab eventKey={1} title="Overview">
                     <div className="row">
                         <div style={{marginTop: "10px"}} className="col-lg-6">
-                            <img src="../translationCore/tC_apps/Autographa/assets/autographa_lite_large.png" className="img-circle" alt="Cinque Terre" width="215" height="200" />
+                            <img style={style.imagecss} src="../translationCore/tC_apps/Autographa/assets/autographa_lite_large.png" className="img-circle" alt="Cinque Terre" width="215" height="200" />
                         </div>
                         <div style={{margin: "10px 0 0 -22px"}} className="col-lg-6">
                             <h3>Autographa Lite</h3>
