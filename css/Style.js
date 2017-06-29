@@ -154,11 +154,19 @@ var style = {
           backgroundColor: "#0b82ff",
           color: "#ffffff",
           fontWeight: "bold",
-          width: "166px",
+          width: "130px",
           borderRadius: "6px",
-          height: "34px",
+          height: "30px",
           paddingLeft: "9px",
-     }   
+     },
+     saveButton: {
+          color: "#fff",
+          fontWeight: "600",
+          backgroundImage: "linear-gradient(rgba(11, 130, 255, 1) 0px, rgba(11, 130, 255, 1) 100%)",
+          borderColor: "#204d74",
+          float: "right",
+          marginRight: "50px",
+        },   
 };
 
 module.exports = style;

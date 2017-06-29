@@ -25,10 +25,12 @@ class Container extends React.Component {
             modalVisibility={this.state.modalVisibility}
             modalSettingsVisibility={this.state.modalSettingsVisibility}
             modalSearchVisibility={this.state.modalSearchVisibility}
+            modalAboutUsVisibility={this.state.modalAboutUsVisibility}
             showModal={() => this.setState({ modalVisibility: true, selectedPane: false })}
             showSettingsModal={() => this.setState({ modalSettingsVisibility: true })}
-            hideModal={() => this.setState({ modalVisibility: false, modalSettingsVisibility:false,modalSearchVisibility:false })}
+            hideModal={() => this.setState({ modalVisibility: false, modalSettingsVisibility:false,modalSearchVisibility:false,modalAboutUsVisibility:false })}
             showSearchReplaceModal ={() => this.setState({ modalSearchVisibility: true })}
+            showAboutModal ={() => this.setState({ modalAboutUsVisibility: true })}
       />      
       </MuiThemeProvider>
     }

@@ -10,6 +10,7 @@ import Glyphicon from "react-bootstrap/lib/Glyphicon";
 import ChapterModal from './ChapterModal';
 import style from '../css/Style';
 import SettingModal from './SettingsModal';
+import AboutUsModal from './AboutUsModal'
 import Toggle from 'material-ui/Toggle';
 import Slider from 'material-ui/Slider';
 import SearchAndReplace from './SearchAndReplace';
@@ -141,7 +142,7 @@ class View extends React.Component {
     const linkStyle = this.state.hover ? style.hover : style.button;
 
     let { contextIdReducer, projectDetailsReducer, resourcesReducer,  modalVisibility, modalSettingsVisibility,
-    showModal, showSettingsModal, hideModal,modalSearchVisibility,showSearchReplaceModal } = this.props
+    modalAboutUsVisibility, showAboutModal, showModal, showSettingsModal, hideModal,modalSearchVisibility,showSearchReplaceModal } = this.props
     let { reference } = contextIdReducer.contextId;
     let { targetLanguage, ULB } = resourcesReducer.bibles;
     let currentChapter = targetLanguage[reference.chapter];
@@ -183,7 +184,7 @@ class View extends React.Component {
             <div className="container-fluid" style={{backgroundColor: "#0b82ff"}}>
                 <div className="navbar-header">
                     <button className="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar"><span className="sr-only">Toggle navigation</span><span className="icon-bar"></span><span className="icon-bar"></span><span className="icon-bar"></span></button>
-                    <a className="navbar-brand" href="javascript:;"><img alt="Brand" src="../translationCore/tC_apps/Autographa/logos/logo.png" /></a>
+                    <a className="navbar-brand" href="javascript:;"><img alt="Brand" src="../translationCore/tC_apps/Autographa/assets/logo.png" /></a>
                 </div>
                 <div className="navbar-collapse collapse" id="navbar" style={{backgroundColor: "#0b82ff"}}>
                     <ul className="nav navbar-nav"  style={{padding: "3px 0 0 0px"}}>
@@ -191,6 +192,7 @@ class View extends React.Component {
                           <div className="btn-group navbar-btn strong verse-diff-on" role="group" aria-label="..." id="bookBtn" style={{marginLeft:"150px"}}>
                             <ChapterModal  show ={ modalVisibility } onHide = { hideModal } chapters = { chapters } allProps = {this.props}/>
                             <SettingModal show ={ modalSettingsVisibility } onHide = { hideModal } />
+                            <AboutUsModal show ={ modalAboutUsVisibility } onHide = { hideModal } allProps = {this.props}/>
                             <SearchAndReplace show ={ modalSearchVisibility } onHide = { hideModal } allProps = {this.props} versetext={verses('target', targetLanguage)}/>
                             <span>
                             <a className="btn btn-default" style={style.chapter} onClick = {showModal} id="chapterBtn" data-target="#myModal"  data-toggle="modal" data-placement="bottom"  title="Select Chapter" >Chapter</a>
@@ -211,7 +213,7 @@ class View extends React.Component {
                         <li style={linkStyle} onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} ><Glyphicon glyph="cloud-download" />
                         </li>
                       
-                        <li style={linkStyle} onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} ><Glyphicon glyph="info-sign" />
+                        <li style={linkStyle} onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} onClick = {showAboutModal}><Glyphicon glyph="info-sign" />
                         </li>
                       
                         <li style={linkStyle} onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} onClick = {showSettingsModal}><Glyphicon glyph="wrench" />
@@ -332,6 +334,7 @@ class View extends React.Component {
                                     <a style={style.layoutButton} className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,2)} title="3-column layout">3x &nbsp;<i className="fa fa-columns fa-lg"></i></a>
                                     <a style={style.layoutButton} className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,3)}  title="4-column layout">4x &nbsp;<i className="fa fa-columns fa-lg"></i></a>
                             </div>
+                            <a style={style.saveButton} id="save-btn" data-toggle="tooltip" data-placement="top" title="" className="btn btn-info btn-save navbar-btn" href="#" role="button" data-original-title="Save changes">Save</a>
                         </div>
                   {/*</div>*/}
         </nav>
