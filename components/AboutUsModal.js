@@ -14,25 +14,24 @@ import Tab from 'react-bootstrap/lib/Tab';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 
-
 class AboutUsModal extends React.Component {
     render() {
     let { onHide,  show } = this.props;
     var _this = this;
     return (  
-    <Modal show={show} onHide={onHide} id="tab-about">
+    <Modal show={show} onHide={onHide} id="tab-about" bsSize="large">
         <Modal.Header style={{ backgroundColor: "var(--accent-color-dark)" }} closeButton>
-            <Modal.Title id="contained-modal-title-sm"
+            <Modal.Title id="contained-modal-title-lg"
             style={{ textAlign: "center", color: "var(--reverse-color)" }}>About</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body className={style.modalContent}>
             <Tabs defaultActiveKey={1} id="uncontrolled-tab-example">
                 <Tab eventKey={1} title="Overview">
-                    <div className="row">
-                        <div style={{marginTop: "10px"}} className="col-lg-6">
+                    <div style={{height: "288px"}}  className="row">
+                        <div style={{marginTop: "53px"}} className="col-lg-6">
                             <img style={style.imagecss} src="../translationCore/tC_apps/Autographa/assets/autographa_lite_large.png" className="img-circle" alt="Cinque Terre" width="215" height="200" />
                         </div>
-                        <div style={{margin: "10px 0 0 -22px"}} className="col-lg-6">
+                        <div style={{marginTop: "65px", fontSize: "18px"}} className="col-lg-6">
                             <h3>Autographa Lite</h3>
                             <p>Version 0.1</p>
                             <p>Source code hosted at: "https://github.com/Bridgeconn/autographa-lite"</p>
@@ -40,7 +39,7 @@ class AboutUsModal extends React.Component {
                     </div>
                 </Tab>
                 <Tab eventKey={2} title="License">
-                    <div style={{overflowY: "scroll", height: "255px"}}>
+                    <div style={{overflowY: "scroll", height: "288px"}}>
                         <h4> The MIT License (MIT)</h4>
                         <p>Released in 2017 by Friends of Agape (www.friendsofagape.org) in partnership with RUN Ministries (www.runministries.org). </p>
                         <br />

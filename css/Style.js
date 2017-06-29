@@ -168,7 +168,7 @@ var style = {
           marginRight: "50px",
         },
      imagecss: {
-          marginLeft: "20px",
+          marginLeft: "88px",
           border: "5px solid #0b82ff",  
       },
     }
