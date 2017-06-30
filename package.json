@@ -16,6 +16,7 @@
     "babel-preset-react": "^6.16.0",
     "natural": "^0.4.0",
     "react": "^15.5.4",
-    "react-dom": "^15.5.4"
+    "react-dom": "^15.5.4",
+    "react-bootstrap-slider": "^1.1.7"
   }
 }

@@ -84,19 +84,11 @@ var style = {
     marginRight: "10px",
     marginLeft: "20px"
   },
-  book: {
-       borderBottomRightRadius: "0",
-       borderTopRightRadius: "0",
-       color: "#0b82ff",
-       fontWeight: "bold",
-       backgroundColor: "#fff"
-  },
   chapter: {
-       borderBottomLeftRadius: "0",
-       borderTopLeftRadius: "0",
        color: "#0b82ff",
        fontWeight: "bold",
-       backgroundColor: "#fff"
+       backgroundColor: "#fff",
+       marginLeft: "210px"
   },
    hover: {
     color: "#fff",
@@ -157,7 +149,28 @@ var style = {
         fontWeight: "bold", 
         color: "#0b82ff", 
         fontSize: "20px"
-    }   
-};
+    },
+     dropdown: {
+          backgroundColor: "#0b82ff",
+          color: "#ffffff",
+          fontWeight: "bold",
+          width: "130px",
+          borderRadius: "6px",
+          height: "30px",
+          paddingLeft: "9px",
+     },
+     saveButton: {
+          color: "#fff",
+          fontWeight: "600",
+          backgroundImage: "linear-gradient(rgba(11, 130, 255, 1) 0px, rgba(11, 130, 255, 1) 100%)",
+          borderColor: "#204d74",
+          float: "right",
+          marginRight: "50px",
+        },
+     imagecss: {
+          marginLeft: "88px",
+          border: "5px solid #0b82ff",  
+      },
+    }
 
 module.exports = style;

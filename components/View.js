@@ -10,6 +10,7 @@ import Glyphicon from "react-bootstrap/lib/Glyphicon";
 import ChapterModal from './ChapterModal';
 import style from '../css/Style';
 import SettingModal from './SettingsModal';
+import AboutUsModal from './AboutUsModal'
 import Toggle from 'material-ui/Toggle';
 import Slider from 'material-ui/Slider';
 import SearchAndReplace from './SearchAndReplace';
@@ -141,7 +142,7 @@ class View extends React.Component {
     const linkStyle = this.state.hover ? style.hover : style.button;
 
     let { contextIdReducer, projectDetailsReducer, resourcesReducer,  modalVisibility, modalSettingsVisibility,
-    showModal, showSettingsModal, hideModal,modalSearchVisibility,showSearchReplaceModal } = this.props
+    modalAboutUsVisibility, showAboutModal, showModal, showSettingsModal, hideModal,modalSearchVisibility,showSearchReplaceModal } = this.props
     let { reference } = contextIdReducer.contextId;
     let { targetLanguage, ULB } = resourcesReducer.bibles;
     let currentChapter = targetLanguage[reference.chapter];
@@ -183,7 +184,7 @@ class View extends React.Component {
             <div className="container-fluid" style={{backgroundColor: "#0b82ff"}}>
                 <div className="navbar-header">
                     <button className="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar"><span className="sr-only">Toggle navigation</span><span className="icon-bar"></span><span className="icon-bar"></span><span className="icon-bar"></span></button>
-                    <a className="navbar-brand" href="javascript:;"><img alt="Brand" src="../translationCore/tC_apps/Autographa/logos/logo.png" /></a>
+                    <a className="navbar-brand" href="javascript:;"><img alt="Brand" src="../translationCore/tC_apps/Autographa/assets/logo.png" /></a>
                 </div>
                 <div className="navbar-collapse collapse" id="navbar" style={{backgroundColor: "#0b82ff"}}>
                     <ul className="nav navbar-nav"  style={{padding: "3px 0 0 0px"}}>
@@ -191,6 +192,7 @@ class View extends React.Component {
                           <div className="btn-group navbar-btn strong verse-diff-on" role="group" aria-label="..." id="bookBtn" style={{marginLeft:"150px"}}>
                             <ChapterModal  show ={ modalVisibility } onHide = { hideModal } chapters = { chapters } allProps = {this.props}/>
                             <SettingModal show ={ modalSettingsVisibility } onHide = { hideModal } />
+                            <AboutUsModal show ={ modalAboutUsVisibility } onHide = { hideModal } allProps = {this.props}/>
                             <SearchAndReplace show ={ modalSearchVisibility } onHide = { hideModal } allProps = {this.props} versetext={verses('target', targetLanguage)}/>
                             <span>
                             <a className="btn btn-default" style={style.chapter} onClick = {showModal} id="chapterBtn" data-target="#myModal"  data-toggle="modal" data-placement="bottom"  title="Select Chapter" >Chapter</a>
@@ -211,7 +213,7 @@ class View extends React.Component {
                         <li style={linkStyle} onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} ><Glyphicon glyph="cloud-download" />
                         </li>
                       
-                        <li style={linkStyle} onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} ><Glyphicon glyph="info-sign" />
+                        <li style={linkStyle} onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} onClick = {showAboutModal}><Glyphicon glyph="info-sign" />
                         </li>
                       
                         <li style={linkStyle} onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} onClick = {showSettingsModal}><Glyphicon glyph="wrench" />
@@ -222,23 +224,30 @@ class View extends React.Component {
         </nav>
          <div className="fontZoom" style={{width:"100%", marginBottom:"20px"}}>
                {this.state.layoutDesign == 1 &&
+               <div>
                <Col key={1}  lg={6} style={{backgroundColor: "#f5f8fa", borderRight: "1px solid #d3e0e9", padding: "0px 20px 60px"}}>
                  <h2>English ULB</h2>
                  <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
-                  <select title="Select Reference Text" onChange={this.handleRefChange.bind(this)} value ={this.state.defaultRef}>
+                  <select style={style.dropdown} title="Select Reference Text" onChange={this.handleRefChange.bind(this)} value ={this.state.defaultRef}>
                       {dropdownOne}
                   </select>
                  <div>
                  {verses(this.state.defaultRef, ULB)}
                  </div>
-                 {verses('target', targetLanguage)}
-              </Col> }
+                 </Col>
+                 <Col lg={6}>
+                  <h2>{projectDetailsReducer.manifest.target_language.name}</h2>
+                  <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
+                  {verses('target', targetLanguage)}
+                  </Col> 
+                  </div>}
+
               {this.state.layoutDesign == 2 &&
               <div>
                 <Col key={2} lg={4} style={{backgroundColor: "#f5f8fa", borderRight: "1px solid #d3e0e9", padding: "0px 20px 60px"}}>
                    <h2>English ULB</h2>
                    <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
-                    <select title="Select Reference Text" onChange={this.handleRefChange.bind(this)} value ={this.state.defaultRef}>
+                    <select style={style.dropdown} title="Select Reference Text" onChange={this.handleRefChange.bind(this)} value ={this.state.defaultRef}>
                         {dropdownOne}
                     </select>
                    <div>
@@ -248,57 +257,63 @@ class View extends React.Component {
                 <Col key={3} lg={4} style={{backgroundColor: "#f5f8fa", borderRight: "1px solid #d3e0e9", padding: "0px 20px 60px"}}>
                    <h2>English ULB</h2>
                    <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
-                    <select title="Select Reference Text" onChange={this.handleRefChangeTwo.bind(this)} value ={this.state.defaultRefTwo}>
+                    <select style={style.dropdown} title="Select Reference Text" onChange={this.handleRefChangeTwo.bind(this)} value ={this.state.defaultRefTwo}>
                         {dropdownOne}
                     </select>
                    <div>
-                   {verses(this.state.defaultRefTwo, ULB)}
+                   {verses(this.state.defaultRef, ULB)}
                    </div>
                 </Col>
+                <Col lg={4}>
+                  <h2>{projectDetailsReducer.manifest.target_language.name}</h2>
+                  <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
+                  {verses('target', targetLanguage)}
+                  </Col>
               </div> }
                      {this.state.layoutDesign == 3 &&
                 <div>
-                    <Col key={3} lg={3} style={{backgroundColor: "#f5f8fa", borderRight: "1px solid #d3e0e9", padding: "0px 20px 60px"}}>
+                    <Col key={4} lg={3} style={{backgroundColor: "#f5f8fa", borderRight: "1px solid #d3e0e9", padding: "0px 20px 60px"}}>
                        <h2>English ULB</h2>
                        <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
-                        <select title="Select Reference Text" onChange={this.handleRefChange.bind(this)} value ={this.state.defaultRef}>
+                        <select style={style.dropdown} title="Select Reference Text" onChange={this.handleRefChange.bind(this)} value ={this.state.defaultRef}>
                             {dropdownOne}
                         </select>
                        <div >
-                       <Col sm={6}>
-                        <h2>{projectDetailsReducer.manifest.target_language.name}</h2>
-                        <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
-                        {verses('target', targetLanguage)}
-                      </Col>
-                       </div>
-                     </Col>
-                     <Col key={4}  lg={3} style={{backgroundColor: "#f5f8fa", borderRight: "1px solid #d3e0e9", padding: "0px 20px 60px"}}>
-                       <h2>English ULB</h2>
-                       <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
-                        <select title="Select Reference Text" onChange={this.handleRefChangeTwo.bind(this)} value ={this.state.defaultRefTwo}>
-                            {dropdownOne}
-                        </select>
-                       <div >
-                       {verses(this.state.defaultRefTwo, ULB)}
+                       {verses(this.state.defaultRef, ULB)}
                        </div>
                      </Col>
                      <Col key={5}  lg={3} style={{backgroundColor: "#f5f8fa", borderRight: "1px solid #d3e0e9", padding: "0px 20px 60px"}}>
                        <h2>English ULB</h2>
                        <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
-                        <select title="Select Reference Text" onChange={this.handleRefChangeThree.bind(this)} value ={this.state.defaultRefThree}>
+                        <select style={style.dropdown} title="Select Reference Text" onChange={this.handleRefChangeTwo.bind(this)} value ={this.state.defaultRefTwo}>
                             {dropdownOne}
                         </select>
                        <div >
-                       {verses(this.state.defaultRefThree, ULB)}
+                       {verses(this.state.defaultRef, ULB)}
                        </div>
+                     </Col>
+                     <Col key={6}  lg={3} style={{backgroundColor: "#f5f8fa", borderRight: "1px solid #d3e0e9", padding: "0px 20px 60px"}}>
+                         <h2>English ULB</h2>
+                       <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
+                        <select style={style.dropdown} title="Select Reference Text" onChange={this.handleRefChangeThree.bind(this)} value ={this.state.defaultRefThree}>
+                            {dropdownOne}
+                        </select>
+                       <div >
+                       {verses(this.state.defaultRef, ULB)}
+                       </div>
+                     </Col>
+                     <Col lg={3}>
+                      <h2>{projectDetailsReducer.manifest.target_language.name}</h2>
+                      <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
+                      {verses('target', targetLanguage)}          
                      </Col>
                 </div> }
             </div> 
-        {<Col sm={6}>
+        {/*<Col sm={6}>
           <h2>{projectDetailsReducer.manifest.target_language.name}</h2>
           <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
           {verses('target', targetLanguage)}
-        </Col>}
+        </Col>*/}
 
         <nav className="navbar navbar-default navbar-fixed-bottom" style={{left:"250px", height:"55px"}}>
                    {/*<div className="nav navbar-nav navbar-center verse-diff-on"> */}
@@ -319,6 +334,7 @@ class View extends React.Component {
                                     <a style={style.layoutButton} className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,2)} title="3-column layout">3x &nbsp;<i className="fa fa-columns fa-lg"></i></a>
                                     <a style={style.layoutButton} className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,3)}  title="4-column layout">4x &nbsp;<i className="fa fa-columns fa-lg"></i></a>
                             </div>
+                            <a style={style.saveButton} id="save-btn" data-toggle="tooltip" data-placement="top" title="" className="btn btn-info btn-save navbar-btn" href="#" role="button" data-original-title="Save changes">Save</a>
                         </div>
                   {/*</div>*/}
         </nav>
