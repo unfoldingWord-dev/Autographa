@@ -1,6 +1,8 @@
 import React from 'react';
 import { Modal, Button, Col, Radio, FormGroup } from 'react-bootstrap';
 import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
+import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 
 class SearchAndReplace extends React.Component {
     constructor(props){
@@ -28,9 +30,9 @@ class SearchAndReplace extends React.Component {
         let username = loginReducer.userdata.username;
 
         if(this.state.selection == "chapter") {
-
+            console.log("hi");
             var size = Object.keys(resourcesReducer.bibles.targetLanguage[chapter]).length
-            var searchVal = this.state.find.toString().toLowerCase();
+            var searchVal = this.state.find.toString();
             var replaceVal = this.state.replace;
             var targetContent = resourcesReducer.bibles.targetLanguage[chapter];
             for (var i = 1; i <= size; i++) {
@@ -84,8 +86,14 @@ class SearchAndReplace extends React.Component {
     }
 
 
-    selectRadioButton(selection){
-        this.setState({selection:selection})
+    selectRadioButton(e){
+      // console.log(event.target.value)
+      //   this.setState({selection:selection})
+        e.persist();
+          setTimeout(() => {
+            this.setState({selection: e.target.value}) 
+          }, 100)
+  // console.log(e.target.value)
     }
 
     closeModal(){
@@ -99,11 +107,25 @@ class SearchAndReplace extends React.Component {
     return (
       <Modal show={show} onHide={onHide} bsSize="lg">
         <Modal.Header style={{ backgroundColor: "var(--accent-color-dark)" }} closeButton>
-            <Modal.Title>Search and Replace</Modal.Title>
+            <Modal.Title id="contained-modal-title-sm"
+            style={{ textAlign: "center", color: "var(--reverse-color)" }}>Search and Replace</Modal.Title>
         </Modal.Header>
         <Modal.Body>{ 
             this.state.showResults ? <div> 
-                <FormGroup>
+            <RadioButtonGroup name="SearchAndReplace" style={{display: "flex"}} defaultSelected={this.state.selection} onChange={this.selectRadioButton.bind(this)}
+    >
+              <RadioButton
+                value="chapter"
+                label="Current Chapter"
+                style={{width: "20%"}}
+              />
+              <RadioButton
+                value="book"
+                label="Current Book"
+                style={{width: "20%"}}
+              />
+            </RadioButtonGroup>
+                {/*<FormGroup>
                   <Radio name="radioGroup" inline onChange={this.selectRadioButton.bind(this,'chapter')} defaultChecked={this.state.selection}>
                     Current Chapter
                   </Radio>
@@ -112,13 +134,13 @@ class SearchAndReplace extends React.Component {
                     Current Book
                   </Radio>
                   {' '}
-                </FormGroup>
+                </FormGroup>*/}
                 <div>
-                    <label>Find</label><br />
-                    <TextField hintText="Find" value={this.state.find} onChange={this.handleFindChange.bind(this)}/> <br />
-                    <label>Replace With</label><br />
-                    <TextField hintText="Replacement" value={this.state.replace} onChange={this.handleReplaceChange.bind(this)}/>
-                    <Button onClick={this.findAndReplaceText.bind(this)}>Replace</Button>
+                    {/*<label>Find</label><br />*/}
+                    <TextField hintText="Find" floatingLabelText="Find" value={this.state.find} onChange={this.handleFindChange.bind(this)}/> <br />
+                    {/*<label>Replace With</label><br />*/}
+                    <TextField hintText="Replacement" floatingLabelText="Replace With" value={this.state.replace} onChange={this.handleReplaceChange.bind(this)}/> <br />
+                    <RaisedButton label="Replace" primary={true} onClick={this.findAndReplaceText.bind(this)} />
                 </div>
             </div> : <div>Book Name:{bookName} Total Words Replaced:{this.state.replaceCount}<Button onClick={this.closeModal.bind(this)}>Close</Button></div> 
         }

@@ -33,7 +33,7 @@ class View extends React.Component {
   }
 
   saveEditVerse() {
-    let {loginReducer, actions, contextIdReducer, resourcesReducer} = this.props;
+    let {loginReducer,  actions, contextIdReducer, resourcesReducer} = this.props;
     let {chapter, verse} = contextIdReducer.contextId.reference;
     let before = resourcesReducer.bibles.targetLanguage[chapter][verse];
     let verseText = document.getElementById('target' + '_verse_' + verse).innerText;
@@ -45,7 +45,9 @@ class View extends React.Component {
       return;
     }
     if (before !== verseText) {
-      actions.addVerseEdit(before, verseText, ['draft'], username);
+      console.log("saved")
+      var timeStamp = this.props.verseEditReducer.modifiedTimestamp
+      actions.addVerseEdit(before, verseText, ['draft'], username, timeStamp);
     }
   }
 
@@ -133,6 +135,7 @@ class View extends React.Component {
  
  
   render() {
+    const timeStamp = this.props.verseEditReducer.modifiedTimestamp;
     const dropdownOne = this.state.reflists.map(function(refDoc, index){
         return(
          <option value={refDoc.value}  key={index} >{refDoc.option}</option>
@@ -334,7 +337,8 @@ class View extends React.Component {
                                     <a style={style.layoutButton} className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,2)} title="3-column layout">3x &nbsp;<i className="fa fa-columns fa-lg"></i></a>
                                     <a style={style.layoutButton} className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,3)}  title="4-column layout">4x &nbsp;<i className="fa fa-columns fa-lg"></i></a>
                             </div>
-                            <a style={style.saveButton} id="save-btn" data-toggle="tooltip" data-placement="top" title="" className="btn btn-info btn-save navbar-btn" href="#" role="button" data-original-title="Save changes">Save</a>
+                            <span style={{ color: "rgba(0, 0, 0, 0.5)", marginLeft: "188px"}}>{timeStamp}</span>
+                            <a  onClick={this.saveEditVerse.bind(this)} style={style.saveButton} id="save-btn" data-toggle="tooltip" data-placement="top" title="" className="btn btn-info btn-save navbar-btn" >Save</a>
                         </div>
                   {/*</div>*/}
         </nav>

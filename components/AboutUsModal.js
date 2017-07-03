@@ -19,12 +19,12 @@ class AboutUsModal extends React.Component {
     let { onHide,  show } = this.props;
     var _this = this;
     return (  
-    <Modal show={show} onHide={onHide} id="tab-about" bsSize="large">
+    <Modal show={show} onHide={onHide} id="tab-about" bsSize="lg">
         <Modal.Header style={{ backgroundColor: "var(--accent-color-dark)" }} closeButton>
             <Modal.Title id="contained-modal-title-lg"
             style={{ textAlign: "center", color: "var(--reverse-color)" }}>About</Modal.Title>
         </Modal.Header>
-        <Modal.Body className={style.modalContent}>
+        <Modal.Body className={style.modalContent} >
             <Tabs defaultActiveKey={1} id="uncontrolled-tab-example">
                 <Tab eventKey={1} title="Overview">
                     <div style={{height: "288px"}}  className="row">
