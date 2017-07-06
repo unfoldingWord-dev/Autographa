@@ -1,6 +1,8 @@
 import React from 'react';
 import { Modal, Button, Col, Radio, FormGroup } from 'react-bootstrap';
 import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
+import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 
 class SearchAndReplace extends React.Component {
     constructor(props){
@@ -38,7 +40,7 @@ class SearchAndReplace extends React.Component {
         let username = loginReducer.userdata.username;
 
         if(this.state.selection == "chapter") {
-
+            console.log("hi");
             var size = Object.keys(resourcesReducer.bibles.targetLanguage[chapter]).length
             var searchVal = this.state.find.toString();
             var replaceVal = this.state.replace;
@@ -84,8 +86,11 @@ class SearchAndReplace extends React.Component {
         }
     }
 
-    selectRadioButton(selection){
-        this.setState({selection:selection})
+    selectRadioButton(e){
+        e.persist();
+          setTimeout(() => {
+            this.setState({selection: e.target.value}) 
+          }, 100)
     }
 
     closeModal(){
@@ -93,23 +98,26 @@ class SearchAndReplace extends React.Component {
         this.props.onHide();
     }
 
-    onsave(){
-        this.setState({showSearchReplace:"count"});
-    }
-
     render() {
+        const bookName = this.props.allProps.projectDetailsReducer.bookName
+        let { onHide,  show, chapters } = this.props;
+
         var partial;
         if (this.state.showSearchReplace == 'search') {
         partial = <div> 
                     <FormGroup>
-                      <Radio name="radioGroup" inline onChange={this.selectRadioButton.bind(this,'chapter')} defaultChecked={this.state.selection}>
-                        Current Chapter
-                      </Radio>
-                      {' '}
-                      <Radio name="radioGroup" inline onChange={this.selectRadioButton.bind(this,'book')}>
-                        Current Book
-                      </Radio>
-                      {' '}
+                    <RadioButtonGroup name="SearchAndReplace" style={{display: "flex"}} defaultSelected={this.state.selection} onChange={this.selectRadioButton.bind(this)}>
+                          <RadioButton
+                            value="chapter"
+                            label="Current Chapter"
+                            style={{width: "20%"}}
+                          />
+                          <RadioButton
+                            value="book"
+                            label="Current Book"
+                            style={{width: "20%"}}
+                          />
+                        </RadioButtonGroup>
                     </FormGroup>
                     <div>
                         <label>Find</label><br />
@@ -122,16 +130,12 @@ class SearchAndReplace extends React.Component {
         } else if (this.state.showSearchReplace == 'loader') {
             partial = <div key="0"><img src="tC_apps/Autographa/assets/giphy.gif"  /></div>;
         } else if (this.state.showSearchReplace == 'count'){
-            partial =  <div key="1">{this.state.replaceCount}<Button onClick={this.closeModal.bind(this)}>Close</Button></div>
-        }
-
-    
-        const bookName = this.props.allProps.projectDetailsReducer.bookName
-        let { onHide,  show, chapters } = this.props;
+            partial =  <div key="1">Book Name:{bookName}<Button onClick={this.closeModal.bind(this)}>Close</Button></div>
+        }        
         return (
             <Modal show={show} onHide={onHide} bsSize="lg">
                 <Modal.Header style={{ backgroundColor: "var(--accent-color-dark)" }} closeButton>
-                    <Modal.Title>Search and Replace</Modal.Title>
+                      <Modal.Title>Search and Replace</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     {partial}  

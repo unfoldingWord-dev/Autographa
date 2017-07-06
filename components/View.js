@@ -26,6 +26,8 @@ class View extends React.Component {
                   currentFontValue: 14, 
                   fontStep: 2,
                   fontSize: 14,
+                  saveFunction: false,
+                  finalTime:"",
                   reflists:[{option:"English-ULB", value:"ULB"},{option:"English-UDB",value:"UDB"},{option:"Hindi-ULB",value:"hin_ulb"}],
                   defaultRef:"ULB" //values has been changed, Hindi lang currently not changed
           }
@@ -33,7 +35,7 @@ class View extends React.Component {
   }
 
   saveEditVerse() {
-    let {loginReducer, actions, contextIdReducer, resourcesReducer} = this.props;
+    let {loginReducer,  actions, contextIdReducer, resourcesReducer} = this.props;
     let {chapter, verse} = contextIdReducer.contextId.reference;
     let before = resourcesReducer.bibles.targetLanguage[chapter][verse];
     let verseText = document.getElementById('target' + '_verse_' + verse).innerText;
@@ -45,7 +47,17 @@ class View extends React.Component {
       return;
     }
     if (before !== verseText) {
-      actions.addVerseEdit(before, verseText, ['draft'], username);
+      console.log("saved")
+      var timeStamp = this.props.verseEditReducer.modifiedTimestamp;
+      var dateStamp = new Date(timeStamp);
+      this.setState({finalTime:"Saved "+dateStamp.toLocaleTimeString()})
+      console.log(this.state.finalTime)  
+      if (isNaN(dateStamp)) {
+        this.setState({saveFunction: false})
+      } else{
+      this.setState({saveFunction: true})
+      }
+      actions.addVerseEdit(before, verseText, ['draft'], username, this.state.finalTime);
     }
   }
 
@@ -100,8 +112,6 @@ class View extends React.Component {
         alert("box 3")
     } 
 
-
-
     fontChange(multiplier) {
         let fontSize = this.state.fontMin;
         if (document.getElementsByClassName("fontZoom")[0].style.fontSize == "") {
@@ -133,7 +143,10 @@ class View extends React.Component {
  
  
   render() {
-    const dropdownOne = this.state.reflists.map(function(refDoc, index){
+      // const timeStamp = this.props.verseEditReducer.modifiedTimestamp;
+      // const dateStamp = new Date(timeStamp);
+      // const finalTime = "Saved "+dateStamp.toLocaleTimeString();
+      const dropdownOne = this.state.reflists.map(function(refDoc, index){
         return(
          <option value={refDoc.value}  key={index} >{refDoc.option}</option>
         )
@@ -309,12 +322,6 @@ class View extends React.Component {
                      </Col>
                 </div> }
             </div> 
-        {/*<Col sm={6}>
-          <h2>{projectDetailsReducer.manifest.target_language.name}</h2>
-          <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
-          {verses('target', targetLanguage)}
-        </Col>*/}
-
         <nav className="navbar navbar-default navbar-fixed-bottom" style={{left:"250px", height:"55px"}}>
                    {/*<div className="nav navbar-nav navbar-center verse-diff-on"> */}
                         <div style={{float:"left", width:"40%"}} className="btn-group navbar-btn verse-diff-on" role="group" aria-label="...">
@@ -334,7 +341,8 @@ class View extends React.Component {
                                     <a style={style.layoutButton} className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,2)} title="3-column layout">3x &nbsp;<i className="fa fa-columns fa-lg"></i></a>
                                     <a style={style.layoutButton} className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,3)}  title="4-column layout">4x &nbsp;<i className="fa fa-columns fa-lg"></i></a>
                             </div>
-                            <a style={style.saveButton} id="save-btn" data-toggle="tooltip" data-placement="top" title="" className="btn btn-info btn-save navbar-btn" href="#" role="button" data-original-title="Save changes">Save</a>
+                            <span style={{ color: "rgba(0, 0, 0, 0.5)", marginLeft: "188px",fontFamily: "Georgia,Serif", fontStyle:"italic"}}>{this.state.saveFunction ? this.state.finalTime:""}</span>
+                            <a  onClick={this.saveEditVerse.bind(this)} style={style.saveButton} id="save-btn" data-toggle="tooltip" data-placement="top" title="" className="btn btn-info btn-save navbar-btn" >Save</a>
                         </div>
                   {/*</div>*/}
         </nav>
