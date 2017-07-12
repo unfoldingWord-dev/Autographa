@@ -151,13 +151,17 @@ var style = {
         fontSize: "20px"
     },
      dropdown: {
-          backgroundColor: "#0b82ff",
-          color: "#ffffff",
+          backgroundColor: "rgba(245, 248, 250, 1)",
+          color: "rgba(11, 130, 255, 1)",
           fontWeight: "bold",
           width: "130px",
-          borderRadius: "6px",
           height: "30px",
           paddingLeft: "9px",
+          borderTop: "none",
+          borderRight: "none",
+          borderLeft: "none",
+          borderColor: "#0b82ff",
+          /* border-width: 1px; */
      },
      saveButton: {
           color: "#fff",

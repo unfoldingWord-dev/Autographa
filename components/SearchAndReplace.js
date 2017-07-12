@@ -123,8 +123,8 @@ class SearchAndReplace extends React.Component {
                         <label>Find</label><br />
                         <TextField hintText="Find" value={this.state.find} onChange={this.handleFindChange.bind(this)}/> <br />
                         <label>Replace With</label><br />
-                        <TextField hintText="Replacement" value={this.state.replace} onChange={this.handleReplaceChange.bind(this)}/>
-                        <Button onClick={this.findAndReplaceText.bind(this)} >Replace</Button>
+                        <TextField hintText="Replacement" value={this.state.replace} onChange={this.handleReplaceChange.bind(this)}/> <br />
+                        <RaisedButton label="Replace" primary={true} onClick={this.findAndReplaceText.bind(this)} />
                     </div>
                 </div>;
         } else if (this.state.showSearchReplace == 'loader') {
@@ -135,7 +135,8 @@ class SearchAndReplace extends React.Component {
         return (
             <Modal show={show} onHide={onHide} bsSize="lg">
                 <Modal.Header style={{ backgroundColor: "var(--accent-color-dark)" }} closeButton>
-                      <Modal.Title>Search and Replace</Modal.Title>
+                      <Modal.Title id="contained-modal-title-sm"
+            style={{ textAlign: "center", color: "var(--reverse-color)" }}>Search and Replace</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     {partial}  

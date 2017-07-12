@@ -14,6 +14,15 @@ import AboutUsModal from './AboutUsModal'
 import Toggle from 'material-ui/Toggle';
 import Slider from 'material-ui/Slider';
 import SearchAndReplace from './SearchAndReplace';
+import RaisedButton from 'material-ui/RaisedButton';
+import Popover from 'material-ui/Popover';
+import Menu from 'material-ui/Menu';
+import MenuItem from 'material-ui/MenuItem';
+import SelectField from 'material-ui/SelectField';
+import DropDownMenu from 'material-ui/DropDownMenu';
+
+
+
 
 class View extends React.Component {
 
@@ -28,8 +37,9 @@ class View extends React.Component {
                   fontSize: 14,
                   saveFunction: false,
                   finalTime:"",
-                  reflists:[{option:"English-ULB", value:"ULB"},{option:"English-UDB",value:"UDB"},{option:"Hindi-ULB",value:"hin_ulb"}],
-                  defaultRef:"ULB" //values has been changed, Hindi lang currently not changed
+                  reflists:[{option:"English-ULB", value:"eng_ulb"},{option:"English-UDB",value:"eng_udb"},{option:"Hindi-ULB",value:"hin_ulb"}],
+                  defaultRef:"ULB", //values has been changed, Hindi lang currently not changed
+                  open: false,
           }
 
   }
@@ -50,9 +60,11 @@ class View extends React.Component {
       console.log("saved")
       var timeStamp = this.props.verseEditReducer.modifiedTimestamp;
       var dateStamp = new Date(timeStamp);
-      this.setState({finalTime:"Saved "+dateStamp.toLocaleTimeString()})
+      var hours = dateStamp.getHours();
+      var minutes = dateStamp.getMinutes();
+      this.setState({finalTime:"Saved "+hours+":"+minutes})
       console.log(this.state.finalTime)  
-      if (isNaN(dateStamp)) {
+      if (isNaN(hours+minutes)) {
         this.setState({saveFunction: false})
       } else{
       this.setState({saveFunction: true})
@@ -140,6 +152,22 @@ class View extends React.Component {
     sliderFontChange(event, value){
         document.getElementsByClassName("fontZoom")[0].style.fontSize = value + "px";
     }
+
+  //   handleTouchTap (event){
+  //   // This prevents ghost click.
+  //   event.preventDefault();
+
+  //   this.setState({
+  //     open: true,
+  //     anchorEl: event.currentTarget,
+  //   });
+  // };
+
+  // handleRequestClose () {
+  //   this.setState({
+  //     open: false,
+  //   });
+  // };
  
  
   render() {
@@ -148,7 +176,8 @@ class View extends React.Component {
       // const finalTime = "Saved "+dateStamp.toLocaleTimeString();
       const dropdownOne = this.state.reflists.map(function(refDoc, index){
         return(
-         <option value={refDoc.value}  key={index} >{refDoc.option}</option>
+         <option value={refDoc.value}  key={index}>{refDoc.option}
+         </option>
         )
     })            
 
@@ -184,10 +213,10 @@ class View extends React.Component {
       return verses
     }
 
-        // var rows = [];
-        // for (var i = 1; i <= this.state.layoutDesign; i++) {
-        //     rows.push(layout(i));
-        // }
+          // var rows = [];
+          // for (var i = 1; i <= this.state.layoutDesign; i++) {
+          //     rows.push(layout(i));
+          // }
 
 
 
