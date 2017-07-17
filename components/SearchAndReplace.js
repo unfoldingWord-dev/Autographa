@@ -48,7 +48,8 @@ class SearchAndReplace extends React.Component {
                 var originalVerse = targetContent[i];
                 if (originalVerse.search(new RegExp(this.escapeRegExp(searchVal), 'g')) >= 0) {    
                     replacecount += originalVerse.match(new RegExp(this.escapeRegExp(searchVal), 'g')).length;               
-                    var modifiedVerse = originalVerse.replace(searchVal, replaceVal);
+                    var modifiedVerse = originalVerse.replace(new RegExp(this.escapeRegExp(searchVal), 'g'), replaceVal);
+                    console.log(modifiedVerse)
                     targetContent[i] = modifiedVerse;
 
                     if (before !== modifiedVerse) {
@@ -72,7 +73,7 @@ class SearchAndReplace extends React.Component {
                     var targetContent = resourcesReducer.bibles.targetLanguage[i]
                     var originalVerse = targetContent[j]
                    if (originalVerse.search(new RegExp(this.escapeRegExp(searchVal), 'g')) >= 0) {
-                        var modifiedVerse = originalVerse.replace(searchVal, replaceVal);
+                        var modifiedVerse = originalVerse.replace(new RegExp(this.escapeRegExp(searchVal), 'g'), replaceVal);
                         replacecount += originalVerse.match(new RegExp(this.escapeRegExp(searchVal), 'g')).length;
                         targetContent[j] = modifiedVerse 
                         if (originalVerse !== modifiedVerse) {
