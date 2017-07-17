@@ -28,9 +28,8 @@ class SearchAndReplace extends React.Component {
 
         setTimeout(function(){
             this.findReplaceSearchInputs();   
-            console.log(this.state.replaceCount)
              this.setState({showSearchReplace:"count"});
-        }.bind(this),4000);
+        }.bind(this),2000);
     }
 
     findReplaceSearchInputs(){
@@ -40,7 +39,6 @@ class SearchAndReplace extends React.Component {
         let username = loginReducer.userdata.username;
 
         if(this.state.selection == "chapter") {
-            console.log("hi");
             var size = Object.keys(resourcesReducer.bibles.targetLanguage[chapter]).length
             var searchVal = this.state.find.toString();
             var replaceVal = this.state.replace;
@@ -55,6 +53,8 @@ class SearchAndReplace extends React.Component {
 
                     if (before !== modifiedVerse) {
                         actions.addVerseEdit(before, modifiedVerse, ['draft'], username);
+                        this.setState({replaceCount:replacecount});
+
                     }
                     targetContent = resourcesReducer.bibles.targetLanguage[chapter]
                     // console.log(this.props.allProps.resourcesReducer.bibles.targetLanguage[chapter])
@@ -80,7 +80,6 @@ class SearchAndReplace extends React.Component {
                             this.setState({replaceCount:replacecount});
                         }                                                     
                     }
-
                 }
             }
         }
@@ -88,9 +87,9 @@ class SearchAndReplace extends React.Component {
 
     selectRadioButton(e){
         e.persist();
-          setTimeout(() => {
+        setTimeout(() => {
             this.setState({selection: e.target.value}) 
-          }, 100)
+        }, 100)
     }
 
     closeModal(){
@@ -130,7 +129,7 @@ class SearchAndReplace extends React.Component {
         } else if (this.state.showSearchReplace == 'loader') {
             partial = <div key="0"><img src="tC_apps/Autographa/assets/giphy.gif"  /></div>;
         } else if (this.state.showSearchReplace == 'count'){
-            partial =  <div key="1">Book Name:{bookName}<Button onClick={this.closeModal.bind(this)}>Close</Button></div>
+            partial =  <div key="1">Book Name:{bookName} Replace Count:{this.state.replaceCount}<Button onClick={this.closeModal.bind(this)}>Close</Button></div>
         }        
         return (
             <Modal show={show} onHide={onHide} bsSize="lg">
