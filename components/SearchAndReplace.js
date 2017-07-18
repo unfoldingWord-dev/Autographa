@@ -24,11 +24,13 @@ class SearchAndReplace extends React.Component {
     }
 
     findAndReplaceText() {
+        document.body.style = "pointer-events:none";
         this.setState({showSearchReplace: "loader"});
 
         setTimeout(function(){
-            this.findReplaceSearchInputs();   
-             this.setState({showSearchReplace:"count"});
+            this.findReplaceSearchInputs();  
+            document.body.style = "none";
+            this.setState({showSearchReplace:"count"});
         }.bind(this),2000);
     }
 
@@ -49,13 +51,10 @@ class SearchAndReplace extends React.Component {
                 if (originalVerse.search(new RegExp(this.escapeRegExp(searchVal), 'g')) >= 0) {    
                     replacecount += originalVerse.match(new RegExp(this.escapeRegExp(searchVal), 'g')).length;               
                     var modifiedVerse = originalVerse.replace(new RegExp(this.escapeRegExp(searchVal), 'g'), replaceVal);
-                    console.log(modifiedVerse)
                     targetContent[i] = modifiedVerse;
-
                     if (before !== modifiedVerse) {
                         actions.addVerseEdit(before, modifiedVerse, ['draft'], username);
-                        this.setState({replaceCount:replacecount});
-
+                        this.setState({replaceCount:replacecount}); 
                     }
                     targetContent = resourcesReducer.bibles.targetLanguage[chapter]
                     // console.log(this.props.allProps.resourcesReducer.bibles.targetLanguage[chapter])
@@ -107,17 +106,17 @@ class SearchAndReplace extends React.Component {
         partial = <div> 
                     <FormGroup>
                     <RadioButtonGroup name="SearchAndReplace" style={{display: "flex"}} defaultSelected={this.state.selection} onChange={this.selectRadioButton.bind(this)}>
-                          <RadioButton
-                            value="chapter"
-                            label="Current Chapter"
-                            style={{width: "20%"}}
-                          />
-                          <RadioButton
-                            value="book"
-                            label="Current Book"
-                            style={{width: "20%"}}
-                          />
-                        </RadioButtonGroup>
+                        <RadioButton
+                        value="chapter"
+                        label="Current Chapter"
+                        style={{width: "20%"}}
+                        />
+                        <RadioButton
+                        value="book"
+                        label="Current Book"
+                        style={{width: "20%"}}
+                        />
+                    </RadioButtonGroup>
                     </FormGroup>
                     <div>
                         <label>Find</label><br />

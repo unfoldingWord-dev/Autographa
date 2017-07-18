@@ -240,7 +240,7 @@ class View extends React.Component {
                     <Col key={2} lg={4} style={{backgroundColor: "#f5f8fa", borderRight: "1px solid #d3e0e9", padding: "0px 20px 60px"}}>
                        <h2>English ULB</h2>
                        <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
-                        <select style={style.dropdown} title="Select Reference Text" onChange={handleRefChange} value ={defaultRef}>
+                        <select style={style.dropdown} title="Select Reference Text" onChange={handleRefChange} value ={this.state.defaultRef}>
                             {dropdownOne}
                         </select>
                        <div>
