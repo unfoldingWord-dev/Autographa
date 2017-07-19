@@ -14,14 +14,7 @@ import AboutUsModal from './AboutUsModal'
 import Toggle from 'material-ui/Toggle';
 import Slider from 'material-ui/Slider';
 import SearchAndReplace from './SearchAndReplace';
-import RaisedButton from 'material-ui/RaisedButton';
-import Popover from 'material-ui/Popover';
-import Menu from 'material-ui/Menu';
-import MenuItem from 'material-ui/MenuItem';
-import SelectField from 'material-ui/SelectField';
-import DropDownMenu from 'material-ui/DropDownMenu';
-
-
+var data = require('../FetchData/chunks.json');
 
 
 class View extends React.Component {
@@ -37,9 +30,8 @@ class View extends React.Component {
                   fontSize: 14,
                   saveFunction: false,
                   finalTime:"",
-                  reflists:[{option:"English-ULB", value:"eng_ulb"},{option:"English-UDB",value:"eng_udb"},{option:"Hindi-ULB",value:"hin_ulb"}],
-                  defaultRef:"ULB", //values has been changed, Hindi lang currently not changed
-                  open: false,
+                  reflists:[{option:"English-ULB", value:"ULB"},{option:"English-UDB",value:"UDB"},{option:"Hindi-ULB",value:"hin_ulb"}],
+                  defaultRef:"ULB" //values has been changed, Hindi lang currently not changed
           }
 
   }
@@ -81,18 +73,47 @@ class View extends React.Component {
     actions.changeCurrentContextId(contextId);
   }
 
-  highlightRef(verseNumber, e){ 
-    let { reference } = this.props.contextIdReducer.contextId;
-    let { targetLanguage, ULB } = this.props.resourcesReducer.bibles;
-    let currentChapter = targetLanguage[reference.chapter];
-    let verseNumbers = Object.keys(currentChapter);
-      for (var i = 1; i <= verseNumbers.length; i++) { 
-          let content = document.getElementById('ULB' + '_verse_' + i)
-          content.style = "padding-left:10px;padding-right:0px;margin-right:0px"; 
-      }
-      let verseText = document.getElementById('ULB' + '_verse_' + verseNumber);
-      verseText.style = "background-color: rgba(11, 130, 255, 0.1);padding-left:10px;padding-right:10px;margin-right:10px; border-radius: 6px";  
-  }
+
+
+   highlightRef(verseNumber, e){ 
+    var leftChunks = [];
+        let { reference } = this.props.contextIdReducer.contextId;
+        let { targetLanguage, ULB } = this.props.resourcesReducer.bibles;
+        let currentChapter = targetLanguage[reference.chapter];
+        let verseNumbers = Object.keys(currentChapter);
+        var elementss = document.getElementsByClassName(verseNumber);
+        var names = [];
+        for (var i = 1; i <= verseNumbers.length; i++) { 
+            var contentsss = document.getElementById(i)
+            console.log(contentsss)
+            // contentsss[i].style = null; 
+           contentsss.style = "padding-left:10px;padding-right:0px;margin-right:0px"; 
+        }
+        /*console.log(contentsss)
+         for(var i = 0; i < contentsss.length; i++) {
+            leftChunks.push(contentsss[i]);
+            // leftChunks[i].style = "padding-left:10px;padding-right:0px;margin-right:0px"; 
+            // console.log(leftChunks)
+        }*/
+        for(var i=0; i < elementss.length/2; i++) {
+            names.push(elementss[i]);
+            names[i].style = "background-color: rgba(11, 130, 255, 0.1);padding-left:10px;padding-right:10px;margin-right:10px; border-radius: 6px"; 
+        }
+
+       /* for (var i = 1; i <= verseNumbers.length; i++) { 
+            let content = document.getElementById('ULB' + '_verse_' + i)
+            content.style = "padding-left:10px;padding-right:0px;margin-right:0px"; 
+        }*/ 
+        // var half_length = Math.ceil(names.length / 2);    
+        // var leftSide = names.splice(0,half_length);
+
+        // var leftSide = elementss.splice(0, Math.floor(elementss.length / 2));
+        // names[i].style = "color: blue; padding-left:10px;padding-right:0px;margin-right:0px"; 
+        // console.log(names) 
+
+        // console.log(leftSide) 
+    }
+  
 
   mouseEnter(){
     this.setState({hover: true});
@@ -152,23 +173,10 @@ class View extends React.Component {
     sliderFontChange(event, value){
         document.getElementsByClassName("fontZoom")[0].style.fontSize = value + "px";
     }
-
-  //   handleTouchTap (event){
-  //   // This prevents ghost click.
-  //   event.preventDefault();
-
-  //   this.setState({
-  //     open: true,
-  //     anchorEl: event.currentTarget,
-  //   });
-  // };
-
-  // handleRequestClose () {
-  //   this.setState({
-  //     open: false,
-  //   });
-  // };
- 
+//  reqListener(e) {
+//     data = JSON.parse(this.responseText);
+//     console.log(data);
+// }
  
   render() {
       // const timeStamp = this.props.verseEditReducer.modifiedTimestamp;
@@ -176,12 +184,13 @@ class View extends React.Component {
       // const finalTime = "Saved "+dateStamp.toLocaleTimeString();
       const dropdownOne = this.state.reflists.map(function(refDoc, index){
         return(
-         <option value={refDoc.value}  key={index}>{refDoc.option}
-         </option>
+         <option value={refDoc.value}  key={index} >{refDoc.option}</option>
         )
     })            
 
     const linkStyle = this.state.hover ? style.hover : style.button;
+
+     
 
     let { contextIdReducer, projectDetailsReducer, resourcesReducer,  modalVisibility, modalSettingsVisibility,
     modalAboutUsVisibility, showAboutModal, showModal, showSettingsModal, hideModal,modalSearchVisibility,showSearchReplaceModal } = this.props
@@ -189,29 +198,58 @@ class View extends React.Component {
     let { targetLanguage, ULB } = resourcesReducer.bibles;
     let currentChapter = targetLanguage[reference.chapter];
     let chapters = this.props.groupsDataReducer.groupsData;
+    let verseNumbers = Object.keys(currentChapter);
+          //console.log(verseNumbers)
+            var i;
+            var chunkIndex = 0;
+            var chunkVerseStart; 
+            var chunkVerseEnd;
+            var chunkGroup = [];
+            for (i = 0; i < data.chunks.length; i++) {
+                chunkVerseStart = data.chunks[0][i]["firstvs"];
+                chunkVerseEnd = data.chunks[0][i + 1]["firstvs"] - 1;
+            }
+            for (var i = 1; i <= verseNumbers.length; i++) {
+                if (i > chunkVerseEnd){
+                    chunkVerseStart = data.chunks[0][chunkIndex]["firstvs"];
+                    // console.log(chunkVerseStart)
+                    if (chunkIndex === verseNumbers.length - 1 ) {
+                        chunkVerseEnd = verseNumbers.length;      
+                    } else {
+                        chunkIndex++;
+                        chunkVerseEnd = data.chunks[0][chunkIndex]["firstvs"];
+                        // console.log(chunkVerseEnd)
+                    }
+                }
+                
+                 var chunk = chunkVerseStart + '-' + chunkVerseEnd;
+                  chunkGroup.push(chunk)
+                 // console.log(chunkGroup)
+            }
+            const verses = (bibleId, bible) => {
+            let verseNumbers = Object.keys(currentChapter);
+            let verses = chunkGroup.map( (verseNumber, index) => {
+            let editable = bibleId === 'target';
+                let verseText = bible[reference.chapter][index+1];
+                return (
+                    <div className="fontZoom" style={{display: "flex", lineHeight: "25px"}} key={index}>
+                        <span style={style.versenum}>{index+1} </span>
+                        <span onClick={this.highlightRef.bind(this, verseNumber)}
+                        style={{paddingLeft: "10px"}}
+                        className={verseNumber}
+                        id={index+1}
+                        contentEditable={editable}
+                        onBlur={this.saveEditVerse.bind(this)}
+                        onFocus={this.changeCurrentVerse.bind(this, index+1)}
+                        suppressContentEditableWarning={true}
+                        >{verseText}</span>
+                    </div>
+                )
+            })
 
-    const verses = (bibleId, bible) => {
-      let verseNumbers = Object.keys(currentChapter);
-      let verses = verseNumbers.map( (verseNumber, index) => {
-        let editable = bibleId === 'target';
-          let verseText = bible[reference.chapter][verseNumber];
-          return (
-          <div className="fontZoom" style={{display: "flex", lineHeight: "25px"}} key={index}>
-              <span style={style.versenum}>{verseNumber} </span>
-              <span onClick={this.highlightRef.bind(this, verseNumber)}
-              style={{paddingLeft: "10px"}}
-              id={bibleId + '_verse_' + verseNumber}
-              contentEditable={editable}
-              onBlur={this.saveEditVerse.bind(this)}
-              onFocus={this.changeCurrentVerse.bind(this, verseNumber)}
-              suppressContentEditableWarning={true}
-              >{verseText}
-          </span>
-        </div>
-        )
-      })
-      return verses
-    }
+            return verses
+        }
+        //console.log(chunkGroup)
 
           // var rows = [];
           // for (var i = 1; i <= this.state.layoutDesign; i++) {
