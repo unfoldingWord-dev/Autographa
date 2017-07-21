@@ -6,6 +6,9 @@ import React from 'react'
 import { Row, Col } from 'react-bootstrap'
 import Button from 'react-bootstrap/lib/Button';
 import Glyphicon from "react-bootstrap/lib/Glyphicon";
+const DiffMatchPatch = require('diff-match-patch');
+ var dmp_diff = new DiffMatchPatch();
+
 // import "*" from "font-awesome/font-awesome";
 import ChapterModal from './ChapterModal';
 import style from '../css/Style';
@@ -14,6 +17,7 @@ import AboutUsModal from './AboutUsModal'
 import Toggle from 'material-ui/Toggle';
 import Slider from 'material-ui/Slider';
 import SearchAndReplace from './SearchAndReplace';
+var data = require('../FetchData/chunks.json');
 
 class View extends React.Component {
 
@@ -63,16 +67,21 @@ class View extends React.Component {
     }
 
     highlightRef(verseNumber, e){ 
-        let { reference } = this.props.contextIdReducer.contextId;
+     /*   let { reference } = this.props.contextIdReducer.contextId;
         let { targetLanguage, ULB } = this.props.resourcesReducer.bibles;
         let currentChapter = targetLanguage[reference.chapter];
         let verseNumbers = Object.keys(currentChapter);
         for (var i = 1; i <= verseNumbers.length; i++) { 
             let content = document.getElementById('ULB' + '_verse_' + i)
             content.style = "padding-left:10px;padding-right:0px;margin-right:0px"; 
+        }*/
+        var elementss = document.getElementsByClassName(verseNumber);
+        var names = '';
+        for(var i=0; i< elementss.length; i++) {
+            names += elementss[i];
         }
-        let verseText = document.getElementById('ULB' + '_verse_' + verseNumber);
-        verseText.style = "background-color: rgba(11, 130, 255, 0.1);padding-left:10px;padding-right:10px;margin-right:10px; border-radius: 6px";  
+        console.log(elementss)
+        
     }
 
     mouseEnter(){
@@ -115,14 +124,77 @@ class View extends React.Component {
     sliderFontChange(event, value){
         document.getElementsByClassName("fontZoom")[0].style.fontSize = value + "px";
     }
+ // insertion and deletion count in difference text by passing verse
+    toggleDiff(verse_diff) {
+        var insertions = 0;
+        var deletions = 0;
+        for (var x = 0; x < verse_diff.length; x++) {
+            var op = verse_diff[x][0];
+            var data = verse_diff[x][1];
+            switch (op) {
+                case DiffMatchPatch.DIFF_INSERT:
+                    insertions += data.length;
+                    break;
+                case DiffMatchPatch.DIFF_DELETE:
+                    deletions += data.length;
+                    break;
+                case DiffMatchPatch.DIFF_EQUAL:
+                    insertions = 0;
+                    deletions = 0;
+                    break;
+            }
+        }
+        return { ins: insertions, del: deletions }
+    }
+
+    getDiffText(event) {
+        console.log(event.target.value);
+        console.log(content)
+        var translatedContent = document.getElementById("diffContent").innerHTML
+        if (event.target.value == "on") {
+            let { reference } =this.props.contextIdReducer.contextId;
+            let { targetLanguage, ULB } = this.props.resourcesReducer.bibles;
  
- 
+            let verseText = ULB[reference.chapter];
+            let translatedText = targetLanguage[reference.chapter]
+            
+            var t_ins = 0;
+            var t_del = 0;
+    /*      var id1 = refId1 + '_' + bookCodeList[parseInt(book, 10) - 1],
+            var id2 = refId2 + '_' + bookCodeList[parseInt(book, 10) - 1],*/
+            var size = Object.keys(this.props.resourcesReducer.bibles.targetLanguage[reference.chapter]).length
+            //console.log(ref1)
+            var refString = "";
+            for (var i = 1; i <= size; i++) {
+                var ref1 = verseText[i];
+                var ref2 = translatedText[i]
+                var d = dmp_diff.diff_main(ref1, ref2);
+                //var diff_count = getDifferenceCount(d);
+                //t_ins += diff_count["ins"]
+                //t_del += diff_count["del"]
+                var ds = dmp_diff.diff_prettyHtml(d);
+                console.log(refString)
+                refString += '<div data-verse="r' + (i) + '"><span class="verse-num">' + (i) + '</span><span>' + ds + '</span></div>';
+                var diffcontent = document.createElement('div');
+                diffcontent.innerHTML = refString; 
+                document.getElementById("diffContent").innerHTML= '';           
+                document.getElementById('diffContent').appendChild(diffcontent);
+            }
+        } else {
+            document.getElementById("diffContent").innerHTML= '';           
+            document.getElementById('diffContent').appendChild(diffcontent);
+        }
+       
+    }
+
+    
     render() {
 
     function handleRefChange(event) {
         event.persist()
         var defaultRef = event.target.value;
     }
+
     function handleRefChangeTwo(event) {
         event.persist()
         var defaultRefTwo = event.target.value;
@@ -131,15 +203,17 @@ class View extends React.Component {
     function handleRefChangeThree(event) {
         event.persist()
        var defaultRefThree = event.target.value;
-    }  
-    //console.log(defaultRef);
-        const dropdownOne = this.state.reflists.map(function(refDoc, index){
-            return(
-                <option value={refDoc.value}  key={index} >{refDoc.option}</option>
-            )
-        })            
+    }
 
-        const linkStyle = this.state.hover ? style.hover : style.button;
+    //console.log(defaultRef);
+
+    const dropdownOne = this.state.reflists.map(function(refDoc, index){
+        return(
+            <option value={refDoc.value}  key={index} >{refDoc.option}</option>
+        )
+    })            
+
+    const linkStyle = this.state.hover ? style.hover : style.button;
 
         let { contextIdReducer, projectDetailsReducer, resourcesReducer,  modalVisibility, modalSettingsVisibility,
         modalAboutUsVisibility, showAboutModal, showModal, showSettingsModal, hideModal,modalSearchVisibility,showSearchReplaceModal } = this.props
@@ -147,28 +221,69 @@ class View extends React.Component {
         let { targetLanguage, ULB } = resourcesReducer.bibles;
         let currentChapter = targetLanguage[reference.chapter];
         let chapters = this.props.groupsDataReducer.groupsData;
-
-        const verses = (bibleId, bible) => {
+        let verseNumbers = Object.keys(currentChapter);
+        //console.log(verseNumbers)
+            var i;
+            var chunkIndex = 0;
+            var chunkVerseStart; 
+            var chunkVerseEnd;
+            var chunkGroup = [];
+            for (i = 0; i < data.chunks.length; i++) {
+                chunkVerseStart = data.chunks[0][i]["firstvs"];
+                chunkVerseEnd = data.chunks[0][i + 1]["firstvs"] - 1;
+            }
+            for (var i = 1; i <= verseNumbers.length; i++) {
+                if (i > chunkVerseEnd){
+                    chunkVerseStart = data.chunks[0][chunkIndex]["firstvs"];
+                    if (chunkIndex === verseNumbers.length - 1 ) {
+                        chunkVerseEnd = verseNumbers.length;      
+                    } else {
+                        chunkIndex++;
+                        chunkVerseEnd = data.chunks[0][chunkIndex]["firstvs"];
+                    }
+                }
+                
+                 var chunk = chunkVerseStart + '-' + chunkVerseEnd;
+                 chunkGroup.push(chunk)
+            }
+            const verses = (bibleId, bible) => {
             let verseNumbers = Object.keys(currentChapter);
-            let verses = verseNumbers.map( (verseNumber, index) => {
+            let verses = chunkGroup.map( (verseNumber, index) => {
             let editable = bibleId === 'target';
-                let verseText = bible[reference.chapter][verseNumber];
+            let verseText = bible[reference.chapter][index+1];
                 return (
-                    <div className="fontZoom" style={{display: "flex", lineHeight: "25px"}} key={index}>
-                        <span style={style.versenum}>{verseNumber} </span>
+                    <div className="fontZoom" style={{display: "flex", lineHeight: "25px"}} key={index} >
+                        <span style={style.versenum}>{index+1} </span>
                         <span onClick={this.highlightRef.bind(this, verseNumber)}
                         style={{paddingLeft: "10px"}}
-                        id={bibleId + '_verse_' + verseNumber}
+                        className={verseNumber}
                         contentEditable={editable}
                         onBlur={this.saveEditVerse.bind(this)}
-                        onFocus={this.changeCurrentVerse.bind(this, verseNumber)}
+                        onFocus={this.changeCurrentVerse.bind(this, index+1)}
                         suppressContentEditableWarning={true}
                         >{verseText}</span>
                     </div>
                 )
             })
+
             return verses
         }
+              
+              /*if (i <=chunkVerseEnd) {
+
+                chunkVerseStart = data.chunks[0][chunkIndex]["firstvs"];
+                chunkVerseEnd = data.chunks[0][chunkIndex + 1]["firstvs"];
+                console.log(chunkVerseStart +"   and " + chunkVerseEnd)
+                chunkGroup.push(chunkVerseStart +"-" + chunkVerseEnd)
+                //chunkGroup.push(chunkVerseStart +"-" + chunkVerseEnd)
+              } else{
+                chunkVerseStart = data.chunks[0][chunkIndex]["firstvs"];
+                chunkVerseEnd = data.chunks[0][chunkIndex + 1]["firstvs"];
+                chunkIndex++;
+                 console.log(chunkVerseStart +"   and " + chunkVerseEnd)  
+              };
+             
+            console.log(chunkGroup)*/
 
         return (  
           <div style={{overflow: "scroll", position: "relative"}}>
@@ -196,7 +311,7 @@ class View extends React.Component {
                         <ul className="nav navbar-nav navbar-right nav-pills verse-diff-on">
                           <li style={{padding: "17px 5px 0 0", color: "#fff", fontWeight: "bold"}}><span>OFF</span></li>
                           <li>
-                              <Toggle style={style.toggle} thumbStyle={style.thumbOff} trackStyle={style.trackOff} thumbSwitchedStyle={style.thumbSwitched} trackSwitchedStyle={style.trackSwitched} labelStyle={style.labelStyle} />                            
+                              <Toggle onClick={this.getDiffText.bind(this)} style={style.toggle} thumbStyle={style.thumbOff} trackStyle={style.trackOff} thumbSwitchedStyle={style.thumbSwitched} trackSwitchedStyle={style.trackSwitched} labelStyle={style.labelStyle} />                            
                           </li>
                            <li style={{padding:"17px 0 0 0", color: "#fff", fontWeight: "bold"}}><span>ON</span></li>
                            <li></li>                              
@@ -215,7 +330,7 @@ class View extends React.Component {
                     </div>
                 </div>
             </nav>
-             <div className="fontZoom" style={{width:"100%", marginBottom:"20px"}}>
+            <div className="fontZoom" style={{width:"100%", marginBottom:"20px"}}>
                    {this.state.layoutDesign == 1 &&
                    <div>
                    <Col key={1}  lg={6} style={{backgroundColor: "#f5f8fa", borderRight: "1px solid #d3e0e9", padding: "0px 20px 60px"}}>
@@ -231,7 +346,9 @@ class View extends React.Component {
                      <Col lg={6}>
                       <h2>{projectDetailsReducer.manifest.target_language.name}</h2>
                       <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
+                      <div id="diffContent">
                       {verses('target', targetLanguage)}
+                      </div>
                       </Col> 
                       </div>}
 
@@ -260,7 +377,9 @@ class View extends React.Component {
                     <Col lg={4}>
                       <h2>{projectDetailsReducer.manifest.target_language.name}</h2>
                       <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
+                        <div id="diffContent">
                       {verses('target', targetLanguage)}
+                      </div>
                       </Col>
                   </div> }
                          {this.state.layoutDesign == 3 &&
@@ -298,7 +417,9 @@ class View extends React.Component {
                          <Col lg={3}>
                           <h2>{projectDetailsReducer.manifest.target_language.name}</h2>
                           <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
-                          {verses('target', targetLanguage)}          
+                           <div id="diffContent">
+                            {verses('target', targetLanguage)}
+                      </div>         
                          </Col>
                     </div> }
                 </div> 
