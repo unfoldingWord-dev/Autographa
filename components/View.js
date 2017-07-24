@@ -77,27 +77,77 @@ class View extends React.Component {
 
    highlightRef(verseNumber, e){ 
     var leftChunks = [];
+    var i;
         let { reference } = this.props.contextIdReducer.contextId;
         let { targetLanguage, ULB } = this.props.resourcesReducer.bibles;
         let currentChapter = targetLanguage[reference.chapter];
         let verseNumbers = Object.keys(currentChapter);
-        var elementss = document.getElementsByClassName(verseNumber);
+        var verse_Num = document.getElementsByClassName(verseNumber);
+        var remove_highlight = document.getElementsByClassName(verseNumber);
+        // var highlight_id = document.getElementsByClassName("test")[0][1]
         var names = [];
-        for (var i = 1; i <= verseNumbers.length; i++) { 
-            var contentsss = document.getElementById(i)
-            console.log(contentsss)
-            // contentsss[i].style = null; 
-           contentsss.style = "padding-left:10px;padding-right:0px;margin-right:0px"; 
+        //   for(var i=0; i < remove_highlight; i++) {  
+        //     // names.push(verse_Num[i]);
+        //     if(verse_Num[i].isContentEditable == false) {
+        //       // console.log(verse_Num)
+        //     verse_Num[i].style = null; 
+        //     }
+            
+        // }
+     if(this.state.layoutDesign == 1) {
+        for (var i = 1; i <= verseNumbers.length; i++) {
+            // console.log(verseNumbers)  
+            var collections = document.getElementById(i)
+             // console.log(collections)
+            // collections[i].style = null; 
+           collections.style = "padding-left:10px;padding-right:0px;margin-right:0px"; 
         }
-        /*console.log(contentsss)
-         for(var i = 0; i < contentsss.length; i++) {
-            leftChunks.push(contentsss[i]);
+      }
+      else if(this.state.layoutDesign == 2) {
+    var x = document.getElementsByClassName("highlight_remove");
+    //console.log(x[i].children[1].style)
+    var i;
+    for (i = 0; i < x.length; i++) {
+
+        x[i].children[i].children[1].style = "padding-left:10px;padding-right:0px;margin-right:0px; background-color: rgba(245, 248, 250, 1);";
+      console.log(x[i].children[i].children[1])
+    }
+        }
+      
+      // else if (this.state.layoutDesign == 2) {
+      //   for (var i = 1; i <= verse_Num.length; i++) {
+      //       // console.log(verseNumbers)  
+      //       // var collections = document.getElementById(i)
+      //        // console.log(collections)
+      //       // collections[i].style = null; 
+      //      highlight_id.style = "padding-left:10px;padding-right:0px;margin-right:0px"; 
+      //   }
+      // }
+        /*console.log(collections)
+         for(var i = 0; i < collections.length; i++) {
+            leftChunks.push(collections[i]);
             // leftChunks[i].style = "padding-left:10px;padding-right:0px;margin-right:0px"; 
             // console.log(leftChunks)
         }*/
-        for(var i=0; i < elementss.length/2; i++) {
-            names.push(elementss[i]);
-            names[i].style = "background-color: rgba(11, 130, 255, 0.1);padding-left:10px;padding-right:10px;margin-right:10px; border-radius: 6px"; 
+        // verse_Num[i].parentNode.removeChild(verse_Num[i])
+        // var arr = [].slice.call(verse_Num);
+        // var arra = arr.splice(-3)
+        // console.log(arr)
+         // var finalArr= [] 
+         // fnalArr = verse_Num.slice(-1,3)
+          // elements.splice(-1,3)
+          // console.log(finalArr)
+        // for(var i=0; i < arr.length; i++) {
+        //     names.push(verse_Num[+i]);
+        //     names[i].style = "background-color: rgba(11, 130, 255, 0.1);padding-left:10px;padding-right:10px;margin-right:10px; border-radius: 6px"; 
+        // }
+         for(var i=0; i < verse_Num.length; i++) {  
+            // names.push(verse_Num[i]);
+            if(verse_Num[i].isContentEditable == false) {
+              // console.log(verse_Num)
+            verse_Num[i].style = "background-color: rgba(11, 130, 255, 0.1);padding-left:10px;padding-right:10px;margin-right:10px; border-radius: 6px"; 
+            }
+            
         }
 
        /* for (var i = 1; i <= verseNumbers.length; i++) { 
@@ -107,7 +157,7 @@ class View extends React.Component {
         // var half_length = Math.ceil(names.length / 2);    
         // var leftSide = names.splice(0,half_length);
 
-        // var leftSide = elementss.splice(0, Math.floor(elementss.length / 2));
+        // var leftSide = verse_Num.splice(0, Math.floor(verse_Num.length / 2));
         // names[i].style = "color: blue; padding-left:10px;padding-right:0px;margin-right:0px"; 
         // console.log(names) 
 
@@ -330,7 +380,7 @@ class View extends React.Component {
                     <select style={style.dropdown} title="Select Reference Text" onChange={this.handleRefChange.bind(this)} value ={this.state.defaultRef}>
                         {dropdownOne}
                     </select>
-                   <div>
+                   <div className="highlight_remove">
                    {verses(this.state.defaultRef, ULB)}
                    </div>
                 </Col> 
@@ -340,7 +390,7 @@ class View extends React.Component {
                     <select style={style.dropdown} title="Select Reference Text" onChange={this.handleRefChangeTwo.bind(this)} value ={this.state.defaultRefTwo}>
                         {dropdownOne}
                     </select>
-                   <div>
+                   <div className= "highlight_remove">
                    {verses(this.state.defaultRef, ULB)}
                    </div>
                 </Col>
