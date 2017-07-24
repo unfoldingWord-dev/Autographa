@@ -178,8 +178,8 @@ class View extends React.Component {
     //console.log(defaultRef);
     const diffContent =  () => {
         var diffArray = []; 
-        var t_ins; 
-        var t_del; 
+        var t_ins = 0;
+        var t_del = 0;
         let { reference } =this.props.contextIdReducer.contextId;
         let { targetLanguage, ULB } = this.props.resourcesReducer.bibles; 
         let verseText = ULB[reference.chapter];
@@ -194,7 +194,7 @@ class View extends React.Component {
             var diff_count = this.getDifferenceCount(d);
             t_ins += diff_count["ins"];
             t_del += diff_count["del"];
-            //console.log(t_del+t_ins)
+            console.log(+t_ins)
             var ds = dmp_diff.diff_prettyHtml(d);
             //console.log(refString)
             //refString += '<div data-verse="r' + (i) + '"><span class="verse-num">' + (i) + '</span><span>' + ds + '</span></div>';
@@ -211,7 +211,8 @@ class View extends React.Component {
             )        
         })
         
-        return diffContent
+       return [diffContent, t_ins, t_del]
+
     }
     const dropdownOne = this.state.reflists.map(function(refDoc, index){
         return(
@@ -273,22 +274,7 @@ class View extends React.Component {
 
             return verses
         }
-              
-              /*if (i <=chunkVerseEnd) {
-
-                chunkVerseStart = data.chunks[0][chunkIndex]["firstvs"];
-                chunkVerseEnd = data.chunks[0][chunkIndex + 1]["firstvs"];
-                console.log(chunkVerseStart +"   and " + chunkVerseEnd)
-                chunkGroup.push(chunkVerseStart +"-" + chunkVerseEnd)
-                //chunkGroup.push(chunkVerseStart +"-" + chunkVerseEnd)
-              } else{
-                chunkVerseStart = data.chunks[0][chunkIndex]["firstvs"];
-                chunkVerseEnd = data.chunks[0][chunkIndex + 1]["firstvs"];
-                chunkIndex++;
-                 console.log(chunkVerseStart +"   and " + chunkVerseEnd)  
-              };
-             
-            console.log(chunkGroup)*/
+        console.log(diffContent());
 
         return (
           <div style={{overflow: "scroll", position: "relative"}}>  
@@ -349,7 +335,7 @@ class View extends React.Component {
                      <Col lg={6}>
                       <h2>{projectDetailsReducer.manifest.target_language.name}</h2>
                       <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
-                      {this.state.show ? <div id="targetContent">{diffContent()}</div>:
+                      {this.state.show ? <div><span>(+):{diffContent()[1]}</span><span>(-):{diffContent()[2]}</span><div id="targetContent">{diffContent()}</div></div>:
                       <div id ="targetContent">{verses('target', targetLanguage)}</div>}
                     </Col> 
                     </div>}
