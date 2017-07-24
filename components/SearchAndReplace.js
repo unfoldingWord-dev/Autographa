@@ -24,13 +24,14 @@ class SearchAndReplace extends React.Component {
     }
 
     findAndReplaceText() {
+        document.body.style = "pointer-events:none";
         this.setState({showSearchReplace: "loader"});
 
         setTimeout(function(){
-            this.findReplaceSearchInputs();   
-            console.log(this.state.replaceCount)
-             this.setState({showSearchReplace:"count"});
-        }.bind(this),4000);
+            this.findReplaceSearchInputs();  
+            document.body.style = "none";
+            this.setState({showSearchReplace:"count"});
+        }.bind(this),2000);
     }
 
     findReplaceSearchInputs(){
@@ -40,7 +41,6 @@ class SearchAndReplace extends React.Component {
         let username = loginReducer.userdata.username;
 
         if(this.state.selection == "chapter") {
-            console.log("hi");
             var size = Object.keys(resourcesReducer.bibles.targetLanguage[chapter]).length
             var searchVal = this.state.find.toString();
             var replaceVal = this.state.replace;
@@ -50,11 +50,11 @@ class SearchAndReplace extends React.Component {
                 var originalVerse = targetContent[i];
                 if (originalVerse.search(new RegExp(this.escapeRegExp(searchVal), 'g')) >= 0) {    
                     replacecount += originalVerse.match(new RegExp(this.escapeRegExp(searchVal), 'g')).length;               
-                    var modifiedVerse = originalVerse.replace(searchVal, replaceVal);
+                    var modifiedVerse = originalVerse.replace(new RegExp(this.escapeRegExp(searchVal), 'g'), replaceVal);
                     targetContent[i] = modifiedVerse;
-
                     if (before !== modifiedVerse) {
                         actions.addVerseEdit(before, modifiedVerse, ['draft'], username);
+                        this.setState({replaceCount:replacecount}); 
                     }
                     targetContent = resourcesReducer.bibles.targetLanguage[chapter]
                     // console.log(this.props.allProps.resourcesReducer.bibles.targetLanguage[chapter])
@@ -72,7 +72,7 @@ class SearchAndReplace extends React.Component {
                     var targetContent = resourcesReducer.bibles.targetLanguage[i]
                     var originalVerse = targetContent[j]
                    if (originalVerse.search(new RegExp(this.escapeRegExp(searchVal), 'g')) >= 0) {
-                        var modifiedVerse = originalVerse.replace(searchVal, replaceVal);
+                        var modifiedVerse = originalVerse.replace(new RegExp(this.escapeRegExp(searchVal), 'g'), replaceVal);
                         replacecount += originalVerse.match(new RegExp(this.escapeRegExp(searchVal), 'g')).length;
                         targetContent[j] = modifiedVerse 
                         if (originalVerse !== modifiedVerse) {
@@ -80,7 +80,6 @@ class SearchAndReplace extends React.Component {
                             this.setState({replaceCount:replacecount});
                         }                                                     
                     }
-
                 }
             }
         }
@@ -88,9 +87,9 @@ class SearchAndReplace extends React.Component {
 
     selectRadioButton(e){
         e.persist();
-          setTimeout(() => {
+        setTimeout(() => {
             this.setState({selection: e.target.value}) 
-          }, 100)
+        }, 100)
     }
 
     closeModal(){
@@ -107,17 +106,17 @@ class SearchAndReplace extends React.Component {
         partial = <div> 
                     <FormGroup>
                     <RadioButtonGroup name="SearchAndReplace" style={{display: "flex"}} defaultSelected={this.state.selection} onChange={this.selectRadioButton.bind(this)}>
-                          <RadioButton
-                            value="chapter"
-                            label="Current Chapter"
-                            style={{width: "20%"}}
-                          />
-                          <RadioButton
-                            value="book"
-                            label="Current Book"
-                            style={{width: "20%"}}
-                          />
-                        </RadioButtonGroup>
+                        <RadioButton
+                        value="chapter"
+                        label="Current Chapter"
+                        style={{width: "20%"}}
+                        />
+                        <RadioButton
+                        value="book"
+                        label="Current Book"
+                        style={{width: "20%"}}
+                        />
+                    </RadioButtonGroup>
                     </FormGroup>
                     <div>
                         <label>Find</label><br />
@@ -130,7 +129,7 @@ class SearchAndReplace extends React.Component {
         } else if (this.state.showSearchReplace == 'loader') {
             partial = <div key="0"><img src="tC_apps/Autographa/assets/giphy.gif"  /></div>;
         } else if (this.state.showSearchReplace == 'count'){
-            partial =  <div key="1">Book Name:{bookName}<Button onClick={this.closeModal.bind(this)}>Close</Button></div>
+            partial =  <div key="1">Book Name:{bookName} Replace Count:{this.state.replaceCount}<Button onClick={this.closeModal.bind(this)}>Close</Button></div>
         }        
         return (
             <Modal show={show} onHide={onHide} bsSize="lg">
