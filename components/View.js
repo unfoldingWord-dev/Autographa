@@ -178,12 +178,12 @@ class View extends React.Component {
     //console.log(defaultRef);
     const diffContent =  () => {
         var diffArray = []; 
+        var t_ins; 
+        var t_del; 
         let { reference } =this.props.contextIdReducer.contextId;
         let { targetLanguage, ULB } = this.props.resourcesReducer.bibles; 
         let verseText = ULB[reference.chapter];
         let translatedText = targetLanguage[reference.chapter]         
-        var t_ins = 0;
-        var t_del = 0;
         var size = Object.keys(this.props.resourcesReducer.bibles.targetLanguage[reference.chapter]).length
         //console.log(ref1)
         var refString = "";
@@ -192,8 +192,8 @@ class View extends React.Component {
             var ref2 = translatedText[i]
             var d = dmp_diff.diff_main(ref1, ref2);
             var diff_count = this.getDifferenceCount(d);
-            t_ins += diff_count["ins"]
-            t_del += diff_count["del"]
+            t_ins += diff_count["ins"];
+            t_del += diff_count["del"];
             //console.log(t_del+t_ins)
             var ds = dmp_diff.diff_prettyHtml(d);
             //console.log(refString)
@@ -203,18 +203,16 @@ class View extends React.Component {
             diffArray.push(ds);
         }
         let diffContent = diffArray.map((text, index) => {
-            console.log(text)
         return (
             <div key={index+1}>
-            <span class="verse-num"> {index+1}</span>
+            <span> {index+1}</span>
             <span dangerouslySetInnerHTML={{__html: text}} ></span>
             </div>
             )        
         })
+        
         return diffContent
-
     }
-
     const dropdownOne = this.state.reflists.map(function(refDoc, index){
         return(
             <option value={refDoc.value}  key={index} >{refDoc.option}</option>
@@ -292,8 +290,8 @@ class View extends React.Component {
              
             console.log(chunkGroup)*/
 
-        return (  
-          <div style={{overflow: "scroll", position: "relative"}}>
+        return (
+          <div style={{overflow: "scroll", position: "relative"}}>  
               <nav className="navbar navbar-inverse navbar-fixed-top" role="navigation" style={{backgroundColor: "#0b82ff", position: "relative", marginBottom: "0"}}>
                 <div className="container-fluid" style={{backgroundColor: "#0b82ff"}}>
                     <div className="navbar-header">
@@ -303,14 +301,13 @@ class View extends React.Component {
                     <div className="navbar-collapse collapse" id="navbar" style={{backgroundColor: "#0b82ff"}}>
                         <ul className="nav navbar-nav"  style={{padding: "3px 0 0 0px"}}>
                             <li>
-                              <div class
-                              Name="btn-group navbar-btn strong verse-diff-on" role="group" aria-label="..." id="bookBtn" style={{marginLeft:"150px"}}>
+                              <div className="btn-group navbar-btn strong verse-diff-on" role="group" aria-label="..." id="bookBtn" style={{marginLeft:"150px"}}>
                                 <ChapterModal  show ={ modalVisibility } onHide = { hideModal } chapters = { chapters } allProps = {this.props}/>
                                 <SettingModal show ={ modalSettingsVisibility } onHide = { hideModal } />
                                 <AboutUsModal show ={ modalAboutUsVisibility } onHide = { hideModal } allProps = {this.props}/>
                                 <SearchAndReplace show ={ modalSearchVisibility } onHide = { hideModal } allProps = {this.props} versetext={verses('target', targetLanguage)}/>
                                 <span>
-                                <a className="btn btn-default" style={style.chapter} onClick = {showModal} id="chapterBtn" data-target="#myModal"  data-toggle="modal" data-placement="bottom"  title="Select Chapter" disabled={this.state.diffDisable}>Chapter</a>
+                                <Button className="btn btn-default" style={style.chapter} onClick = {showModal} id="chapterBtn" title="Select Chapter" disabled={this.state.diffDisable}>Chapter</Button>
                                 </span>
                               </div>
                             </li>
@@ -321,18 +318,17 @@ class View extends React.Component {
                               <Toggle onToggle={this.getDiffText} defaultToggled={false} style={style.toggle} thumbStyle={style.thumbOff} trackStyle={style.trackOff} thumbSwitchedStyle={style.thumbSwitched} trackSwitchedStyle={style.trackSwitched} labelStyle={style.labelStyle} />                            
                           </li>
                            <li style={{padding:"17px 0 0 0", color: "#fff", fontWeight: "bold"}}><span>ON</span></li>
-                           <li></li>                              
-                            <li style={linkStyle} onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} title="Find and replace" id="searchText" onClick = {showSearchReplaceModal} disabled={this.state.diffDisable}><Glyphicon glyph="search" />
-                            </li>
+                            <Button style={linkStyle} onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} title="Find and replace" id="searchText" onClick = {showSearchReplaceModal} disabled={this.state.diffDisable}><Glyphicon glyph="search" />
+                            </Button>
                           
-                            <li style={linkStyle} onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} disabled={this.state.diffDisable}><Glyphicon glyph="cloud-download" />
-                            </li>
+                            <Button style={linkStyle} onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} disabled={this.state.diffDisable}><Glyphicon glyph="cloud-download" />
+                            </Button>
                           
-                            <li style={linkStyle} onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} onClick = {showAboutModal} disabled={this.state.diffDisable}><Glyphicon glyph="info-sign" />
-                            </li>
+                            <Button style={linkStyle} onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} onClick = {showAboutModal} disabled={this.state.diffDisable}><Glyphicon glyph="info-sign" />
+                            </Button>
                           
-                            <li style={linkStyle} onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} onClick = {showSettingsModal} disabled={this.state.diffDisable}><Glyphicon glyph="wrench" />
-                            </li> 
+                            <Button style={linkStyle} onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} onClick = {showSettingsModal} disabled={this.state.diffDisable}><Glyphicon glyph="wrench" />
+                            </Button> 
                         </ul>
                     </div>
                 </div>
@@ -355,8 +351,8 @@ class View extends React.Component {
                       <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
                       {this.state.show ? <div id="targetContent">{diffContent()}</div>:
                       <div id ="targetContent">{verses('target', targetLanguage)}</div>}
-                      </Col> 
-                      </div>}
+                    </Col> 
+                    </div>}
 
                   {this.state.layoutDesign == 2 &&
                   <div>
@@ -431,26 +427,25 @@ class View extends React.Component {
                        {/*<div className="nav navbar-nav navbar-center verse-diff-on"> */}
                             <div style={{float:"left", width:"40%"}} className="btn-group navbar-btn verse-diff-on" role="group" aria-label="...">
                                 <div style={{float: "left"}}>
-                                    <a style={style.fontButtonMinus} className="btn btn-default font-button minus" data-toggle="tooltip" data-placement="top" title="Decrease font size" onClick= {this.fontChange.bind(this, (-2))}>A-</a>
+                                    <Button style={style.fontButtonMinus} className="btn btn-default font-button minus" disabled={this.state.diffDisable} title="Decrease font size" onClick= {this.fontChange.bind(this, (-2))}>A-</Button>
                                 </div>
                                 {/*<ReactBootstrapSlider style={style.sliderHorizontal} change={this.sliderFontChange.bind(this)} value={this.state.currentFontValue} step={this.state.fontStep} max={this.state.fontMax} min={this.state.fontMin} orientation="horizontal" />*/}
                                 <Slider sliderStyle={{ width: "100px", float:"left", marginTop:"11px"}}  onChange={this.sliderFontChange.bind(this)} value={this.state.currentFontValue} step={this.state.fontStep} max={this.state.fontMax} min={this.state.fontMin}/>
                                 {/*<input type="range" onInput={this.sliderFontChange.bind(this)}  onChange={this.sliderFontChange.bind(this)} value={this.state.currentFontValue} step={this.state.fontStep} max={this.state.fontMax} min={this.state.fontMin} />*/}
                                 <div style={{float: "left"}}>
-                                    <a style={style.fontButtonPlus} className="btn btn-default font-button plus" data-toggle="tooltip" data-placement="top" title="Increase font size" onClick= {this.fontChange.bind(this, (+2))}>A+</a>
+                                    <Button style={style.fontButtonPlus} disabled={this.state.diffDisable} className="btn btn-default font-button plus" title="Increase font size" onClick= {this.fontChange.bind(this, (+2))}>A+</Button>
                                 </div>
                             </div>
                             <div style={{ float:"left", width:"60%"}} className="nav navbar-nav navbar-center verse-diff-on" >
                                 <div className="btn-group navbar-btn layout" role="group" aria-label="...">
-                                        <a style={style.layoutButton} className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,1)}  disabled={this.state.diffDisable} title="2-column layout">2x &nbsp;<i className="fa fa-columns fa-lg"></i></a>
-                                        <a style={style.layoutButton} className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,2)} disabled={this.state.diffDisable} title="3-column layout">3x &nbsp;<i className="fa fa-columns fa-lg"></i></a>
-                                        <a style={style.layoutButton} className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,3)}  disabled={this.state.diffDisable} title="4-column layout">4x &nbsp;<i className="fa fa-columns fa-lg"></i></a>
+                                        <Button style={style.layoutButton} className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,1)}  disabled={this.state.diffDisable} title="2-column layout">2x &nbsp;<i className="fa fa-columns fa-lg"></i></Button>
+                                        <Button style={style.layoutButton} className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,2)} disabled={this.state.diffDisable} title="3-column layout">3x &nbsp;<i className="fa fa-columns fa-lg"></i></Button>
+                                        <Button style={style.layoutButton} className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,3)}  disabled={this.state.diffDisable} title="4-column layout">4x &nbsp;<i className="fa fa-columns fa-lg"></i></Button>
                                 </div>
                                 <span style={{ color: "rgba(0, 0, 0, 0.5)", marginLeft: "188px",fontFamily: "Georgia,Serif", fontStyle:"italic"}}>{this.state.saveFunction ? this.state.finalTime:""}</span>
-                                <a  onClick={this.saveEditVerse.bind(this)} style={style.saveButton} id="save-btn" data-toggle="tooltip" data-placement="top" title="" className="btn btn-info btn-save navbar-btn" >Save</a>
                             </div>
                       {/*</div>*/}
-            </nav>
+                </nav>
           </div>
        
         );
