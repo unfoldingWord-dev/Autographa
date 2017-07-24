@@ -26,10 +26,9 @@ class View extends React.Component {
     this.state = {
         hover: false, layoutDesign:1, fontMin: 14, fontMax: 26, currentFontValue: 14, fontStep: 2, fontSize: 14, saveFunction: false, finalTime:"",
         reflists:[{option:"English-ULB", value:"ULB"},{option:"English-UDB",value:"UDB"},{option:"Hindi-ULB",value:"hin_ulb"}],
-        defaultRef:"ULB" //values has been changed, Hindi lang currently not changed
-        }
-
-  }
+        defaultRef:"ULB",diffDisable:false,show:false,diffContent:""}//values has been changed, Hindi lang currently not changed,
+        this.getDiffText = this.getDiffText.bind(this);
+    }
 
     saveEditVerse() {
         let {loginReducer,  actions, contextIdReducer, resourcesReducer} = this.props;
@@ -125,7 +124,7 @@ class View extends React.Component {
         document.getElementsByClassName("fontZoom")[0].style.fontSize = value + "px";
     }
  // insertion and deletion count in difference text by passing verse
-    toggleDiff(verse_diff) {
+    getDifferenceCount(verse_diff) {
         var insertions = 0;
         var deletions = 0;
         for (var x = 0; x < verse_diff.length; x++) {
@@ -147,42 +146,13 @@ class View extends React.Component {
         return { ins: insertions, del: deletions }
     }
 
-    getDiffText(event) {
-        console.log(event.target.value);
-        console.log(content)
-        var translatedContent = document.getElementById("diffContent").innerHTML
-        if (event.target.value == "on") {
-            let { reference } =this.props.contextIdReducer.contextId;
-            let { targetLanguage, ULB } = this.props.resourcesReducer.bibles;
- 
-            let verseText = ULB[reference.chapter];
-            let translatedText = targetLanguage[reference.chapter]
-            
-            var t_ins = 0;
-            var t_del = 0;
-    /*      var id1 = refId1 + '_' + bookCodeList[parseInt(book, 10) - 1],
-            var id2 = refId2 + '_' + bookCodeList[parseInt(book, 10) - 1],*/
-            var size = Object.keys(this.props.resourcesReducer.bibles.targetLanguage[reference.chapter]).length
-            //console.log(ref1)
-            var refString = "";
-            for (var i = 1; i <= size; i++) {
-                var ref1 = verseText[i];
-                var ref2 = translatedText[i]
-                var d = dmp_diff.diff_main(ref1, ref2);
-                //var diff_count = getDifferenceCount(d);
-                //t_ins += diff_count["ins"]
-                //t_del += diff_count["del"]
-                var ds = dmp_diff.diff_prettyHtml(d);
-                console.log(refString)
-                refString += '<div data-verse="r' + (i) + '"><span class="verse-num">' + (i) + '</span><span>' + ds + '</span></div>';
-                var diffcontent = document.createElement('div');
-                diffcontent.innerHTML = refString; 
-                document.getElementById("diffContent").innerHTML= '';           
-                document.getElementById('diffContent').appendChild(diffcontent);
-            }
+    getDiffText(event,logged) {
+        console.log(logged);
+        if (logged == true) {
+            this.setState({diffDisable:true,show:true})   
+
         } else {
-            document.getElementById("diffContent").innerHTML= '';           
-            document.getElementById('diffContent').appendChild(diffcontent);
+            this.setState({diffDisable:false,show:false})
         }
        
     }
@@ -202,10 +172,48 @@ class View extends React.Component {
 
     function handleRefChangeThree(event) {
         event.persist()
-       var defaultRefThree = event.target.value;
+        var defaultRefThree = event.target.value;
     }
 
     //console.log(defaultRef);
+    const diffContent =  () => {
+        var diffArray = []; 
+        let { reference } =this.props.contextIdReducer.contextId;
+        let { targetLanguage, ULB } = this.props.resourcesReducer.bibles; 
+        let verseText = ULB[reference.chapter];
+        let translatedText = targetLanguage[reference.chapter]         
+        var t_ins = 0;
+        var t_del = 0;
+        var size = Object.keys(this.props.resourcesReducer.bibles.targetLanguage[reference.chapter]).length
+        //console.log(ref1)
+        var refString = "";
+        for (var i = 1; i <= size; i++) {
+            var ref1 = verseText[i];
+            var ref2 = translatedText[i]
+            var d = dmp_diff.diff_main(ref1, ref2);
+            var diff_count = this.getDifferenceCount(d);
+            t_ins += diff_count["ins"]
+            t_del += diff_count["del"]
+            //console.log(t_del+t_ins)
+            var ds = dmp_diff.diff_prettyHtml(d);
+            //console.log(refString)
+            //refString += '<div data-verse="r' + (i) + '"><span class="verse-num">' + (i) + '</span><span>' + ds + '</span></div>';
+            //var diffContent = document.createElement('div');
+            //diffcontent.innerHTML = refString; 
+            diffArray.push(ds);
+        }
+        let diffContent = diffArray.map((text, index) => {
+            console.log(text)
+        return (
+            <div key={index+1}>
+            <span class="verse-num"> {index+1}</span>
+            <span dangerouslySetInnerHTML={{__html: text}} ></span>
+            </div>
+            )        
+        })
+        return diffContent
+
+    }
 
     const dropdownOne = this.state.reflists.map(function(refDoc, index){
         return(
@@ -241,8 +249,7 @@ class View extends React.Component {
                         chunkIndex++;
                         chunkVerseEnd = data.chunks[0][chunkIndex]["firstvs"];
                     }
-                }
-                
+                }  
                  var chunk = chunkVerseStart + '-' + chunkVerseEnd;
                  chunkGroup.push(chunk)
             }
@@ -303,7 +310,7 @@ class View extends React.Component {
                                 <AboutUsModal show ={ modalAboutUsVisibility } onHide = { hideModal } allProps = {this.props}/>
                                 <SearchAndReplace show ={ modalSearchVisibility } onHide = { hideModal } allProps = {this.props} versetext={verses('target', targetLanguage)}/>
                                 <span>
-                                <a className="btn btn-default" style={style.chapter} onClick = {showModal} id="chapterBtn" data-target="#myModal"  data-toggle="modal" data-placement="bottom"  title="Select Chapter" >Chapter</a>
+                                <a className="btn btn-default" style={style.chapter} onClick = {showModal} id="chapterBtn" data-target="#myModal"  data-toggle="modal" data-placement="bottom"  title="Select Chapter" disabled={this.state.diffDisable}>Chapter</a>
                                 </span>
                               </div>
                             </li>
@@ -311,20 +318,20 @@ class View extends React.Component {
                         <ul className="nav navbar-nav navbar-right nav-pills verse-diff-on">
                           <li style={{padding: "17px 5px 0 0", color: "#fff", fontWeight: "bold"}}><span>OFF</span></li>
                           <li>
-                              <Toggle onClick={this.getDiffText.bind(this)} style={style.toggle} thumbStyle={style.thumbOff} trackStyle={style.trackOff} thumbSwitchedStyle={style.thumbSwitched} trackSwitchedStyle={style.trackSwitched} labelStyle={style.labelStyle} />                            
+                              <Toggle onToggle={this.getDiffText} defaultToggled={false} style={style.toggle} thumbStyle={style.thumbOff} trackStyle={style.trackOff} thumbSwitchedStyle={style.thumbSwitched} trackSwitchedStyle={style.trackSwitched} labelStyle={style.labelStyle} />                            
                           </li>
                            <li style={{padding:"17px 0 0 0", color: "#fff", fontWeight: "bold"}}><span>ON</span></li>
                            <li></li>                              
-                            <li style={linkStyle} onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} title="Find and replace" id="searchText" onClick = {showSearchReplaceModal}><Glyphicon glyph="search" />
+                            <li style={linkStyle} onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} title="Find and replace" id="searchText" onClick = {showSearchReplaceModal} disabled={this.state.diffDisable}><Glyphicon glyph="search" />
                             </li>
                           
-                            <li style={linkStyle} onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} ><Glyphicon glyph="cloud-download" />
+                            <li style={linkStyle} onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} disabled={this.state.diffDisable}><Glyphicon glyph="cloud-download" />
                             </li>
                           
-                            <li style={linkStyle} onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} onClick = {showAboutModal}><Glyphicon glyph="info-sign" />
+                            <li style={linkStyle} onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} onClick = {showAboutModal} disabled={this.state.diffDisable}><Glyphicon glyph="info-sign" />
                             </li>
                           
-                            <li style={linkStyle} onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} onClick = {showSettingsModal}><Glyphicon glyph="wrench" />
+                            <li style={linkStyle} onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} onClick = {showSettingsModal} disabled={this.state.diffDisable}><Glyphicon glyph="wrench" />
                             </li> 
                         </ul>
                     </div>
@@ -346,9 +353,8 @@ class View extends React.Component {
                      <Col lg={6}>
                       <h2>{projectDetailsReducer.manifest.target_language.name}</h2>
                       <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
-                      <div id="diffContent">
-                      {verses('target', targetLanguage)}
-                      </div>
+                      {this.state.show ? <div id="targetContent">{diffContent()}"(+)":{t_ins}"(-)":{t_del}</div>:
+                      <div id ="targetContent">{verses('target', targetLanguage)}</div>}
                       </Col> 
                       </div>}
 
@@ -377,9 +383,8 @@ class View extends React.Component {
                     <Col lg={4}>
                       <h2>{projectDetailsReducer.manifest.target_language.name}</h2>
                       <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
-                        <div id="diffContent">
-                      {verses('target', targetLanguage)}
-                      </div>
+                         {this.state.show ?<div id="targetContent">{diffContent()}</div>:
+                      <div id ="targetContent"> {verses('target', targetLanguage)}</div>}
                       </Col>
                   </div> }
                          {this.state.layoutDesign == 3 &&
@@ -417,9 +422,8 @@ class View extends React.Component {
                          <Col lg={3}>
                           <h2>{projectDetailsReducer.manifest.target_language.name}</h2>
                           <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
-                           <div id="diffContent">
-                            {verses('target', targetLanguage)}
-                      </div>         
+                           {this.state.show ? <div id="targetContent">{diffContent()}</div>:
+                            <div id ="targetContent"> {verses('target', targetLanguage)}</div>}
                          </Col>
                     </div> }
                 </div> 
@@ -438,9 +442,9 @@ class View extends React.Component {
                             </div>
                             <div style={{ float:"left", width:"60%"}} className="nav navbar-nav navbar-center verse-diff-on" >
                                 <div className="btn-group navbar-btn layout" role="group" aria-label="...">
-                                        <a style={style.layoutButton} className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,1)}  title="2-column layout">2x &nbsp;<i className="fa fa-columns fa-lg"></i></a>
-                                        <a style={style.layoutButton} className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,2)} title="3-column layout">3x &nbsp;<i className="fa fa-columns fa-lg"></i></a>
-                                        <a style={style.layoutButton} className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,3)}  title="4-column layout">4x &nbsp;<i className="fa fa-columns fa-lg"></i></a>
+                                        <a style={style.layoutButton} className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,1)}  disabled={this.state.diffDisable} title="2-column layout">2x &nbsp;<i className="fa fa-columns fa-lg"></i></a>
+                                        <a style={style.layoutButton} className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,2)} disabled={this.state.diffDisable} title="3-column layout">3x &nbsp;<i className="fa fa-columns fa-lg"></i></a>
+                                        <a style={style.layoutButton} className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,3)}  disabled={this.state.diffDisable} title="4-column layout">4x &nbsp;<i className="fa fa-columns fa-lg"></i></a>
                                 </div>
                                 <span style={{ color: "rgba(0, 0, 0, 0.5)", marginLeft: "188px",fontFamily: "Georgia,Serif", fontStyle:"italic"}}>{this.state.saveFunction ? this.state.finalTime:""}</span>
                                 <a  onClick={this.saveEditVerse.bind(this)} style={style.saveButton} id="save-btn" data-toggle="tooltip" data-placement="top" title="" className="btn btn-info btn-save navbar-btn" >Save</a>
