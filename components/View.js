@@ -73,17 +73,7 @@ class View extends React.Component {
         let verseNumbers = Object.keys(currentChapter);
         var verse_Num = document.getElementsByClassName(verseNumber);
         var remove_highlight = document.getElementsByClassName(verseNumber);
-        // var highlight_id = document.getElementsByClassName("test")[0][1]
-        var names = [];
-        //   for(var i=0; i < remove_highlight; i++) {  
-        //     // names.push(verse_Num[i]);
-        //     if(verse_Num[i].isContentEditable == false) {
-        //       // console.log(verse_Num)
-        //     verse_Num[i].style = null; 
-        //     }
-            
-        // }
-      if(this.state.layoutDesign == 1) {
+
         for (var i = 1; i <= verseNumbers.length; i++) {
             // console.log(verseNumbers)  
             var collections = document.getElementById(i)
@@ -91,66 +81,23 @@ class View extends React.Component {
             // collections[i].style = null; 
            collections.style = "padding-left:10px;padding-right:0px;margin-right:0px"; 
         }
-      }
-      else if(this.state.layoutDesign == 2) {
-    var x = document.getElementsByClassName("highlight_remove");
-    //console.log(x[i].children[1].style)
-    var i;
-    for (i = 0; i < x.length; i++) {
-
-        x[i].children[i].children[1].style = "padding-left:10px;padding-right:0px;margin-right:0px; background-color: rgba(245, 248, 250, 1);";
-      console.log(x[i].children[i].children[1])
-    }
+        
+        var x = document.getElementsByClassName("highlight_remove");
+        //console.log(x[i].children[1].style)
+        var i;
+        for (i = 0; i < x.length; i++) {
+            x[i].children[0].style.backgroundColor = "";
         }
-      
-      // else if (this.state.layoutDesign == 2) {
-      //   for (var i = 1; i <= verse_Num.length; i++) {
-      //       // console.log(verseNumbers)  
-      //       // var collections = document.getElementById(i)
-      //        // console.log(collections)
-      //       // collections[i].style = null; 
-      //      highlight_id.style = "padding-left:10px;padding-right:0px;margin-right:0px"; 
-      //   }
-      // }
-        /*console.log(collections)
-         for(var i = 0; i < collections.length; i++) {
-            leftChunks.push(collections[i]);
-            // leftChunks[i].style = "padding-left:10px;padding-right:0px;margin-right:0px"; 
-            // console.log(leftChunks)
-        }*/
-        // verse_Num[i].parentNode.removeChild(verse_Num[i])
-        // var arr = [].slice.call(verse_Num);
-        // var arra = arr.splice(-3)
-        // console.log(arr)
-         // var finalArr= [] 
-         // fnalArr = verse_Num.slice(-1,3)
-          // elements.splice(-1,3)
-          // console.log(finalArr)
-        // for(var i=0; i < arr.length; i++) {
-        //     names.push(verse_Num[+i]);
-        //     names[i].style = "background-color: rgba(11, 130, 255, 0.1);padding-left:10px;padding-right:10px;margin-right:10px; border-radius: 6px"; 
-        // }
-         for(var i=0; i < verse_Num.length; i++) {  
+        
+        for(var i=0; i < verse_Num.length; i++) {  
+          // console.log(verse_Num)
             // names.push(verse_Num[i]);
             if(verse_Num[i].isContentEditable == false) {
               // console.log(verse_Num)
-            verse_Num[i].style = "background-color: rgba(11, 130, 255, 0.1);padding-left:10px;padding-right:10px;margin-right:10px; border-radius: 6px"; 
+            verse_Num[i].style = "background-color: rgba(11, 130, 255, 0.1);padding-left:10px;padding-right:10px;margin-right:10px; border-radius: 6px; display: inline-block;"; 
             }
             
         }
-
-       /* for (var i = 1; i <= verseNumbers.length; i++) { 
-            let content = document.getElementById('ULB' + '_verse_' + i)
-            content.style = "padding-left:10px;padding-right:0px;margin-right:0px"; 
-        }*/ 
-        // var half_length = Math.ceil(names.length / 2);    
-        // var leftSide = names.splice(0,half_length);
-
-        // var leftSide = verse_Num.splice(0, Math.floor(verse_Num.length / 2));
-        // names[i].style = "color: blue; padding-left:10px;padding-right:0px;margin-right:0px"; 
-        // console.log(names) 
-
-        // console.log(leftSide) 
     }
 
     mouseEnter(){
@@ -262,6 +209,7 @@ class View extends React.Component {
                 return (
                     <div className="fontZoom" style={{display: "flex", lineHeight: "25px"}} key={index}>
                         <span style={style.versenum}>{index+1} </span>
+                        <div className="highlight_remove" >
                         <span onClick={this.highlightRef.bind(this, verseNumber)}
                         style={{paddingLeft: "10px"}}
                         className={verseNumber}
@@ -271,6 +219,7 @@ class View extends React.Component {
                         onFocus={this.changeCurrentVerse.bind(this, index+1)}
                         suppressContentEditableWarning={true}
                         >{verseText}</span>
+                        </div>
                     </div>
                 )
             })
@@ -349,7 +298,7 @@ class View extends React.Component {
                         <select style={style.dropdown} title="Select Reference Text" onChange={handleRefChange} value ={this.state.defaultRef}>
                             {dropdownOne}
                         </select>
-                       <div className="highlight_remove">
+                       <div>
                        {verses(this.state.defaultRef, ULB)}
                        </div>
                     </Col> 
