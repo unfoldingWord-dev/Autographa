@@ -353,7 +353,7 @@ class View extends React.Component {
                      <Col lg={6}>
                       <h2>{projectDetailsReducer.manifest.target_language.name}</h2>
                       <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
-                      {this.state.show ? <div id="targetContent">{diffContent()}"(+)":{t_ins}"(-)":{t_del}</div>:
+                      {this.state.show ? <div id="targetContent">{diffContent()}</div>:
                       <div id ="targetContent">{verses('target', targetLanguage)}</div>}
                       </Col> 
                       </div>}
