@@ -74,13 +74,13 @@ class View extends React.Component {
         var verse_Num = document.getElementsByClassName(verseNumber);
         var remove_highlight = document.getElementsByClassName(verseNumber);
 
-        for (var i = 1; i <= verseNumbers.length; i++) {
-            // console.log(verseNumbers)  
-            var collections = document.getElementById(i)
-             // console.log(collections)
-            // collections[i].style = null; 
-           collections.style = "padding-left:10px;padding-right:0px;margin-right:0px"; 
-        }
+        // for (var i = 1; i <= verseNumbers.length; i++) {
+        //     // console.log(verseNumbers)  
+        //     var collections = document.getElementById(i)
+        //      // console.log(collections)
+        //     // collections[i].style = null; 
+        //    collections.style = "padding-left:10px;padding-right:0px;margin-right:0px"; 
+        // }
         
         var x = document.getElementsByClassName("highlight_remove");
         //console.log(x[i].children[1].style)
@@ -213,7 +213,7 @@ class View extends React.Component {
                         <span onClick={this.highlightRef.bind(this, verseNumber)}
                         style={{paddingLeft: "10px"}}
                         className={verseNumber}
-                        id={index+1}
+                        id={bibleId + '_verse_' + (index+1)}
                         contentEditable={editable}
                         onBlur={this.saveEditVerse.bind(this)}
                         onFocus={this.changeCurrentVerse.bind(this, index+1)}
