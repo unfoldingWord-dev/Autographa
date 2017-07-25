@@ -14,6 +14,7 @@ import AboutUsModal from './AboutUsModal'
 import Toggle from 'material-ui/Toggle';
 import Slider from 'material-ui/Slider';
 import SearchAndReplace from './SearchAndReplace';
+import PropTypes from 'prop-types';
 
 class View extends React.Component {
 
@@ -34,6 +35,7 @@ class View extends React.Component {
         let verseText = document.getElementById('target' + '_verse_' + verse).innerText;
         let username = loginReducer.userdata.username;
         // verseText state is undefined if no changes are made in the text box.
+        let that = this;
         if (!loginReducer.loggedInUser) {
           that.props.actions.selectModalTab(1, 1, true);
           that.props.actions.openAlertDialog("You must be logged in to edit a verse");
@@ -44,7 +46,7 @@ class View extends React.Component {
           var timeStamp = this.props.verseEditReducer.modifiedTimestamp;
           var dateStamp = new Date(timeStamp);
           this.setState({finalTime:"Saved "+dateStamp.toLocaleTimeString()})
-          console.log(this.state.finalTime)  
+          console.log(this.state.finalTime)
           if (isNaN(dateStamp)) {
             this.setState({saveFunction: false})
           } else{
@@ -62,17 +64,17 @@ class View extends React.Component {
         actions.changeCurrentContextId(contextId);
     }
 
-    highlightRef(verseNumber, e){ 
+    highlightRef(verseNumber, e){
         let { reference } = this.props.contextIdReducer.contextId;
         let { targetLanguage, ULB } = this.props.resourcesReducer.bibles;
         let currentChapter = targetLanguage[reference.chapter];
         let verseNumbers = Object.keys(currentChapter);
-        for (var i = 1; i <= verseNumbers.length; i++) { 
+        for (var i = 1; i <= verseNumbers.length; i++) {
             let content = document.getElementById('ULB' + '_verse_' + i)
-            content.style = "padding-left:10px;padding-right:0px;margin-right:0px"; 
+            content.style = "padding-left:10px;padding-right:0px;margin-right:0px";
         }
         let verseText = document.getElementById('ULB' + '_verse_' + verseNumber);
-        verseText.style = "background-color: rgba(11, 130, 255, 0.1);padding-left:10px;padding-right:10px;margin-right:10px; border-radius: 6px";  
+        verseText.style = "background-color: rgba(11, 130, 255, 0.1);padding-left:10px;padding-right:10px;margin-right:10px; border-radius: 6px";
     }
 
     mouseEnter(){
@@ -110,14 +112,16 @@ class View extends React.Component {
         this.setState({currentFontValue: fontSize})
         document.getElementsByClassName("fontZoom")[0].style.fontSize = fontSize + "px";
     }
-    
+
 
     sliderFontChange(event, value){
         document.getElementsByClassName("fontZoom")[0].style.fontSize = value + "px";
     }
- 
- 
+
+
     render() {
+
+      debugger
 
     function handleRefChange(event) {
         event.persist()
@@ -131,18 +135,18 @@ class View extends React.Component {
     function handleRefChangeThree(event) {
         event.persist()
        var defaultRefThree = event.target.value;
-    }  
+    }
     //console.log(defaultRef);
         const dropdownOne = this.state.reflists.map(function(refDoc, index){
             return(
                 <option value={refDoc.value}  key={index} >{refDoc.option}</option>
             )
-        })            
+        })
 
         const linkStyle = this.state.hover ? style.hover : style.button;
 
         let { contextIdReducer, projectDetailsReducer, resourcesReducer,  modalVisibility, modalSettingsVisibility,
-        modalAboutUsVisibility, showAboutModal, showModal, showSettingsModal, hideModal,modalSearchVisibility,showSearchReplaceModal } = this.props
+        modalAboutUsVisibility, showAboutModal, showModal, showSettingsModal, hideModal, modalSearchVisibility, showSearchReplaceModal } = this.props
         let { reference } = contextIdReducer.contextId;
         let { targetLanguage, ULB } = resourcesReducer.bibles;
         let currentChapter = targetLanguage[reference.chapter];
@@ -170,7 +174,7 @@ class View extends React.Component {
             return verses
         }
 
-        return (  
+        return (
           <div style={{overflow: "scroll", position: "relative"}}>
               <nav className="navbar navbar-inverse navbar-fixed-top" role="navigation" style={{backgroundColor: "#0b82ff", position: "relative", marginBottom: "0"}}>
                 <div className="container-fluid" style={{backgroundColor: "#0b82ff"}}>
@@ -196,21 +200,21 @@ class View extends React.Component {
                         <ul className="nav navbar-nav navbar-right nav-pills verse-diff-on">
                           <li style={{padding: "17px 5px 0 0", color: "#fff", fontWeight: "bold"}}><span>OFF</span></li>
                           <li>
-                              <Toggle style={style.toggle} thumbStyle={style.thumbOff} trackStyle={style.trackOff} thumbSwitchedStyle={style.thumbSwitched} trackSwitchedStyle={style.trackSwitched} labelStyle={style.labelStyle} />                            
+                              <Toggle style={style.toggle} thumbStyle={style.thumbOff} trackStyle={style.trackOff} thumbSwitchedStyle={style.thumbSwitched} trackSwitchedStyle={style.trackSwitched} labelStyle={style.labelStyle} />
                           </li>
                            <li style={{padding:"17px 0 0 0", color: "#fff", fontWeight: "bold"}}><span>ON</span></li>
-                           <li></li>                              
+                           <li></li>
                             <li style={linkStyle} onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} title="Find and replace" id="searchText" onClick = {showSearchReplaceModal}><Glyphicon glyph="search" />
                             </li>
-                          
+
                             <li style={linkStyle} onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} ><Glyphicon glyph="cloud-download" />
                             </li>
-                          
+
                             <li style={linkStyle} onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} onClick = {showAboutModal}><Glyphicon glyph="info-sign" />
                             </li>
-                          
+
                             <li style={linkStyle} onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} onClick = {showSettingsModal}><Glyphicon glyph="wrench" />
-                            </li> 
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -232,7 +236,7 @@ class View extends React.Component {
                       <h2>{projectDetailsReducer.manifest.target_language.name}</h2>
                       <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
                       {verses('target', targetLanguage)}
-                      </Col> 
+                      </Col>
                       </div>}
 
                   {this.state.layoutDesign == 2 &&
@@ -246,7 +250,7 @@ class View extends React.Component {
                        <div>
                        {verses(this.state.defaultRef, ULB)}
                        </div>
-                    </Col> 
+                    </Col>
                     <Col key={3} lg={4} style={{backgroundColor: "#f5f8fa", borderRight: "1px solid #d3e0e9", padding: "0px 20px 60px"}}>
                        <h2>English ULB</h2>
                        <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
@@ -298,10 +302,10 @@ class View extends React.Component {
                          <Col lg={3}>
                           <h2>{projectDetailsReducer.manifest.target_language.name}</h2>
                           <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
-                          {verses('target', targetLanguage)}          
+                          {verses('target', targetLanguage)}
                          </Col>
                     </div> }
-                </div> 
+                </div>
             <nav className="navbar navbar-default navbar-fixed-bottom" style={{left:"250px", height:"55px"}}>
                        {/*<div className="nav navbar-nav navbar-center verse-diff-on"> */}
                             <div style={{float:"left", width:"40%"}} className="btn-group navbar-btn verse-diff-on" role="group" aria-label="...">
@@ -327,9 +331,26 @@ class View extends React.Component {
                       {/*</div>*/}
             </nav>
           </div>
-       
+
         );
     }
+}
+
+View.propTypes = {
+  toolsReducer: PropTypes.object.isRequired,
+  loginReducer: PropTypes.object.isRequired,
+  settingsReducer: PropTypes.object.isRequired,
+  loaderReducer: PropTypes.object.isRequired,
+  resourcesReducer: PropTypes.object.isRequired,
+  commentsReducer: PropTypes.object.isRequired,
+  remindersReducer: PropTypes.object.isRequired,
+  contextIdReducer: PropTypes.object.isRequired,
+  projectDetailsReducer: PropTypes.object.isRequired,
+  selectionsReducer: PropTypes.object.isRequired,
+  verseEditReducer: PropTypes.object.isRequired,
+  groupsIndexReducer: PropTypes.object.isRequired,
+  groupsDataReducer: PropTypes.object.isRequired,
+  actions: PropTypes.object.isRequired
 }
 
 module.exports = View;
