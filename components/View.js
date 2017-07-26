@@ -59,14 +59,15 @@ class View extends React.Component {
     changeCurrentVerse(verseNumber, e) {
         let {actions, contextIdReducer} = this.props;
         let {contextId} = contextIdReducer;
-        contextId = JSON.parse(JSON.stringify(contextId));
-        contextId.reference.verse = verseNumber;
-        actions.changeCurrentContextId(contextId);
+        let newContextId = JSON.parse(JSON.stringify(contextId));
+        newContextId.reference.verse = parseInt(verseNumber);
+        debugger
+        actions.changeCurrentContextId(newContextId);
     }
 
     highlightRef(verseNumber, e){
         let { reference } = this.props.contextIdReducer.contextId;
-        let { targetLanguage, ULB } = this.props.resourcesReducer.bibles;
+        let { targetLanguage } = this.props.resourcesReducer.bibles;
         let currentChapter = targetLanguage[reference.chapter];
         let verseNumbers = Object.keys(currentChapter);
         for (var i = 1; i <= verseNumbers.length; i++) {
@@ -121,8 +122,6 @@ class View extends React.Component {
 
     render() {
 
-      debugger
-
     function handleRefChange(event) {
         event.persist()
         var defaultRef = event.target.value;
@@ -148,7 +147,9 @@ class View extends React.Component {
         let { contextIdReducer, projectDetailsReducer, resourcesReducer,  modalVisibility, modalSettingsVisibility,
         modalAboutUsVisibility, showAboutModal, showModal, showSettingsModal, hideModal, modalSearchVisibility, showSearchReplaceModal } = this.props
         let { reference } = contextIdReducer.contextId;
-        let { targetLanguage, ULB } = resourcesReducer.bibles;
+
+        let { targetLanguage } = resourcesReducer.bibles;
+        let ULB = resourcesReducer.bibles['ulb-en'];
         let currentChapter = targetLanguage[reference.chapter];
         let chapters = this.props.groupsDataReducer.groupsData;
 
@@ -180,13 +181,12 @@ class View extends React.Component {
                 <div className="container-fluid" style={{backgroundColor: "#0b82ff"}}>
                     <div className="navbar-header">
                         <button className="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar"><span className="sr-only">Toggle navigation</span><span className="icon-bar"></span><span className="icon-bar"></span><span className="icon-bar"></span></button>
-                        <a className="navbar-brand" href="javascript:;"><img alt="Brand" src="../translationCore/tC_apps/Autographa/assets/logo.png" /></a>
+                        <a className="navbar-brand" href="javascript:;"><img alt="Autographa Logo" src="../tC_apps/Autographa/assets/logo.png" /></a>
                     </div>
                     <div className="navbar-collapse collapse" id="navbar" style={{backgroundColor: "#0b82ff"}}>
                         <ul className="nav navbar-nav"  style={{padding: "3px 0 0 0px"}}>
                             <li>
-                              <div class
-                              Name="btn-group navbar-btn strong verse-diff-on" role="group" aria-label="..." id="bookBtn" style={{marginLeft:"150px"}}>
+                              <div className="btn-group navbar-btn strong verse-diff-on" role="group" aria-label="..." id="bookBtn" style={{marginLeft:"150px"}}>
                                 <ChapterModal  show ={ modalVisibility } onHide = { hideModal } chapters = { chapters } allProps = {this.props}/>
                                 <SettingModal show ={ modalSettingsVisibility } onHide = { hideModal } />
                                 <AboutUsModal show ={ modalAboutUsVisibility } onHide = { hideModal } allProps = {this.props}/>
