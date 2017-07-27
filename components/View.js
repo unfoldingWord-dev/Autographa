@@ -25,8 +25,8 @@ class View extends React.Component {
     super(props);
     this.state = {
         hover: false, layoutDesign:1, fontMin: 14, fontMax: 26, currentFontValue: 14, fontStep: 2, fontSize: 14, saveFunction: false, finalTime:"",
-        reflists:[{option:"English-ULB", value:"ULB"},{option:"English-UDB",value:"UDB"},{option:"Hindi-ULB",value:"hin_ulb"}],
-        defaultRef:"ULB",diffDisable:false,show:false,diffContent:""}//values has been changed, Hindi lang currently not changed,
+        reflists:[{option:"English-ULB", value:"ULB"},{option:"English-UDB",value:"UDB"}],
+        defaultRef:"ULB",defaultRefTwo:"ULB",defaultRefThree:"ULB",diffDisable:false,show:false,diffContent:""}//values has been changed, Hindi lang currently not changed,
         this.getDiffText = this.getDiffText.bind(this);
     }
 
@@ -79,7 +79,6 @@ class View extends React.Component {
         for(var i=0; i< elementss.length; i++) {
             names += elementss[i];
         }
-        console.log(elementss)
         
     }
 
@@ -119,113 +118,70 @@ class View extends React.Component {
         document.getElementsByClassName("fontZoom")[0].style.fontSize = fontSize + "px";
     }
     
-
     sliderFontChange(event, value){
         document.getElementsByClassName("fontZoom")[0].style.fontSize = value + "px";
     }
- // insertion and deletion count in difference text by passing verse
+
     getDifferenceCount(verse_diff) {
         var insertions = 0;
         var deletions = 0;
-        for (var x = 0; x < verse_diff.length; x++) {
+        for (var x = 0; x < verse_diff.length; x++) {            
             var op = verse_diff[x][0];
             var data = verse_diff[x][1];
             switch (op) {
                 case DiffMatchPatch.DIFF_INSERT:
-                    insertions += data.length;
-                    break;
+                insertions += data.length;
+                break;
                 case DiffMatchPatch.DIFF_DELETE:
-                    deletions += data.length;
-                    break;
+                deletions += data.length;
+                break;
                 case DiffMatchPatch.DIFF_EQUAL:
-                    insertions = 0;
-                    deletions = 0;
-                    break;
+                insertions = 0;
+                deletions = 0;
+                break;
             }
         }
         return { ins: insertions, del: deletions }
     }
 
     getDiffText(event,logged) {
-        console.log(logged);
         if (logged == true) {
             this.setState({diffDisable:true,show:true})   
 
         } else {
             this.setState({diffDisable:false,show:false})
-        }
-       
+        }     
     }
 
+    handleRefChange(event) {
+        var defaultRef = event.target.value;
+        this.setState({defaultRef:defaultRef})
+    }
+
+    handleRefChangeTwo(event) {
+        var defaultRefTwo = event.target.value;
+        this.setState({defaultRefTwo:defaultRefTwo})
+    }
+
+    handleRefChangeThree(event) {
+        var defaultRefThree = event.target.value;
+        this.setState({defaultRefThree:defaultRefThree})
+    }
     
     render() {
 
-    function handleRefChange(event) {
-        event.persist()
-        var defaultRef = event.target.value;
-    }
+        const dropdownOne = this.state.reflists.map(function(refDoc, index){
+            return(
+                <option value={refDoc.value}  key={index} >{refDoc.option}</option>
+            )
+        })            
 
-    function handleRefChangeTwo(event) {
-        event.persist()
-        var defaultRefTwo = event.target.value;
-    }
-
-    function handleRefChangeThree(event) {
-        event.persist()
-        var defaultRefThree = event.target.value;
-    }
-
-    //console.log(defaultRef);
-    const diffContent =  () => {
-        var diffArray = []; 
-        var t_ins = 0;
-        var t_del = 0;
-        let { reference } =this.props.contextIdReducer.contextId;
-        let { targetLanguage, ULB } = this.props.resourcesReducer.bibles; 
-        let verseText = ULB[reference.chapter];
-        let translatedText = targetLanguage[reference.chapter]         
-        var size = Object.keys(this.props.resourcesReducer.bibles.targetLanguage[reference.chapter]).length
-        //console.log(ref1)
-        var refString = "";
-        for (var i = 1; i <= size; i++) {
-            var ref1 = verseText[i];
-            var ref2 = translatedText[i]
-            var d = dmp_diff.diff_main(ref1, ref2);
-            var diff_count = this.getDifferenceCount(d);
-            t_ins += diff_count["ins"];
-            t_del += diff_count["del"];
-            console.log(+t_ins)
-            var ds = dmp_diff.diff_prettyHtml(d);
-            //console.log(refString)
-            //refString += '<div data-verse="r' + (i) + '"><span class="verse-num">' + (i) + '</span><span>' + ds + '</span></div>';
-            //var diffContent = document.createElement('div');
-            //diffcontent.innerHTML = refString; 
-            diffArray.push(ds);
-        }
-        let diffContent = diffArray.map((text, index) => {
-        return (
-            <div key={index+1}>
-            <span> {index+1}</span>
-            <span dangerouslySetInnerHTML={{__html: text}} ></span>
-            </div>
-            )        
-        })
-        
-       return [diffContent, t_ins, t_del]
-
-    }
-    const dropdownOne = this.state.reflists.map(function(refDoc, index){
-        return(
-            <option value={refDoc.value}  key={index} >{refDoc.option}</option>
-        )
-    })            
-
-    const linkStyle = this.state.hover ? style.hover : style.button;
+        const linkStyle = this.state.hover ? style.hover : style.button;
 
         let { contextIdReducer, projectDetailsReducer, resourcesReducer,  modalVisibility, modalSettingsVisibility,
         modalAboutUsVisibility, showAboutModal, showModal, showSettingsModal, hideModal,modalSearchVisibility,showSearchReplaceModal } = this.props
         let { reference } = contextIdReducer.contextId;
-        let { targetLanguage, ULB } = resourcesReducer.bibles;
+        let { targetLanguage, ULB, UDB } = resourcesReducer.bibles;
         let currentChapter = targetLanguage[reference.chapter];
         let chapters = this.props.groupsDataReducer.groupsData;
         let verseNumbers = Object.keys(currentChapter);
@@ -249,10 +205,11 @@ class View extends React.Component {
                         chunkVerseEnd = data.chunks[0][chunkIndex]["firstvs"];
                     }
                 }  
-                 var chunk = chunkVerseStart + '-' + chunkVerseEnd;
-                 chunkGroup.push(chunk)
+                var chunk = chunkVerseStart + '-' + chunkVerseEnd;
+                chunkGroup.push(chunk)
             }
             const verses = (bibleId, bible) => {
+            console.log(bibleId+bible)
             let verseNumbers = Object.keys(currentChapter);
             let verses = chunkGroup.map( (verseNumber, index) => {
             let editable = bibleId === 'target';
@@ -272,12 +229,53 @@ class View extends React.Component {
                 )
             })
 
-            return verses
-        }
-        console.log(diffContent());
+                return verses
+            }
+     
+            //console.log(defaultRef);
+            const diffContent =  () => {
+                var diffArray = []; 
+                var t_ins = 0;
+                var t_del = 0;
+                let { reference } =this.props.contextIdReducer.contextId;
+                let { targetLanguage, ULB, UDB } = this.props.resourcesReducer.bibles; 
+                let verseText = ULB[reference.chapter];
+               /* if (this.state.layoutDesign == 1) {
+                    let translatedText = targetLanguage[reference.chapter]
+                } else {
+                    let translatedText = UDB[reference.chapter]
+                }*/
+                let translatedText = targetLanguage[reference.chapter]        
+                var size = Object.keys(this.props.resourcesReducer.bibles.targetLanguage[reference.chapter]).length
+                var refString = "";
+                for (var i = 1; i <= size; i++) {
+                    var ref1 = verseText[i];
+                    var ref2 = translatedText[i]
+                    var d = dmp_diff.diff_main(ref1, ref2);
+                    var diff_count = this.getDifferenceCount(d);
+                    t_ins += diff_count["ins"];
+                    t_del += diff_count["del"];
+                    var ds = dmp_diff.diff_prettyHtml(d);
+                    //console.log(refString)
+                    //refString += '<div data-verse="r' + (i) + '"><span class="verse-num">' + (i) + '</span><span>' + ds + '</span></div>';
+                    //var diffContent = document.createElement('div');
+                    //diffcontent.innerHTML = refString; 
+                    diffArray.push(ds);
+                }
+                let diffContent = diffArray.map((text, index) => {
+                return (
+                    <div key={index+1}>
+                    <span> {index+1}</span>
+                    <span dangerouslySetInnerHTML={{__html: text}} ></span>
+                    </div>
+                    )        
+                })
+                
+               return [diffContent, t_ins, t_del]
+            }
 
-        return (
-          <div style={{overflow: "scroll", position: "relative"}}>  
+            return (
+            <div style={{overflow: "scroll", position: "relative"}}>  
               <nav className="navbar navbar-inverse navbar-fixed-top" role="navigation" style={{backgroundColor: "#0b82ff", position: "relative", marginBottom: "0"}}>
                 <div className="container-fluid" style={{backgroundColor: "#0b82ff"}}>
                     <div className="navbar-header">
@@ -325,11 +323,12 @@ class View extends React.Component {
                    <Col key={1}  lg={6} style={{backgroundColor: "#f5f8fa", borderRight: "1px solid #d3e0e9", padding: "0px 20px 60px"}}>
                      <h2>English ULB</h2>
                      <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
-                      <select style={style.dropdown} title="Select Reference Text" onChange={handleRefChange} value ={this.state.defaultRef}>
+                      <select style={style.dropdown} title="Select Reference Text" onChange={this.handleRefChange.bind(this)} value ={this.state.defaultRef}>
                           {dropdownOne}
                       </select>
                      <div>
-                     {verses(this.state.defaultRef, ULB)}
+                     {this.state.defaultRef == "ULB" ?
+                     verses(this.state.defaultRef, ULB):verses(this.state.defaultRef, UDB)}
                      </div>
                      </Col>
                      <Col lg={6}>
@@ -345,21 +344,23 @@ class View extends React.Component {
                     <Col key={2} lg={4} style={{backgroundColor: "#f5f8fa", borderRight: "1px solid #d3e0e9", padding: "0px 20px 60px"}}>
                        <h2>English ULB</h2>
                        <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
-                        <select style={style.dropdown} title="Select Reference Text" onChange={handleRefChange} value ={this.state.defaultRef}>
+                        <select style={style.dropdown} title="Select Reference Text" onChange={this.handleRefChange.bind(this)} value ={this.state.defaultRef}>
                             {dropdownOne}
                         </select>
                        <div>
-                       {verses(this.state.defaultRef, ULB)}
+                       {this.state.defaultRef == "ULB" ?
+                     verses(this.state.defaultRef, ULB):verses(this.state.defaultRef, UDB)}
                        </div>
                     </Col> 
                     <Col key={3} lg={4} style={{backgroundColor: "#f5f8fa", borderRight: "1px solid #d3e0e9", padding: "0px 20px 60px"}}>
                        <h2>English ULB</h2>
                        <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
-                        <select style={style.dropdown} title="Select Reference Text" onChange={handleRefChangeTwo} value ={this.state.defaultRefTwo}>
+                        <select style={style.dropdown} title="Select Reference Text" onChange={this.handleRefChangeTwo.bind(this)} value ={this.state.defaultRefTwo}>
                             {dropdownOne}
                         </select>
                        <div>
-                       {verses(this.state.defaultRef, ULB)}
+                       {this.state.defaultRefTwo == "ULB" ?
+                        verses(this.state.defaultRefTwo, ULB):verses(this.state.defaultRefTwo, UDB)}
                        </div>
                     </Col>
                     <Col lg={4}>
@@ -374,31 +375,34 @@ class View extends React.Component {
                         <Col key={4} lg={3} style={{backgroundColor: "#f5f8fa", borderRight: "1px solid #d3e0e9", padding: "0px 20px 60px"}}>
                            <h2>English ULB</h2>
                            <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
-                            <select style={style.dropdown} title="Select Reference Text" onChange={handleRefChange} value ={this.state.defaultRef}>
+                            <select style={style.dropdown} title="Select Reference Text" onChange={this.handleRefChange.bind(this)} value ={this.state.defaultRef}>
                                 {dropdownOne}
                             </select>
                            <div >
-                           {verses(this.state.defaultRef, ULB)}
+                           {this.state.defaultRef == "ULB" ?
+                            verses(this.state.defaultRef, ULB):verses(this.state.defaultRef, UDB)}
                            </div>
                          </Col>
                          <Col key={5}  lg={3} style={{backgroundColor: "#f5f8fa", borderRight: "1px solid #d3e0e9", padding: "0px 20px 60px"}}>
                            <h2>English ULB</h2>
                            <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
-                            <select style={style.dropdown} title="Select Reference Text" onChange={handleRefChangeTwo} value ={this.state.defaultRefTwo}>
+                            <select style={style.dropdown} title="Select Reference Text" onChange={this.handleRefChangeTwo.bind(this)} value ={this.state.defaultRefTwo}>
                                 {dropdownOne}
                             </select>
-                           <div >
-                           {verses(this.state.defaultRef, ULB)}
+                           <div>
+                            {this.state.defaultRefTwo == "ULB" ?
+                            verses(this.state.defaultRefTwo, ULB):verses(this.state.defaultRefTwo, UDB)}
                            </div>
                          </Col>
                          <Col key={6}  lg={3} style={{backgroundColor: "#f5f8fa", borderRight: "1px solid #d3e0e9", padding: "0px 20px 60px"}}>
                              <h2>English ULB</h2>
                            <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>
-                            <select style={style.dropdown} title="Select Reference Text" onChange={handleRefChangeThree} value ={this.state.defaultRefThree}>
+                            <select style={style.dropdown} title="Select Reference Text" onChange={this.handleRefChangeThree.bind(this)} value ={this.state.defaultRefThree}>
                                 {dropdownOne}
                             </select>
                            <div >
-                           {verses(this.state.defaultRef, ULB)}
+                           {this.state.defaultRefThree == "ULB" ?
+                        verses(this.state.defaultRefThree, ULB):verses(this.state.defaultRefThree, UDB)}
                            </div>
                          </Col>
                          <Col lg={3}>
@@ -432,8 +436,7 @@ class View extends React.Component {
                             </div>
                       {/*</div>*/}
                 </nav>
-          </div>
-       
+            </div> 
         );
     }
 }
