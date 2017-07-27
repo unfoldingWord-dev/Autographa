@@ -21,7 +21,6 @@ class Container extends React.Component {
     let view = <div />
     let { contextId } = this.props.contextIdReducer;
     if (contextId) {
-      debugger
       view = <MuiThemeProvider><View
         {...this.props}
             modalVisibility={this.state.modalVisibility}

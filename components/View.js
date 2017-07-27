@@ -28,99 +28,99 @@ class View extends React.Component {
 
   }
 
-    saveEditVerse() {
-        let {loginReducer,  actions, contextIdReducer, resourcesReducer} = this.props;
-        let {chapter, verse} = contextIdReducer.contextId.reference;
-        let before = resourcesReducer.bibles.targetLanguage[chapter][verse];
-        let verseText = document.getElementById('target' + '_verse_' + verse).innerText;
-        let username = loginReducer.userdata.username;
-        // verseText state is undefined if no changes are made in the text box.
-        let that = this;
-        if (!loginReducer.loggedInUser) {
-          that.props.actions.selectModalTab(1, 1, true);
-          that.props.actions.openAlertDialog("You must be logged in to edit a verse");
-          return;
+  saveEditVerse() {
+      let {loginReducer,  actions, contextIdReducer, resourcesReducer} = this.props;
+      let {chapter, verse} = contextIdReducer.contextId.reference;
+      let before = resourcesReducer.bibles.targetLanguage[chapter][verse];
+      let verseText = document.getElementById('target' + '_verse_' + verse).innerText;
+      let username = loginReducer.userdata.username;
+      // verseText state is undefined if no changes are made in the text box.
+      let that = this;
+      if (!loginReducer.loggedInUser) {
+        that.props.actions.selectModalTab(1, 1, true);
+        that.props.actions.openAlertDialog("You must be logged in to edit a verse");
+        return;
+      }
+      if (before !== verseText) {
+        console.log("saved")
+        var timeStamp = this.props.verseEditReducer.modifiedTimestamp;
+        var dateStamp = new Date(timeStamp);
+        this.setState({finalTime:"Saved "+dateStamp.toLocaleTimeString()})
+        console.log(this.state.finalTime)
+        if (isNaN(dateStamp)) {
+          this.setState({saveFunction: false})
+        } else{
+        this.setState({saveFunction: true})
         }
-        if (before !== verseText) {
-          console.log("saved")
-          var timeStamp = this.props.verseEditReducer.modifiedTimestamp;
-          var dateStamp = new Date(timeStamp);
-          this.setState({finalTime:"Saved "+dateStamp.toLocaleTimeString()})
-          console.log(this.state.finalTime)
-          if (isNaN(dateStamp)) {
-            this.setState({saveFunction: false})
-          } else{
-          this.setState({saveFunction: true})
+        actions.addVerseEdit(before, verseText, ['draft'], username, this.state.finalTime);
+      }
+  }
+
+  changeCurrentVerse(verseNumber, e) {
+      let {actions, contextIdReducer} = this.props;
+      let {contextId} = contextIdReducer;
+      let newContextId = JSON.parse(JSON.stringify(contextId));
+      newContextId.reference.verse = parseInt(verseNumber);
+      debugger
+      actions.changeCurrentContextId(newContextId);
+  }
+
+  highlightRef(verseNumber, e){
+      let { reference } = this.props.contextIdReducer.contextId;
+      let { targetLanguage } = this.props.resourcesReducer.bibles;
+      let currentChapter = targetLanguage[reference.chapter];
+      let verseNumbers = Object.keys(currentChapter);
+      for (var i = 1; i <= verseNumbers.length; i++) {
+          let content = document.getElementById('ULB' + '_verse_' + i)
+          content.style = "padding-left:10px;padding-right:0px;margin-right:0px";
+      }
+      let verseText = document.getElementById('ULB' + '_verse_' + verseNumber);
+      verseText.style = "background-color: rgba(11, 130, 255, 0.1);padding-left:10px;padding-right:10px;margin-right:10px; border-radius: 6px";
+  }
+
+  mouseEnter(){
+      this.setState({hover: true});
+  }
+
+  mouseLeave(){
+      this.setState({hover: false});
+  }
+
+ handleChange(key) {
+      this.setState({layoutDesign: key});
+  }
+
+  fontChange(multiplier) {
+      let fontSize = this.state.fontMin;
+      if (document.getElementsByClassName("fontZoom")[0].style.fontSize == "") {
+          document.getElementsByClassName("fontZoom")[0].style.fontSize = "14px";
+      }else{
+          fontSize = parseInt(document.getElementsByClassName("fontZoom")[0].style.fontSize)
+      }
+      if(multiplier < 0){
+          if((multiplier+fontSize) <= this.state.fontMin ){
+              fontSize = this.state.fontMin
+          }else{
+              fontSize = multiplier + fontSize
           }
-          actions.addVerseEdit(before, verseText, ['draft'], username, this.state.finalTime);
-        }
-    }
-
-    changeCurrentVerse(verseNumber, e) {
-        let {actions, contextIdReducer} = this.props;
-        let {contextId} = contextIdReducer;
-        let newContextId = JSON.parse(JSON.stringify(contextId));
-        newContextId.reference.verse = parseInt(verseNumber);
-        debugger
-        actions.changeCurrentContextId(newContextId);
-    }
-
-    highlightRef(verseNumber, e){
-        let { reference } = this.props.contextIdReducer.contextId;
-        let { targetLanguage } = this.props.resourcesReducer.bibles;
-        let currentChapter = targetLanguage[reference.chapter];
-        let verseNumbers = Object.keys(currentChapter);
-        for (var i = 1; i <= verseNumbers.length; i++) {
-            let content = document.getElementById('ULB' + '_verse_' + i)
-            content.style = "padding-left:10px;padding-right:0px;margin-right:0px";
-        }
-        let verseText = document.getElementById('ULB' + '_verse_' + verseNumber);
-        verseText.style = "background-color: rgba(11, 130, 255, 0.1);padding-left:10px;padding-right:10px;margin-right:10px; border-radius: 6px";
-    }
-
-    mouseEnter(){
-        this.setState({hover: true});
-    }
-
-    mouseLeave(){
-        this.setState({hover: false});
-    }
-
-   handleChange(key) {
-        this.setState({layoutDesign: key});
-    }
-
-    fontChange(multiplier) {
-        let fontSize = this.state.fontMin;
-        if (document.getElementsByClassName("fontZoom")[0].style.fontSize == "") {
-            document.getElementsByClassName("fontZoom")[0].style.fontSize = "14px";
-        }else{
-            fontSize = parseInt(document.getElementsByClassName("fontZoom")[0].style.fontSize)
-        }
-        if(multiplier < 0){
-            if((multiplier+fontSize) <= this.state.fontMin ){
-                fontSize = this.state.fontMin
-            }else{
-                fontSize = multiplier + fontSize
-            }
-        }else{
-            if((multiplier+fontSize) >= this.state.fontMax ){
-                fontSize = this.state.fontMax
-            }else{
-                fontSize = multiplier + fontSize
-            }
-        }
-        this.setState({currentFontValue: fontSize})
-        document.getElementsByClassName("fontZoom")[0].style.fontSize = fontSize + "px";
-    }
+      }else{
+          if((multiplier+fontSize) >= this.state.fontMax ){
+              fontSize = this.state.fontMax
+          }else{
+              fontSize = multiplier + fontSize
+          }
+      }
+      this.setState({currentFontValue: fontSize})
+      document.getElementsByClassName("fontZoom")[0].style.fontSize = fontSize + "px";
+  }
 
 
-    sliderFontChange(event, value){
-        document.getElementsByClassName("fontZoom")[0].style.fontSize = value + "px";
-    }
+  sliderFontChange(event, value){
+      document.getElementsByClassName("fontZoom")[0].style.fontSize = value + "px";
+  }
 
 
-    render() {
+  render() {
 
     function handleRefChange(event) {
         event.persist()
@@ -331,7 +331,6 @@ class View extends React.Component {
                       {/*</div>*/}
             </nav>
           </div>
-
         );
     }
 }
