@@ -78,14 +78,14 @@ class View extends React.Component {
         var x = document.getElementsByClassName("highlight_remove");
         var i;
         for (i = 0; i < x.length; i++) {
-            x[i].children[0].style = "background-color:'';padding-left:10px;padding-right:10px;margin-right:10px;display: inline-block;";
+            x[i].children[0].style = "background-color:'';padding-left:10px;padding-right:10px;margin-right:10px;display: inline-block;line-height:normal;line-height:175%;";
         }
         
         for(var i=0; i < verse_Num.length; i++) {  
            // console.log(verse_Num)
            //console.log(verse_Num.length);
             if(verse_Num[i].isContentEditable == false) {
-            verse_Num[i].style = "background-color: rgba(11, 130, 255, 0.1);padding-left:10px;padding-right:10px;margin-right:10px; border-radius: 6px; display: inline-block;"; 
+            verse_Num[i].style = "background-color: rgba(11, 130, 255, 0.1);padding-left:10px;padding-right:10px;margin-right:10px; border-radius: 6px; display: inline-block;line-height:175%;"; 
             // verse_Num[i+1].style = "background-color:red";
             // verse_Num[1].style = "background-color: rgba(11, 130, 255, 0.1);padding-left:10px;padding-right:10px;margin-right:10px; border-radius-bottom: 6px; display: inline-block;";
             }
@@ -109,6 +109,7 @@ class View extends React.Component {
         let fontSize = this.state.fontMin;
         if (document.getElementsByClassName("fontZoom")[0].style.fontSize == "") {
             document.getElementsByClassName("fontZoom")[0].style.fontSize = "14px";
+            console.log(document.getElementsByClassName("verseNum"))
         }else{
             fontSize = parseInt(document.getElementsByClassName("fontZoom")[0].style.fontSize)
         }
@@ -230,10 +231,10 @@ class View extends React.Component {
             let verseText = bible[reference.chapter][index+1];
                 return (
                     <div className="fontZoom" style={{display: "flex", lineHeight: "25px"}} key={index} >
-                        <span style={style.versenum}>{index+1} </span>
+                        <span className="verseNum" style={style.versenum}>{index+1} </span>
                         <div className="highlight_remove" >
                         <span onClick={this.highlightRef.bind(this, verseNumber)}
-                        style={{paddingLeft: "10px"}}
+                        style={{paddingLeft: "10px", lineHeight:"normal"}}
                         className={verseNumber}
                         id={bibleId + '_verse_' + (index+1)}
                         contentEditable={editable}
@@ -429,7 +430,7 @@ class View extends React.Component {
                          </Col>
                     </div> }
                 </div> 
-            <nav className="navbar navbar-default navbar-fixed-bottom" style={{left:"250px", height:"55px"}}>
+            <nav className="navbar navbar-default navbar-fixed-bottom" style={{left:"250px", height:"0"}}>
                        {/*<div className="nav navbar-nav navbar-center verse-diff-on"> */}
                             <div style={{float:"left", width:"40%"}} className="btn-group navbar-btn verse-diff-on" role="group" aria-label="...">
                                 <div style={{float: "left"}}>

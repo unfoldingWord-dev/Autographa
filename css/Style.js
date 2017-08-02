@@ -82,13 +82,15 @@ var style = {
     fontSize: "25px",
     paddingTop: "10px",
     marginRight: "10px",
-    marginLeft: "20px"
+    marginLeft: "20px",
+    backgroundColor: "#0b82ff"
   },
   chapter: {
        color: "#0b82ff",
        fontWeight: "bold",
-       backgroundColor: "#fff",
-       marginLeft: "210px"
+       backgroundColor: "#ffffff",
+       marginLeft: "210px",
+       backgroundImage: "linear-gradient(to bottom,#ffffff 0,#ffffff 100%)",
   },
    hover: {
     color: "#fff",
@@ -97,12 +99,14 @@ var style = {
     fontSize: "25px",
     paddingTop: "10px",
     marginRight: "10px",
-    marginLeft: "20px"
+    marginLeft: "20px",
+    backgroundColor: "#0b82ff"
   },
     versenum: {
       paddingTop: "1px",
       fontWeight: "bold",
-      fontSize: "12px"
+      fontSize: "12px",
+      lineHeight: "auto",
     },
   toggle: {
       marginTop: "15px"
@@ -130,6 +134,7 @@ var style = {
     },
     layoutButton: {
       backgroundImage: "linear-gradient(to bottom,#0b82ff 0,#0b82ff 100%)",
+      backgroundColor: "#0b82ff",
     },
     sliderHorizontal: {
       width: "50px",
@@ -140,7 +145,8 @@ var style = {
         border: "none", 
         fontWeight: "bold", 
         color: "#0b82ff", 
-        fontSize: "15px"
+        fontSize: "15px",
+        backgroundColor: "#fbfbfb"
     },
      fontButtonPlus: {
         backgroundImage: "linear-gradient(to bottom,#fbfbfb 0,#fbfbfb 100%)",
@@ -148,16 +154,22 @@ var style = {
         border: "none", 
         fontWeight: "bold", 
         color: "#0b82ff", 
-        fontSize: "20px"
+        fontSize: "20px",
+        backgroundColor: "#fbfbfb",
     },
       dropdown: {
-          backgroundColor: "#0b82ff",
-          color: "#ffffff",
+          backgroundColor: "rgba(245, 248, 250, 1)",
+          color: "rgba(11, 130, 255, 1)",
           fontWeight: "bold",
           width: "130px",
-          borderRadius: "6px",
           height: "30px",
           paddingLeft: "9px",
+          fontSize: "14px",
+          borderTop: "none",
+          borderRight: "none",
+          borderLeft: "none",
+          borderBottomColor: "#0b82ff",
+          marginBottom: "5px",
      },
      saveButton: {
           color: "#fff",
@@ -166,6 +178,7 @@ var style = {
           borderColor: "#204d74",
           float: "right",
           marginRight: "50px",
+          backgroundColor:"rgba(11, 130, 255, 1)",
         },
      imagecss: {
           marginLeft: "88px",
