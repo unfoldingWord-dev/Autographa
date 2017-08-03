@@ -169,7 +169,8 @@ var style = {
           borderRight: "none",
           borderLeft: "none",
           borderBottomColor: "#0b82ff",
-          marginBottom: "5px",
+          margin: "5px",
+          
      },
      saveButton: {
           color: "#fff",
