@@ -19,7 +19,7 @@ class AboutUsModal extends React.Component {
     let { onHide,  show } = this.props;
     var _this = this;
     return (  
-    <Modal show={show} onHide={onHide} id="tab-about" bsSize="lg">
+    <Modal show={show} onHide={onHide} id="tab-about">
         <Modal.Header style={{ backgroundColor: "var(--accent-color-dark)" }} closeButton>
             <Modal.Title id="contained-modal-title-lg"
             style={{ textAlign: "center", color: "var(--reverse-color)" }}>About</Modal.Title>
@@ -28,13 +28,13 @@ class AboutUsModal extends React.Component {
             <Tabs defaultActiveKey={1} id="uncontrolled-tab-example">
                 <Tab eventKey={1} title="Overview">
                     <div style={{height: "288px"}}  className="row">
-                        <div style={{marginTop: "53px"}} className="col-lg-6">
+                        <div style={{marginTop: "53px"}} className="col-lg-5">
                             <img style={style.imagecss} src="../translationCore/tC_apps/Autographa/assets/autographa_lite_large.png" className="img-circle" alt="Cinque Terre" width="215" height="200" />
                         </div>
-                        <div style={{marginTop: "65px", fontSize: "18px"}} className="col-lg-6">
+                        <div style={{marginTop: "52px",paddingLeft:"52px", fontSize: "18px"}} className="col-lg-7">
                             <h3>Autographa Lite</h3>
                             <p>Version 0.1</p>
-                            <p>Source code hosted at: "https://github.com/Bridgeconn/autographa-lite"</p>
+                            <p>Source code hosted at: "https://github.com/Bridgeconn/<br/>autographa-lite"</p>
                         </div>
                     </div>
                 </Tab>

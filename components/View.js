@@ -78,14 +78,17 @@ class View extends React.Component {
         var x = document.getElementsByClassName("highlight_remove");
         var i;
         for (i = 0; i < x.length; i++) {
-            x[i].children[0].style = "background-color:'';padding-left:10px;padding-right:10px;margin-right:10px;display: inline-block;line-height:normal;line-height:175%;";
+            x[i].children[0].style = "background-color:'';padding-left:10px;padding-right:10px;margin-right:10px;display: inline-block;;line-height:186%;";
         }
         
         for(var i=0; i < verse_Num.length; i++) {  
            // console.log(verse_Num)
            //console.log(verse_Num.length);
             if(verse_Num[i].isContentEditable == false) {
-            verse_Num[i].style = "background-color: rgba(11, 130, 255, 0.1);padding-left:10px;padding-right:10px;margin-right:10px; border-radius: 6px; display: inline-block;line-height:175%;"; 
+                // console.log(verse_Num[0])
+                 console.log(verse_Num.length - 1);
+            verse_Num[i].style = "background-color: rgba(11, 130, 255, 0.1);padding-left:10px;padding-right:10px;margin-right:10px; display: inline-block;line-height:186%;"; 
+            // verse_Num[i-1].style = "background-color: red;"; 
             // verse_Num[i+1].style = "background-color:red";
             // verse_Num[1].style = "background-color: rgba(11, 130, 255, 0.1);padding-left:10px;padding-right:10px;margin-right:10px; border-radius-bottom: 6px; display: inline-block;";
             }
@@ -106,10 +109,10 @@ class View extends React.Component {
     }
 
     fontChange(multiplier) {
+        console.log(document.getElementsByClassName("fontZoom")[0])
         let fontSize = this.state.fontMin;
         if (document.getElementsByClassName("fontZoom")[0].style.fontSize == "") {
             document.getElementsByClassName("fontZoom")[0].style.fontSize = "14px";
-            console.log(document.getElementsByClassName("verseNum"))
         }else{
             fontSize = parseInt(document.getElementsByClassName("fontZoom")[0].style.fontSize)
         }
@@ -230,7 +233,7 @@ class View extends React.Component {
             let editable = bibleId === 'target';
             let verseText = bible[reference.chapter][index+1];
                 return (
-                    <div className="fontZoom" style={{display: "flex", lineHeight: "25px"}} key={index} >
+                    <div style={{display: "flex", lineHeight: "25px"}} key={index} >
                         <span className="verseNum" style={style.versenum}>{index+1} </span>
                         <div className="highlight_remove" >
                         <span onClick={this.highlightRef.bind(this, verseNumber)}
@@ -294,7 +297,7 @@ class View extends React.Component {
             return (
             <div style={{overflow: "scroll", position: "relative"}}>
               <nav className="navbar navbar-inverse navbar-fixed-top" role="navigation" style={{backgroundColor: "#0b82ff", position: "relative", marginBottom: "0"}}>
-                <div className="container-fluid" style={{backgroundColor: "#0b82ff"}}>
+                <div className="container-fluid" style={{backgroundColor: "#0b82ff",fontFamily: "Helvetica"}}>
                     <div className="navbar-header">
                         <button className="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar"><span className="sr-only">Toggle navigation</span><span className="icon-bar"></span><span className="icon-bar"></span><span className="icon-bar"></span></button>
                         <a className="navbar-brand" href="javascript:;"><img alt="Brand" src="../translationCore/tC_apps/Autographa/assets/logo.png" /></a>
@@ -308,7 +311,7 @@ class View extends React.Component {
                                 <AboutUsModal show ={ modalAboutUsVisibility } onHide = { hideModal } allProps = {this.props}/>
                                 <SearchAndReplace show ={ modalSearchVisibility } onHide = { hideModal } allProps = {this.props} versetext={verses('target', targetLanguage)}/>
                                 <span>
-                                <Button className="btn btn-default" style={style.chapter} onClick = {showModal} id="chapterBtn" title="Select Chapter" disabled={this.state.diffDisable}>Chapter</Button>
+                                <Button className="btn btn-default" style={style.chapter} onClick = {showModal} id="chapterBtn" title="Select Chapter" disabled={this.state.diffDisable}>Bookname Chapter No.</Button>
                                 </span>
                               </div>
                             </li>
@@ -322,14 +325,14 @@ class View extends React.Component {
                             <Button style={linkStyle} onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} title="Find and replace" id="searchText" onClick = {showSearchReplaceModal} disabled={this.state.diffDisable}><Glyphicon glyph="search" />
                             </Button>
                           
-                            <Button style={linkStyle} onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} disabled={this.state.diffDisable}><Glyphicon glyph="cloud-download" />
+                            <Button style={linkStyle} onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} title="Download" disabled={this.state.diffDisable}><Glyphicon glyph="cloud-download" />
                             </Button>
                           
-                            <Button style={linkStyle} onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} onClick = {showAboutModal} disabled={this.state.diffDisable}><Glyphicon glyph="info-sign" />
+                            <Button style={linkStyle} onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)}title="About" onClick = {showAboutModal} disabled={this.state.diffDisable}><Glyphicon glyph="info-sign" />
                             </Button>
                           
-                            <Button style={linkStyle} onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} onClick = {showSettingsModal} disabled={this.state.diffDisable}><Glyphicon glyph="wrench" />
-                            </Button> 
+                            {/*<Button style={linkStyle} onMouseEnter={this.mouseEnter.bind(this)} onMouseLeave={this.mouseLeave.bind(this)} onClick = {showSettingsModal} disabled={this.state.diffDisable}><Glyphicon glyph="wrench" />
+                            </Button>*/} 
                         </ul>
                     </div>
                 </div>
@@ -360,7 +363,7 @@ class View extends React.Component {
                     </div>}
 
                   {this.state.layoutDesign == 2 &&
-                  <div>
+                  <div style={{}}>
                     <Col key={2} lg={4} style={{backgroundColor: "#f5f8fa", borderRight: "1px solid #d3e0e9", padding: "0px 20px 60px"}}>
                        {/*<h2>English ULB</h2>
                        <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>*/}
@@ -460,9 +463,9 @@ class View extends React.Component {
                             </div>
                             <div style={{ float:"left", width:"60%"}} className="nav navbar-nav navbar-center verse-diff-on" >
                                 <div className="btn-group navbar-btn layout" role="group" aria-label="...">
-                                        <Button style={style.layoutButton} className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,1)}  disabled={this.state.diffDisable} title="2-column layout">2x &nbsp;<i className="fa fa-columns fa-lg"></i></Button>
-                                        <Button style={style.layoutButton} className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,2)} disabled={this.state.diffDisable} title="3-column layout">3x &nbsp;<i className="fa fa-columns fa-lg"></i></Button>
-                                        <Button style={style.layoutButton} className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,3)}  disabled={this.state.diffDisable} title="4-column layout">4x &nbsp;<i className="fa fa-columns fa-lg"></i></Button>
+                                        <Button style={style.layoutButton} data-toggle="tooltip" className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,1)}  disabled={this.state.diffDisable} title="2-column layout">2x &nbsp;<img alt="Lyout 2x" style={style.svg} src="../translationCore/tC_apps/Autographa/assets/two-columns-layout.svg" /></Button>
+                                        <Button style={style.layoutButton} className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,2)} disabled={this.state.diffDisable} title="3-column layout">3x &nbsp;<img alt="Lyout 3x" style={style.svg} src="../translationCore/tC_apps/Autographa/assets/two-columns-layout.svg" /></Button>
+                                        <Button style={style.layoutButton} className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,3)}  disabled={this.state.diffDisable} title="4-column layout">4x &nbsp;<img alt="Lyout 4x" style={style.svg} src="../translationCore/tC_apps/Autographa/assets/two-columns-layout.svg" /></Button>
                                 </div>
                                 <span style={{ color: "rgba(0, 0, 0, 0.5)", marginLeft: "188px",fontFamily: "Georgia,Serif", fontStyle:"italic"}}>{this.state.saveFunction ? this.state.finalTime:""}</span>
                                 {/*<a  onClick={this.saveEditVerse.bind(this)} style={style.saveButton} id="save-btn" data-toggle="tooltip" data-placement="top" title="" className="btn btn-info btn-save navbar-btn" >Save</a>*/}

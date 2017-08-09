@@ -86,11 +86,11 @@ var style = {
     backgroundColor: "#0b82ff"
   },
   chapter: {
-       color: "#0b82ff",
-       fontWeight: "bold",
-       backgroundColor: "#ffffff",
-       marginLeft: "210px",
-       backgroundImage: "linear-gradient(to bottom,#ffffff 0,#ffffff 100%)",
+   color: "#0b82ff",
+   fontWeight: "bold",
+   backgroundColor: "#ffffff",
+   marginLeft: "155px",
+   backgroundImage: "linear-gradient(to bottom,#ffffff 0,#ffffff 100%)",
   },
    hover: {
     color: "#fff",
@@ -105,7 +105,6 @@ var style = {
     versenum: {
       paddingTop: "1px",
       fontWeight: "bold",
-      fontSize: "12px",
       lineHeight: "auto",
     },
   toggle: {
@@ -158,19 +157,15 @@ var style = {
         backgroundColor: "#fbfbfb",
     },
       dropdown: {
-          backgroundColor: "rgba(245, 248, 250, 1)",
-          color: "rgba(11, 130, 255, 1)",
+          backgroundColor: "#0b82ff",
+          color: "#ffffff",
           fontWeight: "bold",
-          width: "130px",
-          height: "30px",
+          width: "166px",
+          borderRadius: "6px",
+          height: "34px",
           paddingLeft: "9px",
           fontSize: "14px",
-          borderTop: "none",
-          borderRight: "none",
-          borderLeft: "none",
-          borderBottomColor: "#0b82ff",
-          margin: "5px",
-          
+          marginTop: "8px",
      },
      saveButton: {
           color: "#fff",
@@ -182,9 +177,16 @@ var style = {
           backgroundColor:"rgba(11, 130, 255, 1)",
         },
      imagecss: {
-          marginLeft: "88px",
+          marginLeft: "25px",
           border: "5px solid #0b82ff",  
       },
+      svg: {
+          height: "23px",
+          width: "20px",
+      },
+      body: {
+        fontFamily: "Helvetica",
+      }
     }
 
 module.exports = style;
