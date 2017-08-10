@@ -86,7 +86,7 @@ class View extends React.Component {
            //console.log(verse_Num.length);
             if(verse_Num[i].isContentEditable == false) {
                 // console.log(verse_Num[0])
-                 console.log(verse_Num.length - 1);
+                 console.log(verse_Num[i]);
             verse_Num[i].style = "background-color: rgba(11, 130, 255, 0.1);padding-left:10px;padding-right:10px;margin-right:10px; display: inline-block;line-height:186%;"; 
             // verse_Num[i-1].style = "background-color: red;"; 
             // verse_Num[i+1].style = "background-color:red";
@@ -311,7 +311,7 @@ class View extends React.Component {
                                 <AboutUsModal show ={ modalAboutUsVisibility } onHide = { hideModal } allProps = {this.props}/>
                                 <SearchAndReplace show ={ modalSearchVisibility } onHide = { hideModal } allProps = {this.props} versetext={verses('target', targetLanguage)}/>
                                 <span>
-                                <Button className="btn btn-default" style={style.chapter} onClick = {showModal} id="chapterBtn" title="Select Chapter" disabled={this.state.diffDisable}>Bookname Chapter No.</Button>
+                                <Button className="btn btn-default" style={style.chapter} onClick = {showModal} id="chapterBtn" title="Select Chapter" disabled={this.state.diffDisable}>{projectDetailsReducer.bookName} {reference.chapter}</Button>
                                 </span>
                               </div>
                             </li>
