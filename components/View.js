@@ -311,7 +311,7 @@ class View extends React.Component {
                                 <AboutUsModal show ={ modalAboutUsVisibility } onHide = { hideModal } allProps = {this.props}/>
                                 <SearchAndReplace show ={ modalSearchVisibility } onHide = { hideModal } allProps = {this.props} versetext={verses('target', targetLanguage)}/>
                                 <span>
-                                <Button className="btn btn-default" style={style.chapter} onClick = {showModal} id="chapterBtn" title="Select Chapter" disabled={this.state.diffDisable}>{projectDetailsReducer.bookName} {reference.chapter}</Button>
+                                <Button className="btn btn-default" style={style.chapter} onClick = {showModal} id="chapterBtn" title="Select Chapter" disabled={this.state.diffDisable}>{projectDetailsReducer.bookName}:{reference.chapter}</Button>
                                 </span>
                               </div>
                             </li>
@@ -417,7 +417,7 @@ class View extends React.Component {
                            {/*<h2>English ULB</h2>
                            <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>*/}
                             <div style={{textAlign: "center", marginBottom:"20px"}}>
-                              <select style={style.dropdown} title="Select Reference Text" onChange={this.handleRefChange.bind(this)} value ={this.state.defaultRef}>
+                              <select style={style.dropdown} title="Select Reference Text" onChange={this.handleRefChangeTwo.bind(this)} value ={this.state.defaultRefTwo}>
                                   {dropdownOne}
                               </select>
                             </div>
@@ -430,7 +430,7 @@ class View extends React.Component {
                             {/*<h2>English ULB</h2>
                            <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>*/}
                             <div style={{textAlign: "center", marginBottom:"20px"}}>
-                              <select style={style.dropdown} title="Select Reference Text" onChange={this.handleRefChange.bind(this)} value ={this.state.defaultRef}>
+                              <select style={style.dropdown} title="Select Reference Text" onChange={this.handleRefChangeThree.bind(this)} value ={this.state.defaultRefThree}>
                                   {dropdownOne}
                               </select>
                             </div>
