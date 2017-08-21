@@ -32,9 +32,9 @@ class AboutUsModal extends React.Component {
                             <img style={style.imagecss} src="../translationCore/tC_apps/Autographa/assets/autographa_lite_large.png" className="img-circle" alt="Cinque Terre" width="215" height="200" />
                         </div>
                         <div style={{marginTop: "52px",paddingLeft:"52px", fontSize: "18px"}} className="col-lg-7">
-                            <h3>Autographa Lite</h3>
+                            <h3>Autographa Live</h3>
                             <p>Version 0.1</p>
-                            <p>Source code hosted at: "https://github.com/Bridgeconn/<br/>autographa-lite"</p>
+                            <p>Find us on <a href="https://github.com/Bridgeconn/autographa-lite"><img style ={{height:"34px", backgroundColor:"rgba(121, 126, 132, 0.08)"}} src="../translationCore/tC_apps/Autographa/assets/GitHub_Logo.png" alt="GitHub_Logo"/></a></p>
                         </div>
                     </div>
                 </Tab>

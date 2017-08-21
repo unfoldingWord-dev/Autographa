@@ -119,6 +119,13 @@ class SearchAndReplace extends React.Component {
                         style={{width: "20%"}}
                         />
                     </RadioButtonGroup>
+                     <RadioButtonGroup name="CaseSensitive" defaultSelected={this.state.selection} onChange={this.selectRadioButton.bind(this)}>
+                        <RadioButton
+                        value="check"
+                        label="Select for Capitals"
+                        style={{width: ""}}
+                        />  
+                    </RadioButtonGroup>
                     </FormGroup>
                     <div>
                         <label>Find</label><br />
@@ -129,12 +136,13 @@ class SearchAndReplace extends React.Component {
                     </div>
                 </div>;
         } else if (this.state.showSearchReplace == 'loader') {
-            partial = <div key="0"><img src="tC_apps/Autographa/assets/giphy.gif"  /></div>;
-        } else if (this.state.showSearchReplace == 'count'){
-            partial =  <div key="1">Book Name:{bookName} Replace Count:{this.state.replaceCount}<Button onClick={this.closeModal.bind(this)}>Close</Button></div>
+            partial = <div key="0"><img src="tC_apps/Autographa/assets/giphy.gif" style={{marginLeft:"26%"}} /></div>;
+        } else if (this.state.showSearchReplace == 'count'){    
+            partial =  <div key="1" style={{fontStyle:"italic   "}}>Book Name : {bookName} Replace Count : {this.state.replaceCount}<br/><br/>
+            <RaisedButton label="Close" primary={true} onClick={this.closeModal.bind(this)} /></div>
         }        
         return (
-            <Modal show={show} onHide={onHide} bsSize="lg">
+            <Modal show={show} onHide={onHide} >
                 <Modal.Header style={{ backgroundColor: "var(--accent-color-dark)" }} closeButton>
                       <Modal.Title id="contained-modal-title-sm"
             style={{ textAlign: "center", color: "var(--reverse-color)" }}>Search and Replace</Modal.Title>

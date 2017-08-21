@@ -357,7 +357,7 @@ class View extends React.Component {
                       <h5 style={{textAlign: "center",textDecoration: "underline", fontWeight: "bold", marginBottom:"20px"}}>Translation</h5>
                       {/*<h2>{projectDetailsReducer.manifest.target_language.name}</h2>
                       <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>*/}
-                      {this.state.show ? <div><span>(+):{diffContent()[1]}</span><span>(-):{diffContent()[2]}</span><div id="targetContent">{diffContent()}</div></div>:
+                      {this.state.show ? <div><span style={{color:"green"}}>(Additions):{diffContent()[1]} &nbsp;</span><span style={{color:"red"}}>(Deletions):{diffContent()[2]}</span><div id="targetContent">{diffContent()}</div></div>:
                       <div id ="targetContent">{verses('target', targetLanguage)}</div>}
                     </Col> 
                     </div>}
@@ -448,9 +448,9 @@ class View extends React.Component {
                          </Col>
                     </div> }
                 </div> 
-            <nav className="navbar navbar-default navbar-fixed-bottom" style={{left:"250px", height:"0"}}>
+            <nav className="navbar navbar-default navbar-fixed-bottom" style={{left:"250px", height:"55px"}}>
                        {/*<div className="nav navbar-nav navbar-center verse-diff-on"> */}
-                            <div style={{float:"left", width:"40%"}} className="btn-group navbar-btn verse-diff-on" role="group" aria-label="...">
+                            <div style={{float:"left", width:"50%", paddingLeft:"29%"}} className="btn-group navbar-btn verse-diff-on" role="group" aria-label="...">
                                 <div style={{float: "left"}}>
                                     <Button style={style.fontButtonMinus} className="btn btn-default font-button minus" disabled={this.state.diffDisable} title="Decrease font size" onClick= {this.fontChange.bind(this, (-2))}>A-</Button>
                                 </div>
@@ -461,7 +461,7 @@ class View extends React.Component {
                                     <Button style={style.fontButtonPlus} disabled={this.state.diffDisable} className="btn btn-default font-button plus" title="Increase font size" onClick= {this.fontChange.bind(this, (+2))}>A+</Button>
                                 </div>
                             </div>
-                            <div style={{ float:"left", width:"60%"}} className="nav navbar-nav navbar-center verse-diff-on" >
+                            <div style={{ float:"left", width:"50%"}} className="nav navbar-nav navbar-center verse-diff-on" >
                                 <div className="btn-group navbar-btn layout" role="group" aria-label="...">
                                         <Button style={style.layoutButton} data-toggle="tooltip" className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,1)}  disabled={this.state.diffDisable} title="2-column layout">2x &nbsp;<img alt="Lyout 2x" style={style.svg} src="../translationCore/tC_apps/Autographa/assets/two-columns-layout.svg" /></Button>
                                         <Button style={style.layoutButton} className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,2)} disabled={this.state.diffDisable} title="3-column layout">3x &nbsp;<img alt="Lyout 3x" style={style.svg} src="../translationCore/tC_apps/Autographa/assets/two-columns-layout.svg" /></Button>

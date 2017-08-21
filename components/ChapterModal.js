@@ -12,7 +12,7 @@ class ChapterModal extends React.Component {
   }
 
   changeChapter(contextId){
-    console.log(contextId.reference.verse)
+    console.log(contextId.reference)
     contextId.reference.verse = 1;
     this.props.allProps.actions.changeCurrentContextId(contextId);
     this.props.onHide(this);
