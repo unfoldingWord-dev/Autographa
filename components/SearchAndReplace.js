@@ -1,13 +1,14 @@
 import React from 'react';
 import { Modal, Button, Col, Radio, FormGroup } from 'react-bootstrap';
 import TextField from 'material-ui/TextField';
+import Checkbox from 'material-ui/Checkbox';
 import RaisedButton from 'material-ui/RaisedButton';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 
 class SearchAndReplace extends React.Component {
     constructor(props){
         super(props);
-        this.state = {targetContent:this.props.allProps.resourcesReducer.bibles.targetLanguage, find:"", replace:"",replaceCount:0,selection:'chapter',showSearchReplace:"search"}
+        this.state = {targetContent:this.props.allProps.resourcesReducer.bibles.targetLanguage, find:"", replace:"",replaceCount:0,selection:'chapter',showSearchReplace:"search", checked:false}
  
     }
 
@@ -39,10 +40,42 @@ class SearchAndReplace extends React.Component {
         let {loginReducer, actions, contextIdReducer, resourcesReducer, groupsIndexReducer} = this.props.allProps;
         let {chapter, verse} = contextIdReducer.contextId.reference;
         let username = loginReducer.userdata.username;
+        console.log(this.state.checked)
+        if(this.state.selection == "chapter" ) {
+            if (this.state.checked) {
+                var size = Object.keys(resourcesReducer.bibles.targetLanguage[chapter]).length
+                var searchVal = this.state.find.toUpperCase();
+                console.log(searchVal)
+                var replaceVal = this.state.replace;
+                var targetContent = resourcesReducer.bibles.targetLanguage[chapter];
+                console.log(targetContent)
+                console.log(targetContent)
+                for (var i = 1; i <= size; i++) {
+                    let before = resourcesReducer.bibles.targetLanguage[chapter][i].toUpperCase();
+                    console.log(before)
+                    var originalVerse = targetContent[i];
+                    if (originalVerse.search(new RegExp(this.escapeRegExp(searchVal), 'g')) >= 0) {    
+                        replacecount += originalVerse.match(new RegExp(this.escapeRegExp(searchVal), 'g')).length;               
+                        var modifiedVerse = originalVerse.replace(new RegExp(this.escapeRegExp(searchVal), 'g'), replaceVal);
+                        targetContent[i] = modifiedVerse;
+                        if (before !== modifiedVerse) {
+                            actions.addVerseEdit(before, modifiedVerse, ['draft'], username);
+                            this.setState({replaceCount:replacecount}); 
+                        }
+                        targetContent = resourcesReducer.bibles.targetLanguage[chapter]
+                        // targetContet = targetContent2.toLowerCase();
+                        // console.log(this.props.allProps.resourcesReducer.bibles.targetLanguage[chapter])
+                    }
+                }
 
-        if(this.state.selection == "chapter") {
+
+
+
+            } else{
+            console.log("in else")
             var size = Object.keys(resourcesReducer.bibles.targetLanguage[chapter]).length
             var searchVal = this.state.find.toString();
+            console.log(searchVal)
             var replaceVal = this.state.replace;
             var targetContent = resourcesReducer.bibles.targetLanguage[chapter];
             console.log(targetContent)
@@ -62,11 +95,40 @@ class SearchAndReplace extends React.Component {
                     // console.log(this.props.allProps.resourcesReducer.bibles.targetLanguage[chapter])
                 }
             }
+
+            };
+
                     
         }else {
+            if(this.state.checked) {
+                console.log("in if")
             this.props.allProps.loaderReducer.show = true
             let noOfChapters = groupsIndexReducer.groupsIndex.length;
-            var searchVal = this.state.find.toString();
+            var searchVal = this.state.find.toUpperCase();
+            var replaceVal = this.state.replace;
+            for (var i = 1; i <= noOfChapters; i++) {
+                var noOfVerses = Object.keys(resourcesReducer.bibles.targetLanguage[i]).length
+                for (var j = 1; j <= noOfVerses; j++) {
+                    var targetContent = resourcesReducer.bibles.targetLanguage[i];
+                    var originalVerse = targetContent[j]
+                   if (originalVerse.search(new RegExp(this.escapeRegExp(searchVal), 'g')) >= 0) {
+                        var modifiedVerse = originalVerse.replace(new RegExp(this.escapeRegExp(searchVal), 'g'), replaceVal);
+                        replacecount += originalVerse.match(new RegExp(this.escapeRegExp(searchVal), 'g')).length;
+                        targetContent[j] = modifiedVerse 
+                        if (originalVerse !== modifiedVerse) {
+                            actions.addVerseEdit(originalVerse, modifiedVerse, ['draft'], username);
+                            this.setState({replaceCount:replacecount});
+                        }                                                     
+                    }
+                }
+            }
+
+            }
+            else{
+            console.log("in else")
+            this.props.allProps.loaderReducer.show = true
+            let noOfChapters = groupsIndexReducer.groupsIndex.length;
+            var searchVal = this.state.find.toLowerCase();
             var replaceVal = this.state.replace;
             for (var i = 1; i <= noOfChapters; i++) {
                 var noOfVerses = Object.keys(resourcesReducer.bibles.targetLanguage[i]).length
@@ -86,6 +148,15 @@ class SearchAndReplace extends React.Component {
             }
         }
     }
+}
+
+    updateCheck() {
+    this.setState((oldState) => {
+      return {
+        checked: !oldState.checked,
+      };
+    });
+  }
 
     selectRadioButton(e){
         e.persist();
@@ -118,14 +189,13 @@ class SearchAndReplace extends React.Component {
                         label="Current Book"
                         style={{width: "20%"}}
                         />
-                    </RadioButtonGroup>
-                     <RadioButtonGroup name="CaseSensitive" defaultSelected={this.state.selection} onChange={this.selectRadioButton.bind(this)}>
-                        <RadioButton
-                        value="check"
-                        label="Select for Capitals"
-                        style={{width: ""}}
-                        />  
-                    </RadioButtonGroup>
+                        </RadioButtonGroup>
+                        <Checkbox
+                        label="Select for Capital search"
+                        checked={this.state.checked}
+                        onCheck={this.updateCheck.bind(this)}
+                        style={{}}
+                            />
                     </FormGroup>
                     <div>
                         <label>Find</label><br />
@@ -138,7 +208,7 @@ class SearchAndReplace extends React.Component {
         } else if (this.state.showSearchReplace == 'loader') {
             partial = <div key="0"><img src="tC_apps/Autographa/assets/giphy.gif" style={{marginLeft:"26%"}} /></div>;
         } else if (this.state.showSearchReplace == 'count'){    
-            partial =  <div key="1" style={{fontStyle:"italic   "}}>Book Name : {bookName} Replace Count : {this.state.replaceCount}<br/><br/>
+            partial =  <div key="1" style={{fontStyle:"italic   "}}>Book Name &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: {bookName}<br/> Replace Count : {this.state.replaceCount}<br/><br/>
             <RaisedButton label="Close" primary={true} onClick={this.closeModal.bind(this)} /></div>
         }        
         return (
