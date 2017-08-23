@@ -48,11 +48,11 @@ class SearchAndReplace extends React.Component {
                 console.log(searchVal)
                 var replaceVal = this.state.replace;
                 var targetContent = resourcesReducer.bibles.targetLanguage[chapter];
-                console.log(targetContent)
-                console.log(targetContent)
+                 console.log(targetContent)
+                // console.log(targetContent)
                 for (var i = 1; i <= size; i++) {
                     let before = resourcesReducer.bibles.targetLanguage[chapter][i].toUpperCase();
-                    console.log(before)
+                    // console.log(before)
                     var originalVerse = targetContent[i];
                     if (originalVerse.search(new RegExp(this.escapeRegExp(searchVal), 'g')) >= 0) {    
                         replacecount += originalVerse.match(new RegExp(this.escapeRegExp(searchVal), 'g')).length;               
@@ -81,7 +81,7 @@ class SearchAndReplace extends React.Component {
             console.log(targetContent)
             for (var i = 1; i <= size; i++) {
                 let before = resourcesReducer.bibles.targetLanguage[chapter][i];
-                console.log(before)
+                // console.log(before)
                 var originalVerse = targetContent[i];
                 if (originalVerse.search(new RegExp(this.escapeRegExp(searchVal), 'g')) >= 0) {    
                     replacecount += originalVerse.match(new RegExp(this.escapeRegExp(searchVal), 'g')).length;               

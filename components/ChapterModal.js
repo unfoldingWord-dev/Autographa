@@ -12,6 +12,7 @@ class ChapterModal extends React.Component {
   }
 
   changeChapter(contextId){
+    console.log(contextId)
     console.log(contextId.reference)
     contextId.reference.verse = 1;
     this.props.allProps.actions.changeCurrentContextId(contextId);
@@ -32,14 +33,14 @@ class ChapterModal extends React.Component {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body style={{ padding: '0px', backgroundColor: "var(--reverse-color)", color: "var(--text-color)" }}>
-          <div style={{height: "350px", display: 'flex'}}>
+          <ul style={{listStyle: "none", width:"100%", float:"left", margin:"0", padding:"0"}}>
             {
               
               Object.keys(chapters).map(function (chapter, index) {
-                return(<Col sm={1} key = {index} ><span><a style={style.chapmodal}  href="javascript:void(0);"  onClick={() => _this.changeChapter(chapters[chapter][index].contextId) }>{index +1}</a></span></Col>)
+                return(<li style={{textAlign: "center", listStyle: "none", float: "left", width:"5%", padding:"2px", margin:"2%"}} key = {index}><a style={style.chapmodal}  href="javascript:void(0);"  onClick={() => _this.changeChapter(chapters[chapter][index].contextId) }>{index +1}</a></li>)
               })
             }
-          </div>
+          </ul>
         </Modal.Body>
         <Modal.Footer style={{ backgroundColor: "var(--reverse-color)" }}>
           <Button onClick={onHide}>Close</Button>
