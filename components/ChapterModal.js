@@ -5,6 +5,8 @@
 import React from 'react';
 import { Modal, Button, Col } from 'react-bootstrap';
 import style from '../css/Style';
+import RaisedButton from 'material-ui/RaisedButton';
+
 class ChapterModal extends React.Component {
   constructor(props){
       super(props);
@@ -12,8 +14,8 @@ class ChapterModal extends React.Component {
   }
 
   changeChapter(contextId){
-    console.log(contextId)
-    console.log(contextId.reference)
+    // console.log(contextId)
+    // console.log(contextId.reference)
     contextId.reference.verse = 1;
     this.props.allProps.actions.changeCurrentContextId(contextId);
     this.props.onHide(this);
@@ -32,7 +34,7 @@ class ChapterModal extends React.Component {
               Chapters
           </Modal.Title>
         </Modal.Header>
-        <Modal.Body style={{ padding: '0px', backgroundColor: "var(--reverse-color)", color: "var(--text-color)" }}>
+        <Modal.Body style={{ padding: '0px', backgroundColor: "var(--reverse-color)", color: "var(--text-color)", height:"200px" }}>
           <ul style={{listStyle: "none", width:"100%", float:"left", margin:"0", padding:"0"}}>
             {
               
@@ -43,7 +45,7 @@ class ChapterModal extends React.Component {
           </ul>
         </Modal.Body>
         <Modal.Footer style={{ backgroundColor: "var(--reverse-color)" }}>
-          <Button onClick={onHide}>Close</Button>
+          <RaisedButton label="Close" primary={true} onClick={onHide} />
         </Modal.Footer>
       </Modal>
     );

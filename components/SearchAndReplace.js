@@ -195,21 +195,21 @@ class SearchAndReplace extends React.Component {
                         checked={this.state.checked}
                         onCheck={this.updateCheck.bind(this)}
                         style={{}}
-                            />
+                        />
                     </FormGroup>
                     <div>
                         <label>Find</label><br />
                         <TextField hintText="Find" value={this.state.find} onChange={this.handleFindChange.bind(this)}/> <br />
                         <label>Replace With</label><br />
                         <TextField hintText="Replacement" value={this.state.replace} onChange={this.handleReplaceChange.bind(this)}/> <br />
-                        <RaisedButton label="Replace" primary={true} onClick={this.findAndReplaceText.bind(this)} />
+                        <RaisedButton style={{marginLeft: "474px"}} label="Replace" primary={true} onClick={this.findAndReplaceText.bind(this)} />
                     </div>
                 </div>;
         } else if (this.state.showSearchReplace == 'loader') {
             partial = <div key="0"><img src="tC_apps/Autographa/assets/giphy.gif" style={{marginLeft:"26%"}} /></div>;
         } else if (this.state.showSearchReplace == 'count'){    
-            partial =  <div key="1" style={{fontStyle:"italic   "}}>Book Name &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: {bookName}<br/> Replace Count : {this.state.replaceCount}<br/><br/>
-            <RaisedButton label="Close" primary={true} onClick={this.closeModal.bind(this)} /></div>
+            partial =  <div key="1" style={{fontStyle:"italic   "}}>Book Name &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: {bookName}<br/> Replace Count : {this.state.replaceCount} occurrences<br/><br/>
+            <RaisedButton style={{marginLeft: "474px"}} label="Close" primary={true} onClick={this.closeModal.bind(this)} /></div>
         }        
         return (
             <Modal show={show} onHide={onHide} >
@@ -217,7 +217,7 @@ class SearchAndReplace extends React.Component {
                       <Modal.Title id="contained-modal-title-sm"
             style={{ textAlign: "center", color: "var(--reverse-color)" }}>Search and Replace</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
+                <Modal.Body >
                     {partial}  
                 </Modal.Body> 
             </Modal>

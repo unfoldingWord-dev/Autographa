@@ -78,7 +78,7 @@ class View extends React.Component {
         var x = document.getElementsByClassName("highlight_remove");
         var i;
         for (i = 0; i < x.length; i++) {
-            x[i].children[0].style = "background-color:'';padding-left:10px;padding-right:10px;margin-right:10px;display: inline-block;;line-height:186%;";
+            x[i].children[0].style = "background-color:'';padding-left:10px;padding-right:10px;margin-right:10px;display: inline-block;";
         }
         
         for(var i=0; i < verse_Num.length; i++) {  
@@ -87,7 +87,7 @@ class View extends React.Component {
             if(verse_Num[i].isContentEditable == false) {
                 // console.log(verse_Num[0])
                  // console.log(verse_Num[i]);
-            verse_Num[i].style = "background-color: rgba(11, 130, 255, 0.1);padding-left:10px;padding-right:10px;margin-right:10px; display: inline-block;line-height:186%;"; 
+            verse_Num[i].style = "background-color: rgba(11, 130, 255, 0.1);padding-left:10px;padding-right:10px;margin-right:10px; display: inline-block;"; 
             // verse_Num[i-1].style = "background-color: red;"; 
             // verse_Num[i+1].style = "background-color:red";
             // verse_Num[1].style = "background-color: rgba(11, 130, 255, 0.1);padding-left:10px;padding-right:10px;margin-right:10px; border-radius-bottom: 6px; display: inline-block;";
@@ -109,7 +109,6 @@ class View extends React.Component {
     }
 
     fontChange(multiplier) {
-        console.log(document.getElementsByClassName("fontZoom")[0])
         let fontSize = this.state.fontMin;
         if (document.getElementsByClassName("fontZoom")[0].style.fontSize == "") {
             document.getElementsByClassName("fontZoom")[0].style.fontSize = "14px";
@@ -340,7 +339,7 @@ class View extends React.Component {
             <div className="fontZoom" style={{width:"100%", marginBottom:"20px"}}>
                    {this.state.layoutDesign == 1 &&
                    <div>
-                   <Col key={1}  lg={6} style={{backgroundColor: "#f5f8fa", borderRight: "1px solid #d3e0e9", padding: "0px 20px 60px"}}>
+                   <Col key={1}  lg={6} style={{backgroundColor: "#f5f8fa", borderRight: "1px solid #d3e0e9", padding: "0px 20px 112px"}}>
                      {/*<h2>English ULB</h2>
                      <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>*/}
                       <div style={{textAlign: "center", marginBottom:"20px"}}>
@@ -353,11 +352,11 @@ class View extends React.Component {
                      verses(this.state.defaultRef, ULB):verses(this.state.defaultRef, UDB)}
                      </div>
                      </Col>
-                     <Col lg={6} style={{marginBottom:"34px"}}>
+                     <Col lg={6} style={{marginBottom:"40px"}}>
                       <h5 style={{textAlign: "center",textDecoration: "underline", fontWeight: "bold", marginBottom:"20px"}}>Translation</h5>
                       {/*<h2>{projectDetailsReducer.manifest.target_language.name}</h2>
                       <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>*/}
-                      {this.state.show ? <div><span style={{color:"green", marginLeft:"30%",fontWeight:"bold"}}>(Additions):{diffContent()[1]} &nbsp;</span><span style={{color:"red", fontWeight:"bold"}}>(Deletions):{diffContent()[2]}</span><div id="targetContent">{diffContent()}</div></div>:
+                      {this.state.show ? <div><span style={{color:"green", marginLeft:"30%",fontWeight:"bold"}}>{diffContent()[1]}: Additions &nbsp;</span><span style={{color:"red", fontWeight:"bold"}}>{diffContent()[2]}: Deletions</span><div id="targetContent">{diffContent()}</div></div>:
                       <div id ="targetContent">{verses('target', targetLanguage)}</div>}
                     </Col> 
                     </div>}
@@ -450,17 +449,17 @@ class View extends React.Component {
                 </div> 
             <nav className="navbar navbar-default navbar-fixed-bottom" style={{left:"250px", height:"55px"}}>
                        {/*<div className="nav navbar-nav navbar-center verse-diff-on"> */}
-                            <div style={{float:"left", width:"50%", paddingLeft:"29%"}} className="btn-group navbar-btn verse-diff-on" role="group" aria-label="...">
+                             <div style={{float:"left", width:"40%"}} className="btn-group navbar-btn verse-diff-on" role="group" aria-label="...">
                                 <div style={{float: "left"}}>
                                     <Button style={style.fontButtonMinus} className="btn btn-default font-button minus" disabled={this.state.diffDisable} title="Decrease font size" onClick= {this.fontChange.bind(this, (-2))}>A-</Button>
                                 </div>
                                 {/*<ReactBootstrapSlider style={style.sliderHorizontal} change={this.sliderFontChange.bind(this)} value={this.state.currentFontValue} step={this.state.fontStep} max={this.state.fontMax} min={this.state.fontMin} orientation="horizontal" />*/}
-                                <Slider sliderStyle={{ width: "100px", float:"left", marginTop:"11px"}}  onChange={this.sliderFontChange.bind(this)} value={this.state.currentFontValue} step={this.state.fontStep} max={this.state.fontMax} min={this.state.fontMin}/>
+                                <Slider sliderStyle={{ width: "100px", float:"left", marginTop:"10px"}}  onChange={this.sliderFontChange.bind(this)} value={this.state.currentFontValue} step={this.state.fontStep} max={this.state.fontMax} min={this.state.fontMin}/>
                                 {/*<input type="range" onInput={this.sliderFontChange.bind(this)}  onChange={this.sliderFontChange.bind(this)} value={this.state.currentFontValue} step={this.state.fontStep} max={this.state.fontMax} min={this.state.fontMin} />*/}
                                 <div style={{float: "left"}}>
                                     <Button style={style.fontButtonPlus} disabled={this.state.diffDisable} className="btn btn-default font-button plus" title="Increase font size" onClick= {this.fontChange.bind(this, (+2))}>A+</Button>
                                 </div>
-                            </div>
+                            </div>  
                             <div style={{ float:"left", width:"50%"}} className="nav navbar-nav navbar-center verse-diff-on" >
                                 <div className="btn-group navbar-btn layout" role="group" aria-label="...">
                                         <Button style={style.layoutButton} data-toggle="tooltip" className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,1)}  disabled={this.state.diffDisable} title="2-column layout">2x &nbsp;<img alt="Lyout 2x" style={style.svg} src="../translationCore/tC_apps/Autographa/assets/two-columns-layout.svg" /></Button>
