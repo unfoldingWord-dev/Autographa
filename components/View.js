@@ -69,31 +69,35 @@ class View extends React.Component {
 
 
     highlightRef(verseNumber, e){ 
+    		let refContent = document.getElementsByClassName('refContent')[0];
         let { reference } = this.props.contextIdReducer.contextId;
         let { targetLanguage, ULB } = this.props.resourcesReducer.bibles;
         let currentChapter = targetLanguage[reference.chapter];
-        let verseNumbers = Object.keys(currentChapter);
         var verse_Num = document.getElementsByClassName(verseNumber);
-        var remove_highlight = document.getElementsByClassName(verseNumber);
         var x = document.getElementsByClassName("highlight_remove");
         var i;
-        for (i = 0; i < x.length; i++) {
-            x[i].children[0].style = "background-color:'';padding-left:10px;padding-right:10px;margin-right:10px;display: inline-block;";
+        refContent.querySelectorAll('div[data-verse^="r"]').style="background-color:'';padding-left:10px;padding-right:10px;margin-right:10px;display: inline-block;;line-height:186%";
+        for (i = 0; i < refContent.children.length; i++) {
+        	let refDiv = refContent.querySelectorAll('div[data-verse^='+'"'+"r"+(i+1)+'"'+']');
+                if (refDiv != 'undefined'){
+                    refDiv[0].style="background-color:none;font-weight:none;padding-left:10px;padding-right:10px";
+                } 
+        }
+        var limits = verseNumber.split("-").map(function(element) {
+                    return parseInt(element, 10) - 1;
+        });
+        for(var j=limits[0]; j<=limits[1];j++){
+        	if(refContent.querySelectorAll("div[data-verse=r"+(j+1)+"]")[0] != undefined){
+            refContent.querySelectorAll("div[data-verse=r"+(j+1)+"]")[0].style = "background-color: rgba(11, 130, 255, 0.1);padding-left:10px;padding-right:10px;margin-right:10px;"; 
+        	}                               
+        }
+        refContent.querySelectorAll('div[data-verse="r' + (limits[0] + 1) + '"]')[0].style.borderRadius = "10px 10px 0px 0px";
+        if(limits[1] < refContent.children.length) {
+        	refContent.querySelectorAll('div[data-verse="r' + (limits[1] + 1) + '"]')[0].style.borderRadius = "0px 0px 10px 10px";
+        }else{
+        	refContent.querySelectorAll('div[data-verse="r' + (limits[1]) + '"]')[0].style.borderRadius = "0px 0px 10px 10px";
         }
         
-        for(var i=0; i < verse_Num.length; i++) {  
-           // console.log(verse_Num)
-           //console.log(verse_Num.length);
-            if(verse_Num[i].isContentEditable == false) {
-                // console.log(verse_Num[0])
-                 // console.log(verse_Num[i]);
-            verse_Num[i].style = "background-color: rgba(11, 130, 255, 0.1);padding-left:10px;padding-right:10px;margin-right:10px; display: inline-block;"; 
-            // verse_Num[i-1].style = "background-color: red;"; 
-            // verse_Num[i+1].style = "background-color:red";
-            // verse_Num[1].style = "background-color: rgba(11, 130, 255, 0.1);padding-left:10px;padding-right:10px;margin-right:10px; border-radius-bottom: 6px; display: inline-block;";
-            }
-            
-        }
     }
 
     mouseEnter(){
@@ -109,6 +113,7 @@ class View extends React.Component {
     }
 
     fontChange(multiplier) {
+        console.log(document.getElementsByClassName("fontZoom")[0])
         let fontSize = this.state.fontMin;
         if (document.getElementsByClassName("fontZoom")[0].style.fontSize == "") {
             document.getElementsByClassName("fontZoom")[0].style.fontSize = "14px";
@@ -232,10 +237,10 @@ class View extends React.Component {
             let editable = bibleId === 'target';
             let verseText = bible[reference.chapter][index+1];
                 return (
-                    <div style={{display: "flex", lineHeight: "25px"}} key={index} >
+                    <div style={{display: "flex", lineHeight: "25px"}} key={index} data-verse={"r"+(index+1)} onClick={this.highlightRef.bind(this, verseNumber)}>
                         <span className="verseNum" style={style.versenum}>{index+1} </span>
-                        <div className="highlight_remove" >
-                        <span onClick={this.highlightRef.bind(this, verseNumber)}
+                        <div className="highlight_remove"  >
+                        <span 
                         style={{paddingLeft: "10px", lineHeight:"normal"}}
                         className={verseNumber}
                         id={bibleId + '_verse_' + (index+1)}
@@ -339,7 +344,7 @@ class View extends React.Component {
             <div className="fontZoom" style={{width:"100%", marginBottom:"20px"}}>
                    {this.state.layoutDesign == 1 &&
                    <div>
-                   <Col key={1}  lg={6} style={{backgroundColor: "#f5f8fa", borderRight: "1px solid #d3e0e9", padding: "0px 20px 112px"}}>
+                   <Col key={1}  lg={6} style={{backgroundColor: "#f5f8fa", borderRight: "1px solid #d3e0e9", padding: "0px 20px 60px"}}>
                      {/*<h2>English ULB</h2>
                      <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>*/}
                       <div style={{textAlign: "center", marginBottom:"20px"}}>
@@ -347,16 +352,16 @@ class View extends React.Component {
                           {dropdownOne}
                       </select>
                       </div>
-                     <div>
+                     <div className="refContent">
                      {this.state.defaultRef == "ULB" ?
                      verses(this.state.defaultRef, ULB):verses(this.state.defaultRef, UDB)}
                      </div>
                      </Col>
-                     <Col lg={6} style={{marginBottom:"40px"}}>
+                     <Col lg={6} style={{marginBottom:"34px"}}>
                       <h5 style={{textAlign: "center",textDecoration: "underline", fontWeight: "bold", marginBottom:"20px"}}>Translation</h5>
                       {/*<h2>{projectDetailsReducer.manifest.target_language.name}</h2>
                       <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>*/}
-                      {this.state.show ? <div><span style={{color:"green", marginLeft:"30%",fontWeight:"bold"}}>{diffContent()[1]}: Additions &nbsp;</span><span style={{color:"red", fontWeight:"bold"}}>{diffContent()[2]}: Deletions</span><div id="targetContent">{diffContent()}</div></div>:
+                      {this.state.show ? <div><span style={{color:"green", marginLeft:"30%",fontWeight:"bold"}}>(Additions):{diffContent()[1]} &nbsp;</span><span style={{color:"red", fontWeight:"bold"}}>(Deletions):{diffContent()[2]}</span><div id="targetContent">{diffContent()}</div></div>:
                       <div id ="targetContent">{verses('target', targetLanguage)}</div>}
                     </Col> 
                     </div>}
@@ -449,17 +454,17 @@ class View extends React.Component {
                 </div> 
             <nav className="navbar navbar-default navbar-fixed-bottom" style={{left:"250px", height:"55px"}}>
                        {/*<div className="nav navbar-nav navbar-center verse-diff-on"> */}
-                             <div style={{float:"left", width:"40%"}} className="btn-group navbar-btn verse-diff-on" role="group" aria-label="...">
+                            <div style={{float:"left", width:"50%", paddingLeft:"29%"}} className="btn-group navbar-btn verse-diff-on" role="group" aria-label="...">
                                 <div style={{float: "left"}}>
                                     <Button style={style.fontButtonMinus} className="btn btn-default font-button minus" disabled={this.state.diffDisable} title="Decrease font size" onClick= {this.fontChange.bind(this, (-2))}>A-</Button>
                                 </div>
                                 {/*<ReactBootstrapSlider style={style.sliderHorizontal} change={this.sliderFontChange.bind(this)} value={this.state.currentFontValue} step={this.state.fontStep} max={this.state.fontMax} min={this.state.fontMin} orientation="horizontal" />*/}
-                                <Slider sliderStyle={{ width: "100px", float:"left", marginTop:"10px"}}  onChange={this.sliderFontChange.bind(this)} value={this.state.currentFontValue} step={this.state.fontStep} max={this.state.fontMax} min={this.state.fontMin}/>
+                                <Slider sliderStyle={{ width: "100px", float:"left", marginTop:"11px"}}  onChange={this.sliderFontChange.bind(this)} value={this.state.currentFontValue} step={this.state.fontStep} max={this.state.fontMax} min={this.state.fontMin}/>
                                 {/*<input type="range" onInput={this.sliderFontChange.bind(this)}  onChange={this.sliderFontChange.bind(this)} value={this.state.currentFontValue} step={this.state.fontStep} max={this.state.fontMax} min={this.state.fontMin} />*/}
                                 <div style={{float: "left"}}>
                                     <Button style={style.fontButtonPlus} disabled={this.state.diffDisable} className="btn btn-default font-button plus" title="Increase font size" onClick= {this.fontChange.bind(this, (+2))}>A+</Button>
                                 </div>
-                            </div>  
+                            </div>
                             <div style={{ float:"left", width:"50%"}} className="nav navbar-nav navbar-center verse-diff-on" >
                                 <div className="btn-group navbar-btn layout" role="group" aria-label="...">
                                         <Button style={style.layoutButton} data-toggle="tooltip" className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,1)}  disabled={this.state.diffDisable} title="2-column layout">2x &nbsp;<img alt="Lyout 2x" style={style.svg} src="../translationCore/tC_apps/Autographa/assets/two-columns-layout.svg" /></Button>
