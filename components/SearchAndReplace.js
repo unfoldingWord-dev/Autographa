@@ -178,16 +178,16 @@ class SearchAndReplace extends React.Component {
         if (this.state.showSearchReplace == 'search') {
         partial = <div> 
                     <FormGroup>
-                    <RadioButtonGroup name="SearchAndReplace" style={{display: "flex", margin:"2%"}} defaultSelected={this.state.selection} onChange={this.selectRadioButton.bind(this)}>
+                    <RadioButtonGroup name="SearchAndReplace" style={{display: "flex", marginBottom:"2%"}} defaultSelected={this.state.selection} onChange={this.selectRadioButton.bind(this)}>
                         <RadioButton
                         value="chapter"
                         label="Current Chapter"
-                        style={{width: "20%"}}
+                        style={{width: "40%"}}
                         />
                         <RadioButton
                         value="book"
                         label="Current Book"
-                        style={{width: "20%"}}
+                        style={{width: "40%"}}
                         />
                         </RadioButtonGroup>
                         <Checkbox
