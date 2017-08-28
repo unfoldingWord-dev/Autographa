@@ -76,11 +76,12 @@ class View extends React.Component {
         var verse_Num = document.getElementsByClassName(verseNumber);
         var x = document.getElementsByClassName("highlight_remove");
         var i;
-        refContent.querySelectorAll('div[data-verse^="r"]').style="background-color:'';padding-left:10px;padding-right:10px;margin-right:10px;display: inline-block;;line-height:186%";
+        refContent.querySelectorAll('div[data-verse^="r"]').style="background-color:'';padding-left:10px;padding-right:10px;display: inline-block;";
         for (i = 0; i < refContent.children.length; i++) {
         	let refDiv = refContent.querySelectorAll('div[data-verse^='+'"'+"r"+(i+1)+'"'+']');
+                console.log(refDiv)
                 if (refDiv != 'undefined'){
-                    refDiv[0].style="background-color:none;font-weight:none;padding-left:10px;padding-right:10px";
+                    refDiv[0].style="background-color:none;font-weight:none;padding-left:10px;padding-right:10px;";
                 } 
         }
         var limits = verseNumber.split("-").map(function(element) {
@@ -237,11 +238,11 @@ class View extends React.Component {
             let editable = bibleId === 'target';
             let verseText = bible[reference.chapter][index+1];
                 return (
-                    <div style={{display: "flex", lineHeight: "25px"}} key={index} data-verse={"r"+(index+1)} onClick={this.highlightRef.bind(this, verseNumber)}>
+                    <div style={{display: "flex"}} key={index} data-verse={"r"+(index+1)} onClick={this.highlightRef.bind(this, verseNumber)}>
+                        <div className="highlight_remove" style={{padding:"5px 0"}} >
                         <span className="verseNum" style={style.versenum}>{index+1} </span>
-                        <div className="highlight_remove"  >
                         <span 
-                        style={{paddingLeft: "10px", lineHeight:"normal"}}
+                        style={{paddingLeft: "10px"}}
                         className={verseNumber}
                         id={bibleId + '_verse_' + (index+1)}
                         contentEditable={editable}
@@ -454,17 +455,17 @@ class View extends React.Component {
                 </div> 
             <nav className="navbar navbar-default navbar-fixed-bottom" style={{left:"250px", height:"55px"}}>
                        {/*<div className="nav navbar-nav navbar-center verse-diff-on"> */}
-                            <div style={{float:"left", width:"50%", paddingLeft:"29%"}} className="btn-group navbar-btn verse-diff-on" role="group" aria-label="...">
+                             <div style={{float:"left", width:"40%"}} className="btn-group navbar-btn verse-diff-on" role="group" aria-label="...">
                                 <div style={{float: "left"}}>
                                     <Button style={style.fontButtonMinus} className="btn btn-default font-button minus" disabled={this.state.diffDisable} title="Decrease font size" onClick= {this.fontChange.bind(this, (-2))}>A-</Button>
                                 </div>
                                 {/*<ReactBootstrapSlider style={style.sliderHorizontal} change={this.sliderFontChange.bind(this)} value={this.state.currentFontValue} step={this.state.fontStep} max={this.state.fontMax} min={this.state.fontMin} orientation="horizontal" />*/}
-                                <Slider sliderStyle={{ width: "100px", float:"left", marginTop:"11px"}}  onChange={this.sliderFontChange.bind(this)} value={this.state.currentFontValue} step={this.state.fontStep} max={this.state.fontMax} min={this.state.fontMin}/>
+                                <Slider sliderStyle={{ width: "100px", float:"left", marginTop:"10px"}}  onChange={this.sliderFontChange.bind(this)} value={this.state.currentFontValue} step={this.state.fontStep} max={this.state.fontMax} min={this.state.fontMin}/>
                                 {/*<input type="range" onInput={this.sliderFontChange.bind(this)}  onChange={this.sliderFontChange.bind(this)} value={this.state.currentFontValue} step={this.state.fontStep} max={this.state.fontMax} min={this.state.fontMin} />*/}
                                 <div style={{float: "left"}}>
                                     <Button style={style.fontButtonPlus} disabled={this.state.diffDisable} className="btn btn-default font-button plus" title="Increase font size" onClick= {this.fontChange.bind(this, (+2))}>A+</Button>
                                 </div>
-                            </div>
+                            </div>  
                             <div style={{ float:"left", width:"50%"}} className="nav navbar-nav navbar-center verse-diff-on" >
                                 <div className="btn-group navbar-btn layout" role="group" aria-label="...">
                                         <Button style={style.layoutButton} data-toggle="tooltip" className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,1)}  disabled={this.state.diffDisable} title="2-column layout">2x &nbsp;<img alt="Lyout 2x" style={style.svg} src="../translationCore/tC_apps/Autographa/assets/two-columns-layout.svg" /></Button>
