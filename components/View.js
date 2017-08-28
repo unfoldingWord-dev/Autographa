@@ -362,7 +362,7 @@ class View extends React.Component {
                       <h5 style={{textAlign: "center",textDecoration: "underline", fontWeight: "bold", marginBottom:"20px"}}>Translation</h5>
                       {/*<h2>{projectDetailsReducer.manifest.target_language.name}</h2>
                       <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>*/}
-                      {this.state.show ? <div><span style={{color:"green", marginLeft:"30%",fontWeight:"bold"}}>(Additions):{diffContent()[1]} &nbsp;</span><span style={{color:"red", fontWeight:"bold"}}>(Deletions):{diffContent()[2]}</span><div id="targetContent">{diffContent()}</div></div>:
+                      {this.state.show ? <div><span style={{color:"green", marginLeft:"30%",fontWeight:"bold"}}>{diffContent()[1]}:Additions &nbsp;</span><span style={{color:"red", fontWeight:"bold"}}>{diffContent()[2]}:Deletions</span><div id="targetContent">{diffContent()}</div></div>:
                       <div id ="targetContent">{verses('target', targetLanguage)}</div>}
                     </Col> 
                     </div>}
