@@ -1,10 +1,6 @@
 import React from 'react';
 import View from './components/View';
-import fetchData from './FetchData/main';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-
-// String constants
-const NAMESPACE = "Autographa";
 
 class Container extends React.Component {
   constructor() {
@@ -31,7 +27,7 @@ class Container extends React.Component {
             hideModal={() => this.setState({ modalVisibility: false, modalSettingsVisibility:false,modalSearchVisibility:false,modalAboutUsVisibility:false })}
             showSearchReplaceModal ={() => this.setState({ modalSearchVisibility: true })}
             showAboutModal ={() => this.setState({ modalAboutUsVisibility: true })}
-      />      
+      />
       </MuiThemeProvider>
     }
     return view;
@@ -44,8 +40,4 @@ class Container extends React.Component {
   }
 }
 
-module.exports = {
-  name: NAMESPACE,
-  container: Container,
-  fetchData: fetchData
-};
+export default Container;
