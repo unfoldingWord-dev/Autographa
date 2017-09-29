@@ -35,7 +35,7 @@ class View extends React.Component {
         let {loginReducer,  actions, contextIdReducer, resourcesReducer} = this.props;
         let {chapter, verse} = contextIdReducer.contextId.reference;
         let before = resourcesReducer.bibles.targetLanguage[chapter][verse];
-        let verseText = document.getElementById('target' + '_verse_' + verse).innerText;
+        let verseText = document.getElementById('targetLanguage' + '_verse_' + verse).innerText;
         let username = loginReducer.userdata.username;
         // verseText state is undefined if no changes are made in the text box.
         if (!loginReducer.loggedInUser) {

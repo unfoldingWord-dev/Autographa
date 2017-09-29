@@ -37,9 +37,9 @@ class ChapterModal extends React.Component {
         <Modal.Body style={{ padding: '0px', backgroundColor: "var(--reverse-color)", color: "var(--text-color)", height:"200px" }}>
           <ul style={{listStyle: "none", width:"100%", float:"left", margin:"0", padding:"0"}}>
             {
-              
               Object.keys(chapters).map(function (chapter, index) {
-                return(<li style={{textAlign: "center", listStyle: "none", float: "left", width:"5%", padding:"2px", margin:"2%"}} key = {index}><a style={style.chapmodal}  href="javascript:void(0);"  onClick={() => _this.changeChapter(chapters[chapter][index].contextId) }>{index +1}</a></li>)
+
+                return(<li style={{textAlign: "center", listStyle: "none", float: "left", width:"5%", padding:"2px", margin:"2%"}} key = {index}><a style={style.chapmodal}  href="javascript:void(0);"  onClick={() => _this.changeChapter(chapters[chapter][0].contextId) }>{index +1}</a></li>)
               })
             }
           </ul>
