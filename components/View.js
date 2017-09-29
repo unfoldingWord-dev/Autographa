@@ -306,7 +306,7 @@ class View extends React.Component {
                 <div className="container-fluid" style={{backgroundColor: "#0b82ff",fontFamily: "Helvetica"}}>
                     <div className="navbar-header">
                         <button className="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar"><span className="sr-only">Toggle navigation</span><span className="icon-bar"></span><span className="icon-bar"></span><span className="icon-bar"></span></button>
-                        <a className="navbar-brand" href="javascript:;"><img alt="Brand" src="../translationCore/tC_apps/Autographa/assets/logo.png" /></a>
+                        <a className="navbar-brand" href="javascript:;"><img alt="Brand" src="../tC_apps/Autographa/assets/logo.png" /></a>
                     </div>
                     <div className="navbar-collapse collapse" id="navbar" style={{backgroundColor: "#0b82ff"}}>
                         <ul className="nav navbar-nav"  style={{padding: "3px 0 0 0px"}}>
@@ -317,7 +317,7 @@ class View extends React.Component {
                                 <AboutUsModal show ={ modalAboutUsVisibility } onHide = { hideModal } allProps = {this.props}/>
                                 <SearchAndReplace show ={ modalSearchVisibility } onHide = { hideModal } allProps = {this.props} versetext={verses('targetLanguage', targetLanguage)}/>
                                 <span>
-                                <Button className="btn btn-default" style={style.chapter} onClick = {showModal} id="chapterBtn" title="Select Chapter" disabled={this.state.diffDisable}>{projectDetailsReducer.bookName}:{reference.chapter}</Button>
+                                <Button className="btn btn-default" style={style.chapter} onClick = {showModal} id="chapterBtn" title="Select Chapter" disabled={this.state.diffDisable}>{projectDetailsReducer.manifest.project.name}:{reference.chapter}</Button>
                                 </span>
                               </div>
                             </li>
@@ -469,9 +469,9 @@ class View extends React.Component {
                             </div>
                             <div style={{ float:"left", width:"50%"}} className="nav navbar-nav navbar-center verse-diff-on" >
                                 <div className="btn-group navbar-btn layout" role="group" aria-label="...">
-                                        <Button style={style.layoutButton} data-toggle="tooltip" className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,1)}  disabled={this.state.diffDisable} title="2-column layout">2x &nbsp;<img alt="Lyout 2x" style={style.svg} src="../translationCore/tC_apps/Autographa/assets/two-columns-layout.svg" /></Button>
-                                        <Button style={style.layoutButton} className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,2)} disabled={this.state.diffDisable} title="3-column layout">3x &nbsp;<img alt="Lyout 3x" style={style.svg} src="../translationCore/tC_apps/Autographa/assets/two-columns-layout.svg" /></Button>
-                                        <Button style={style.layoutButton} className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,3)}  disabled={this.state.diffDisable} title="4-column layout">4x &nbsp;<img alt="Lyout 4x" style={style.svg} src="../translationCore/tC_apps/Autographa/assets/two-columns-layout.svg" /></Button>
+                                        <Button style={style.layoutButton} data-toggle="tooltip" className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,1)}  disabled={this.state.diffDisable} title="2-column layout">2x &nbsp;<img alt="Lyout 2x" style={style.svg} src="../tC_apps/Autographa/assets/two-columns-layout.svg" /></Button>
+                                        <Button style={style.layoutButton} className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,2)} disabled={this.state.diffDisable} title="3-column layout">3x &nbsp;<img alt="Lyout 3x" style={style.svg} src="../tC_apps/Autographa/assets/two-columns-layout.svg" /></Button>
+                                        <Button style={style.layoutButton} className="btn btn-primary btn-default" onClick = {this.handleChange.bind(this,3)}  disabled={this.state.diffDisable} title="4-column layout">4x &nbsp;<img alt="Lyout 4x" style={style.svg} src="../tC_apps/Autographa/assets/two-columns-layout.svg" /></Button>
                                 </div>
                                 <span style={{ color: "rgba(0, 0, 0, 0.5)", marginLeft: "188px",fontFamily: "Georgia,Serif", fontStyle:"italic"}}>{this.state.saveFunction ? this.state.finalTime:""}</span>
                                 {/*<a  onClick={this.saveEditVerse.bind(this)} style={style.saveButton} id="save-btn" data-toggle="tooltip" data-placement="top" title="" className="btn btn-info btn-save navbar-btn" >Save</a>*/}

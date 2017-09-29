@@ -206,7 +206,7 @@ class SearchAndReplace extends React.Component {
                     </div>
                 </div>;
         } else if (this.state.showSearchReplace == 'loader') {
-            partial = <div key="0"><img src="tC_apps/Autographa/assets/giphy.gif" style={{marginLeft:"26%"}} /></div>;
+            partial = <div key="0"><img src="../tC_apps/Autographa/assets/giphy.gif" style={{marginLeft:"26%"}} /></div>;
         } else if (this.state.showSearchReplace == 'count'){    
             partial =  <div key="1" style={{fontStyle:"italic   "}}>Book Name &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: {bookName}<br/> Replace Count : {this.state.replaceCount} occurrences<br/><br/>
             <RaisedButton style={{marginLeft: "474px"}} label="Close" primary={true} onClick={this.closeModal.bind(this)} /></div>
