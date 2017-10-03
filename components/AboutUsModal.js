@@ -29,12 +29,12 @@ class AboutUsModal extends React.Component {
                 <Tab eventKey={1} title="Overview">
                     <div style={{height: "288px"}}  className="row">
                         <div style={{marginTop: "53px"}} className="col-lg-5">
-                            <img style={style.imagecss} src="../translationCore/tC_apps/Autographa/assets/autographa_lite_large.png" className="img-circle" alt="Cinque Terre" width="215" height="200" />
+                            <img style={style.imagecss} src="../tC_apps/Autographa/assets/autographa_lite_large.png" className="img-circle" alt="Cinque Terre" width="215" height="200" />
                         </div>
                         <div style={{marginTop: "52px",paddingLeft:"52px", fontSize: "18px"}} className="col-lg-7">
                             <h3>Autographa Live</h3>
                             <p>Version 0.1</p>
-                            <p>Find us on <a href="https://github.com/Bridgeconn/autographa-lite"><img style ={{height:"34px", backgroundColor:"rgba(121, 126, 132, 0.08)"}} src="../translationCore/tC_apps/Autographa/assets/GitHub_Logo.png" alt="GitHub_Logo"/></a></p>
+                            <p>Find us on <a href="https://github.com/Bridgeconn/autographa-lite"><img style ={{height:"34px", backgroundColor:"rgba(121, 126, 132, 0.08)"}} src="../tC_apps/Autographa/assets/GitHub_Logo.png" alt="GitHub_Logo"/></a></p>
                         </div>
                     </div>
                 </Tab>
