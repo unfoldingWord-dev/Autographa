@@ -60,13 +60,14 @@ class SearchAndReplace extends React.Component {
                         targetContent[i] = modifiedVerse;
                         if (before !== modifiedVerse) {
                             actions.addVerseEdit(before, modifiedVerse, ['draft'], username);
-                            this.setState({replaceCount:replacecount}); 
+                            // this.setState({replaceCount:replacecount}); 
                         }
-                        targetContent = resourcesReducer.bibles.targetLanguage[chapter]
+                        // targetContent = resourcesReducer.bibles.targetLanguage[chapter]
                         // targetContet = targetContent2.toLowerCase();
                         // console.log(this.props.allProps.resourcesReducer.bibles.targetLanguage[chapter])
                     }
                 }
+                console.log(targetContent)
 
 
 
@@ -75,26 +76,30 @@ class SearchAndReplace extends React.Component {
             console.log("in else")
             var size = Object.keys(resourcesReducer.bibles.targetLanguage[chapter]).length
             var searchVal = this.state.find.toString();
-            console.log(searchVal)
             var replaceVal = this.state.replace;
             var targetContent = resourcesReducer.bibles.targetLanguage[chapter];
-            console.log(targetContent)
             for (var i = 1; i <= size; i++) {
-                let before = resourcesReducer.bibles.targetLanguage[chapter][i];
+
                 // console.log(before)
                 var originalVerse = targetContent[i];
                 if (originalVerse.search(new RegExp(this.escapeRegExp(searchVal), 'g')) >= 0) {    
                     replacecount += originalVerse.match(new RegExp(this.escapeRegExp(searchVal), 'g')).length;               
                     var modifiedVerse = originalVerse.replace(new RegExp(this.escapeRegExp(searchVal), 'g'), replaceVal);
-                    targetContent[i] = modifiedVerse;
-                    if (before !== modifiedVerse) {
-                        actions.addVerseEdit(before, modifiedVerse, ['draft'], username);
-                        this.setState({replaceCount:replacecount}); 
-                    }
-                    targetContent = resourcesReducer.bibles.targetLanguage[chapter]
+                    resourcesReducer.bibles.targetLanguage[chapter][i] = modifiedVerse
+
+                    if (originalVerse !== modifiedVerse) {
+                    	let {contextId} = contextIdReducer;
+								        contextId = JSON.parse(JSON.stringify(contextId));
+								        contextId.reference.verse = i;
+								        actions.changeCurrentContextId(contextId);
+                        actions.addVerseEdit(originalVerse, modifiedVerse, ['draft'], username);
+                        //this.setState({replaceCount:replacecount}); 
+                    }	
                     // console.log(this.props.allProps.resourcesReducer.bibles.targetLanguage[chapter])
                 }
             }
+             
+
 
             };
 
