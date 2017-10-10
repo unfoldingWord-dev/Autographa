@@ -23,14 +23,15 @@ var data = require('../FetchData/chunks.json');
 class View extends React.Component {
 
   constructor(props) {
+    debugger
     super(props);
     this.state = {
         hover: false, layoutDesign:1, fontMin: 14, fontMax: 26, currentFontValue: 14, fontStep: 2, fontSize: 14, saveFunction: false, finalTime:"",
         reflists:[{option:"English-ULB", value:"ulb"},{option:"English-UDB",value:"udb"}],
         defaultRef:"ulb",defaultRefTwo:"ulb",defaultRefThree:"ulb",diffDisable:false,show:false,diffContent:""}//values has been changed, Hindi lang currently not changed,
         this.getDiffText = this.getDiffText.bind(this);
+    debugger
     }
-
     saveEditVerse() {
         let {loginReducer,  actions, contextIdReducer, resourcesReducer} = this.props;
         let {chapter, verse} = contextIdReducer.contextId.reference;
@@ -189,7 +190,7 @@ class View extends React.Component {
     }
 
     render() {
-
+debugger
         const dropdownOne = this.state.reflists.map(function(refDoc, index){
             return(
                 <option value={refDoc.value}  key={index} >{refDoc.option}</option>
