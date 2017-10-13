@@ -23,14 +23,12 @@ var data = require('../FetchData/chunks.json');
 class View extends React.Component {
 
   constructor(props) {
-    debugger
     super(props);
     this.state = {
         hover: false, layoutDesign:1, fontMin: 14, fontMax: 26, currentFontValue: 14, fontStep: 2, fontSize: 14, saveFunction: false, finalTime:"",
         reflists:[{option:"English-ULB", value:"ulb"},{option:"English-UDB",value:"udb"}],
         defaultRef:"ulb",defaultRefTwo:"ulb",defaultRefThree:"ulb",diffDisable:false,show:false,diffContent:"", layoutArray: [1] }//values has been changed, Hindi lang currently not changed,
         this.getDiffText = this.getDiffText.bind(this);
-    debugger
     }
     saveEditVerse() {
         let {loginReducer,  actions, contextIdReducer, resourcesReducer} = this.props;
@@ -112,7 +110,7 @@ class View extends React.Component {
 
    handleChange(key) {
     		this.setState({layoutDesign: key});
-				
+
     }
 
     fontChange(multiplier) {
@@ -191,7 +189,6 @@ class View extends React.Component {
     }
 
     render() {
-debugger
         const dropdownOne = this.state.reflists.map(function(refDoc, index){
             return(
                 <option value={refDoc.value}  key={index} >{refDoc.option}</option>
@@ -286,7 +283,7 @@ debugger
 							}else{
 
                 let verseText = ulb[reference.chapter];
-             
+
                 let translatedText = targetLanguage[reference.chapter]
                 var size = Object.keys(this.props.resourcesReducer.bibles.targetLanguage[reference.chapter]).length
                 var refString = "";
@@ -298,11 +295,11 @@ debugger
                     t_ins += diff_count["ins"];
                     t_del += diff_count["del"];
                     var ds = dmp_diff.diff_prettyHtml(d);
-                   
+
                     diffArray.push(ds);
                 }
 							}
-               
+
                 let diffContent = diffArray.map((text, index) => {
                 return (
                     <div key={index+1}>
@@ -405,7 +402,7 @@ debugger
                         </div>
                        <div>
                        {this.state.show ? (this.state.defaultRefTwo == "ulb" ? diffContent("ulb") : diffContent("udb"))
-                            
+
                             : (this.state.defaultRefTwo == "ulb") ? verses(this.state.defaultRefTwo, ulb):verses(this.state.defaultRefTwo, udb)}
                        </div>
                     </Col>
@@ -442,7 +439,7 @@ debugger
                             </div>
                            <div>
                            {this.state.show ? (this.state.defaultRef == "ulb" ? diffContent("ulb") : diffContent("udb"))
-                            
+
                             : (this.state.defaultRefTwo == "ulb") ? verses(this.state.defaultRefTwo, ulb):verses(this.state.defaultRefTwo, udb)}
                            </div>
                          </Col>
@@ -455,9 +452,9 @@ debugger
                               </select>
                             </div>
                            <div>
-                           
+
                          {this.state.show ? (this.state.defaultRefThree == "ulb" ? diffContent("ulb") : diffContent("udb"))
-                            
+
                             : (this.state.defaultRefThree == "ulb") ? verses(this.state.defaultRefThree, ulb):verses(this.state.defaultRefThree, udb)}
                            </div>
                          </Col>

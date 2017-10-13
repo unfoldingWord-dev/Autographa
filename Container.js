@@ -13,10 +13,8 @@ class Container extends React.Component {
   }
 
   view() {
-    debugger
     let view = <div />
     let { contextId } = this.props.contextIdReducer;
-    debugger
     if (contextId) {
       view = <MuiThemeProvider><View
         {...this.props}
