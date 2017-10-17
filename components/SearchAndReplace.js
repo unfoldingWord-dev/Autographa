@@ -8,7 +8,7 @@ import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 class SearchAndReplace extends React.Component {
     constructor(props){
         super(props);
-        this.state = {targetContent:this.props.allProps.resourcesReducer.bibles.targetLanguage, find:"", replace:"",replaceCount:0,selection:'chapter',showSearchReplace:"search", checked:false}
+        this.state = {targetContent:this.props.allProps.resourcesReducer.bibles.targetLanguage, searchVal: "", replaceVal:"", replace:"",replaceCount:0,selection:'chapter',showSearchReplace:"search", checked:false}
  
     }
 
@@ -17,11 +17,11 @@ class SearchAndReplace extends React.Component {
     }
 
     handleFindChange(e) {
-        this.setState({find: e.target.value});
+        this.setState({searchVal: e.target.value});
     }
 
     handleReplaceChange(e) {
-       this.setState({replace: e.target.value});
+       this.setState({replaceVal: e.target.value});
     }
 
     findAndReplaceText() {
@@ -35,131 +35,92 @@ class SearchAndReplace extends React.Component {
         }.bind(this),2000);
     }
 
-    findReplaceSearchInputs(){
-        var replacecount = 0;
-        let {loginReducer, actions, contextIdReducer, resourcesReducer, groupsIndexReducer} = this.props.allProps;
-        let {chapter, verse} = contextIdReducer.contextId.reference;
-        let username = loginReducer.userdata.username;
-        console.log(this.state.checked)
-        if(this.state.selection == "chapter" ) {
-            if (this.state.checked) {
-                var size = Object.keys(resourcesReducer.bibles.targetLanguage[chapter]).length
-                var searchVal = this.state.find.toUpperCase();
-                console.log(searchVal)
-                var replaceVal = this.state.replace;
-                var targetContent = resourcesReducer.bibles.targetLanguage[chapter];
-                 console.log(targetContent)
-                // console.log(targetContent)
-                for (var i = 1; i <= size; i++) {
-                    let before = resourcesReducer.bibles.targetLanguage[chapter][i].toUpperCase();
-                    // console.log(before)
-                    var originalVerse = targetContent[i];
-                    if (originalVerse.search(new RegExp(this.escapeRegExp(searchVal), 'g')) >= 0) {    
-                        replacecount += originalVerse.match(new RegExp(this.escapeRegExp(searchVal), 'g')).length;               
-                        var modifiedVerse = originalVerse.replace(new RegExp(this.escapeRegExp(searchVal), 'g'), replaceVal);
-                        targetContent[i] = modifiedVerse;
-                        if (before !== modifiedVerse) {
-                            actions.addVerseEdit(before, modifiedVerse, ['draft'], username);
-                            // this.setState({replaceCount:replacecount}); 
-                        }
-                        // targetContent = resourcesReducer.bibles.targetLanguage[chapter]
-                        // targetContet = targetContent2.toLowerCase();
-                        // console.log(this.props.allProps.resourcesReducer.bibles.targetLanguage[chapter])
-                    }
-                }
-                console.log(targetContent)
 
-
-
-
-            } else{
-            console.log("in else")
-            var size = Object.keys(resourcesReducer.bibles.targetLanguage[chapter]).length
-            var searchVal = this.state.find.toString();
-            var replaceVal = this.state.replace;
-            var targetContent = resourcesReducer.bibles.targetLanguage[chapter];
-            for (var i = 1; i <= size; i++) {
-
-                // console.log(before)
-                var originalVerse = targetContent[i];
-                if (originalVerse.search(new RegExp(this.escapeRegExp(searchVal), 'g')) >= 0) {    
-                    replacecount += originalVerse.match(new RegExp(this.escapeRegExp(searchVal), 'g')).length;               
-                    var modifiedVerse = originalVerse.replace(new RegExp(this.escapeRegExp(searchVal), 'g'), replaceVal);
-                    resourcesReducer.bibles.targetLanguage[chapter][i] = modifiedVerse
-
-                    if (originalVerse !== modifiedVerse) {
-                        console.log(contextId);
-                    	let {contextId} = contextIdReducer;
-								        contextId = JSON.parse(JSON.stringify(contextId));
-								        contextId.reference.verse = i;
-								        actions.changeCurrentContextId(contextId);
-                        actions.addVerseEdit(originalVerse, modifiedVerse, ['draft'], username);
-                        this.setState({replaceCount:replacecount}); 
-                    }	
-                    // console.log(this.props.allProps.resourcesReducer.bibles.targetLanguage[chapter])
-                }
-            }
-             
-
-
-            };
-
-                    
-        }else {
-            if(this.state.checked) {
-                console.log("in if")
-            this.props.allProps.loaderReducer.show = true
-            let noOfChapters = groupsIndexReducer.groupsIndex.length;
-            var searchVal = this.state.find.toUpperCase();
-            var replaceVal = this.state.replace;
-            for (var i = 1; i <= noOfChapters; i++) {
-                var noOfVerses = Object.keys(resourcesReducer.bibles.targetLanguage[i]).length
-                for (var j = 1; j <= noOfVerses; j++) {
-                    var targetContent = resourcesReducer.bibles.targetLanguage[i];
-                    var originalVerse = targetContent[j]
-                   if (originalVerse.search(new RegExp(this.escapeRegExp(searchVal), 'g')) >= 0) {
-                        var modifiedVerse = originalVerse.replace(new RegExp(this.escapeRegExp(searchVal), 'g'), replaceVal);
-                        replacecount += originalVerse.match(new RegExp(this.escapeRegExp(searchVal), 'g')).length;
-                        targetContent[j] = modifiedVerse 
-                        if (originalVerse !== modifiedVerse) {
-                            actions.addVerseEdit(originalVerse, modifiedVerse, ['draft'], username);
-                            this.setState({replaceCount:replacecount});
-                        }                                                     
-                    }
-                }
-            }
-
-            }
-            else{
-            console.log("in else")
-            this.props.allProps.loaderReducer.show = true
-            let noOfChapters = groupsIndexReducer.groupsIndex.length;
-            var searchVal = this.state.find.toLowerCase();
-            var replaceVal = this.state.replace;
-            for (var i = 1; i <= noOfChapters; i++) {
-                var noOfVerses = Object.keys(resourcesReducer.bibles.targetLanguage[i]).length
-                for (var j = 1; j <= noOfVerses; j++) {
-                    var targetContent = resourcesReducer.bibles.targetLanguage[i]
-                    var originalVerse = targetContent[j]
-                   if (originalVerse.search(new RegExp(this.escapeRegExp(searchVal), 'g')) >= 0) {
-                        var modifiedVerse = originalVerse.replace(new RegExp(this.escapeRegExp(searchVal), 'g'), replaceVal);
-                        replacecount += originalVerse.match(new RegExp(this.escapeRegExp(searchVal), 'g')).length;
-                        targetContent[j] = modifiedVerse 
-                        if (originalVerse !== modifiedVerse) {
-                            actions.addVerseEdit(originalVerse, modifiedVerse, ['draft'], username);
-                            this.setState({replaceCount:replacecount});
-                        }                                                     
-                    }
-                }
-            }
-        }
+    changeCurrentVerse(verseNumber) {
+        let {actions, contextIdReducer} = this.props.allProps;
+        let {contextId} = contextIdReducer;
+        contextId = JSON.parse(JSON.stringify(contextId));
+        contextId.reference.verse = verseNumber;
+        actions.changeCurrentContextId(contextId);
     }
-}
+
+    replaceContentAndSave(noOfChapters, option){
+      var replacecount = 0;
+    	let {loginReducer, actions, contextIdReducer, resourcesReducer, groupsIndexReducer, groupsDataReducer} = this.props.allProps;
+    	let {chapter, verse} = contextIdReducer.contextId.reference;
+    	let username = loginReducer.userdata.username;
+      var targetContent = resourcesReducer.bibles.targetLanguage[chapter];
+      const {searchVal, replaceVal} = this.state;
+      for (var i = 1; i <= noOfChapters; i++) {
+      	if(option === "chapter"){
+        	var noOfVerses = Object.keys(resourcesReducer.bibles.targetLanguage[chapter]).length
+
+      	}else{
+      		console.log(resourcesReducer.bibles)
+      		const contextId = groupsDataReducer.groupsData["ch"+i][0].contextId
+      		console.log(contextId)
+      		// actions.changeCurrentContextId(contextId);
+        	var noOfVerses = Object.keys(resourcesReducer.bibles.targetLanguage[i]).length
+      	}
+
+	      for (var i = 1; i <= noOfVerses; i++) {
+	          var originalVerse = targetContent[i];
+	          if (originalVerse.search(new RegExp(this.escapeRegExp(searchVal), 'g')) >= 0) {    
+	              replacecount += originalVerse.match(new RegExp(this.escapeRegExp(searchVal), 'g')).length;               
+	              var modifiedVerse = originalVerse.replace(new RegExp(this.escapeRegExp(searchVal), 'g'), replaceVal);
+	              if (originalVerse !== modifiedVerse) {
+	              		this.changeCurrentVerse(i);
+	                  actions.addVerseEdit(originalVerse, modifiedVerse, ['draft'], username);
+	              }	
+	          }
+	      }
+	    }
+      this.setState({replaceCount:replacecount});
+             
+    }
+
+   
+    findReplaceSearchInputs(){
+       	
+        console.log(this.state.checked)
+        if(this.state.selection == "chapter" ){
+        		this.replaceContentAndSave(1, "chapter");
+        		console.log("chapter")
+          }
+          else{
+            console.log("in book")
+            this.props.allProps.loaderReducer.show = true
+            let noOfChapters = this.props.allProps.groupsIndexReducer.groupsIndex.length;
+            this.replaceContentAndSave(noOfChapters, "book");
+            // var searchVal = this.state.find.toLowerCase();
+            // var replaceVal = this.state.replace;
+            // for (var i = 1; i <= noOfChapters; i++) {
+            //     var noOfVerses = Object.keys(resourcesReducer.bibles.targetLanguage[i]).length
+            //     for (var j = 1; j <= noOfVerses; j++) {
+            //         var targetContent = resourcesReducer.bibles.targetLanguage[i]
+            //         var originalVerse = targetContent[j]
+            //        if (originalVerse.search(new RegExp(this.escapeRegExp(searchVal), 'g')) >= 0) {
+            //             var modifiedVerse = originalVerse.replace(new RegExp(this.escapeRegExp(searchVal), 'g'), replaceVal);
+            //             replacecount += originalVerse.match(new RegExp(this.escapeRegExp(searchVal), 'g')).length;
+            //             targetContent[j] = modifiedVerse 
+            //             if (originalVerse !== modifiedVerse) {
+            //                 actions.addVerseEdit(originalVerse, modifiedVerse, ['draft'], username);
+            //             }                                                     
+            //         }
+            //     }
+            // }
+            // this.setState({replaceCount:replacecount});
+
+        }
+      }
+
+    //}
+//}
 
     updateCheck() {
     this.setState((oldState) => {
       return {
-        checked: !oldState.checked,
+        checked: !oldState.checked
       };
     });
   }
@@ -177,8 +138,8 @@ class SearchAndReplace extends React.Component {
     }
 
     render() {
-        const bookName = this.props.allProps.projectDetailsReducer.bookName
-        let { onHide,  show, chapters } = this.props;
+        const bookName = this.props.allProps.projectDetailsReducer.manifest.project.name
+        let { onHide,  show, chapters, pro } = this.props;
 
         var partial;
         if (this.state.showSearchReplace == 'search') {
@@ -205,9 +166,9 @@ class SearchAndReplace extends React.Component {
                     </FormGroup>
                     <div>
                         <label>Find</label><br />
-                        <TextField hintText="Find" value={this.state.find} onChange={this.handleFindChange.bind(this)}/> <br />
+                        <TextField hintText="Find" value={this.state.searchVal} onChange={this.handleFindChange.bind(this)}/> <br />
                         <label>Replace With</label><br />
-                        <TextField hintText="Replacement" value={this.state.replace} onChange={this.handleReplaceChange.bind(this)}/> <br />
+                        <TextField hintText="Replacement" value={this.state.replaceVal} onChange={this.handleReplaceChange.bind(this)}/> <br />
                         <RaisedButton style={{marginLeft: "474px"}} label="Replace" primary={true} onClick={this.findAndReplaceText.bind(this)} />
                     </div>
                 </div>;
