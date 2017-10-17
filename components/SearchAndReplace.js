@@ -88,12 +88,13 @@ class SearchAndReplace extends React.Component {
                     resourcesReducer.bibles.targetLanguage[chapter][i] = modifiedVerse
 
                     if (originalVerse !== modifiedVerse) {
+                        console.log(contextId);
                     	let {contextId} = contextIdReducer;
 								        contextId = JSON.parse(JSON.stringify(contextId));
 								        contextId.reference.verse = i;
 								        actions.changeCurrentContextId(contextId);
                         actions.addVerseEdit(originalVerse, modifiedVerse, ['draft'], username);
-                        //this.setState({replaceCount:replacecount}); 
+                        this.setState({replaceCount:replacecount}); 
                     }	
                     // console.log(this.props.allProps.resourcesReducer.bibles.targetLanguage[chapter])
                 }

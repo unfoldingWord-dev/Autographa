@@ -89,7 +89,6 @@ var style = {
    color: "#0b82ff",
    fontWeight: "bold",
    backgroundColor: "#ffffff",
-   marginLeft: "155px",
    backgroundImage: "linear-gradient(to bottom,#ffffff 0,#ffffff 100%)",
   },
    hover: {

@@ -304,14 +304,12 @@ class View extends React.Component {
             <div style={{overflow: "scroll", position: "relative"}}>
               <nav className="navbar navbar-inverse navbar-fixed-top" role="navigation" style={{backgroundColor: "#0b82ff", position: "relative", marginBottom: "0"}}>
                 <div className="container-fluid" style={{backgroundColor: "#0b82ff",fontFamily: "Helvetica"}}>
+                    <div className="navbar-collapse collapse" id="navbar" style={{backgroundColor: "#0b82ff", width: "50%", float:"left"}}>
                     <div className="navbar-header">
                         <button className="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar"><span className="sr-only">Toggle navigation</span><span className="icon-bar"></span><span className="icon-bar"></span><span className="icon-bar"></span></button>
                         <a className="navbar-brand" href="javascript:;"><img alt="Brand" src="../tC_apps/Autographa/assets/logo.png" /></a>
-                    </div>
-                    <div className="navbar-collapse collapse" id="navbar" style={{backgroundColor: "#0b82ff"}}>
-                        <ul className="nav navbar-nav"  style={{padding: "3px 0 0 0px"}}>
-                            <li>
-                              <div className="btn-group navbar-btn strong verse-diff-on" role="group" aria-label="..." id="bookBtn" style={{marginLeft:"150px"}}>
+                    </div>                             
+                            <div className="btn-group navbar-btn strong verse-diff-on" role="group" aria-label="..." id="bookBtn" style={{float:"right"}}>
                                 <ChapterModal  show ={ modalVisibility } onHide = { hideModal } chapters = { chapters } allProps = {this.props}/>
                                 <SettingModal show ={ modalSettingsVisibility } onHide = { hideModal } />
                                 <AboutUsModal show ={ modalAboutUsVisibility } onHide = { hideModal } allProps = {this.props}/>
@@ -320,8 +318,8 @@ class View extends React.Component {
                                 <Button className="btn btn-default" style={style.chapter} onClick = {showModal} id="chapterBtn" title="Select Chapter" disabled={this.state.diffDisable}>{projectDetailsReducer.manifest.project.name}:{reference.chapter}</Button>
                                 </span>
                               </div>
-                            </li>
-                        </ul>
+                    </div>
+                    <div style={{backgroundColor: "#0b82ff", width: "50%", float:"left"}}>
                         <ul className="nav navbar-nav navbar-right nav-pills verse-diff-on">
                           <li style={{padding: "17px 5px 0 0", color: "#fff", fontWeight: "bold"}}><span>OFF</span></li>
                           <li>
