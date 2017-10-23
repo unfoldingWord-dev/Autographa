@@ -242,7 +242,7 @@ class View extends React.Component {
                         <div className="highlight_remove" style={{padding:"5px 0"}} >
                         <span className="verseNum" style={style.versenum}>{index+1} </span>
                         <span
-                        style={{paddingLeft: "10px"}}
+                        style={{paddingLeft: "5px"}}
                         className={verseNumber}
                         id={bibleId + '_verse_' + (index+1)}
                         contentEditable={editable}
@@ -373,8 +373,8 @@ class View extends React.Component {
 
                 let diffContent = diffArray.map((text, index) => {
                 return (
-                    <div key={index+1}>
-                    	<span> {index+1}</span>
+                    <div style={{paddingTop: "7px"}} key={index+1}>
+                    	<span className="verseNum" style={style.diffVerseNum}> {index+1}</span>
                     	<span dangerouslySetInnerHTML={{__html: text}} ></span>
                     </div>
                     )

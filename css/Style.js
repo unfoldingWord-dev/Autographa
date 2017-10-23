@@ -106,6 +106,13 @@ var style = {
       fontWeight: "bold",
       lineHeight: "auto",
     },
+
+    diffVerseNum: {
+      paddingTop: "1px",
+      fontWeight: "bold",
+      paddingRight: "7px",
+      lineHeight: "auto",
+    },
   toggle: {
       marginTop: "15px"
     },
