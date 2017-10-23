@@ -264,14 +264,13 @@ class View extends React.Component {
                 var t_del = 0;
                 let { reference } = this.props.contextIdReducer.contextId;
                 let { targetLanguage } = this.props.resourcesReducer.bibles;
-
-							if (this.state.layoutDesign == 2 && lang != undefined){
+								if (this.state.layoutDesign == 2 && lang != "target"){
 								var verseText1 = this.props.resourcesReducer.bibles[this.state.defaultRef]
-								var verseText2 = this.props.resourcesReducer.bibles[lang]
+								var verseText2 = this.props.resourcesReducer.bibles[this.state.defaultRefTwo]
 								var refString = "";
                 for (var i = 1; i <= Object.keys(verseText1[reference.chapter]).length; i++) {
                     var ref1 = verseText1[reference.chapter][i];
-                    var ref2 = verseText2[reference.chapter][i]
+                    var ref2 = verseText2[reference.chapter][i];
                     var d = dmp_diff.diff_main(ref1, ref2);
                     var diff_count = this.getDifferenceCount(d);
                     t_ins += diff_count["ins"];
@@ -280,25 +279,97 @@ class View extends React.Component {
                     diffArray.push(ds);
                 }
 
-							}else{
+							 }else if(this.state.layoutDesign == 3 && lang != "target"){
 
-                let verseText = ulb[reference.chapter];
+							 	var verseText1 = "";
+							 	var verseText2 = "";
+							 	if(lang == "1"){
+							 		verseText1 = this.props.resourcesReducer.bibles[this.state.defaultRef]
+									verseText2 = this.props.resourcesReducer.bibles[this.state.defaultRefTwo]
+									console.log(verseText1)
 
-                let translatedText = targetLanguage[reference.chapter]
-                var size = Object.keys(this.props.resourcesReducer.bibles.targetLanguage[reference.chapter]).length
-                var refString = "";
-                for (var i = 1; i <= size; i++) {
-                    var ref1 = verseText[i];
-                    var ref2 = translatedText[i]
-                    var d = dmp_diff.diff_main(ref1, ref2);
-                    var diff_count = this.getDifferenceCount(d);
-                    t_ins += diff_count["ins"];
-                    t_del += diff_count["del"];
-                    var ds = dmp_diff.diff_prettyHtml(d);
+							 	}
+							 	if(lang == "2"){
+							 		verseText1 = this.props.resourcesReducer.bibles[this.state.defaultRefTwo]
+									verseText2 = this.props.resourcesReducer.bibles[this.state.defaultRefThree]
 
-                    diffArray.push(ds);
-                }
-							}
+							 	}
+                 var size = Object.keys(this.props.resourcesReducer.bibles.targetLanguage[reference.chapter]).length
+                 var refString = "";
+                 console.log(verseText1)
+                 console.log(verseText2)
+                 for (var i = 1; i <= size; i++) {
+                     var ref1 = verseText1[reference.chapter][i];
+                     var ref2 = verseText2[reference.chapter][i]
+                     var d = dmp_diff.diff_main(ref1, ref2);
+                     var diff_count = this.getDifferenceCount(d);
+                     t_ins += diff_count["ins"];
+                     t_del += diff_count["del"];
+                     var ds = dmp_diff.diff_prettyHtml(d);
+
+                     diffArray.push(ds);
+                 }
+							 }
+							 else if(this.state.layoutDesign == 2 && lang == "target"){
+
+								 var verseText = this.props.resourcesReducer.bibles[this.state.defaultRefTwo]
+
+                 let translatedText = targetLanguage[reference.chapter]
+                 
+                 var size = Object.keys(this.props.resourcesReducer.bibles.targetLanguage[reference.chapter]).length
+                 var refString = "";
+                 for (var i = 1; i <= size; i++) {
+                     var ref1 = verseText[reference.chapter][i];
+                     var ref2 = translatedText[i]
+                     var d = dmp_diff.diff_main(ref1, ref2);
+                     var diff_count = this.getDifferenceCount(d);
+                     t_ins += diff_count["ins"];
+                     t_del += diff_count["del"];
+                     var ds = dmp_diff.diff_prettyHtml(d);
+
+                     diffArray.push(ds);
+                 }
+							 }else if(this.state.layoutDesign == 3 && lang == "target"){
+
+								 var verseText = this.props.resourcesReducer.bibles[this.state.defaultRefThree]
+
+                 let translatedText = targetLanguage[reference.chapter]
+                 
+                 var size = Object.keys(this.props.resourcesReducer.bibles.targetLanguage[reference.chapter]).length
+                 var refString = "";
+                 for (var i = 1; i <= size; i++) {
+                     var ref1 = verseText[reference.chapter][i];
+                     var ref2 = translatedText[i]
+                     var d = dmp_diff.diff_main(ref1, ref2);
+                     var diff_count = this.getDifferenceCount(d);
+                     t_ins += diff_count["ins"];
+                     t_del += diff_count["del"];
+                     var ds = dmp_diff.diff_prettyHtml(d);
+
+                     diffArray.push(ds);
+                 }
+							 }
+
+							 else{
+
+							 	var verseText = this.props.resourcesReducer.bibles[this.state.defaultRef]
+
+                 let translatedText = targetLanguage[reference.chapter]
+                 
+                 var size = Object.keys(this.props.resourcesReducer.bibles.targetLanguage[reference.chapter]).length
+                 var refString = "";
+                 for (var i = 1; i <= size; i++) {
+                     var ref1 = verseText[reference.chapter][i];
+                     var ref2 = translatedText[i]
+                     var d = dmp_diff.diff_main(ref1, ref2);
+                     var diff_count = this.getDifferenceCount(d);
+                     t_ins += diff_count["ins"];
+                     t_del += diff_count["del"];
+                     var ds = dmp_diff.diff_prettyHtml(d);
+
+                     diffArray.push(ds);
+                 }
+							 }
 
                 let diffContent = diffArray.map((text, index) => {
                 return (
@@ -399,7 +470,7 @@ class View extends React.Component {
                         </select>
                         </div>
                        <div>
-                       {this.state.show ? (this.state.defaultRefTwo == "ulb" ? diffContent("ulb") : diffContent("udb"))
+                       {this.state.show ? (this.state.defaultRef == "ulb" ? diffContent("ulb") : diffContent("udb"))
 
                             : (this.state.defaultRefTwo == "ulb") ? verses(this.state.defaultRefTwo, ulb):verses(this.state.defaultRefTwo, udb)}
                        </div>
@@ -408,7 +479,7 @@ class View extends React.Component {
                     <h5 style={{textAlign: "center",textDecoration: "underline", fontWeight: "bold", marginBottom:"20px"}}>Translation</h5>
                       {/*<h2>{projectDetailsReducer.manifest.target_language.name}</h2>
                       <h3>{projectDetailsReducer.bookName} {reference.chapter}:{reference.verse}</h3>*/}
-                         {this.state.show ?<div id="targetContent">{diffContent()}</div>:
+                         {this.state.show ?<div id="targetContent">{diffContent("target")}</div>:
                       <div id ="targetContent"> {verses('targetLanguage', targetLanguage)}</div>}
                       </Col>
                   </div> }
@@ -436,7 +507,7 @@ class View extends React.Component {
                               </select>
                             </div>
                            <div>
-                           {this.state.show ? (this.state.defaultRef == "ulb" ? diffContent("ulb") : diffContent("udb"))
+                           {this.state.show ? (this.state.defaultRef == "ulb" ? diffContent("1") : diffContent("1"))
 
                             : (this.state.defaultRefTwo == "ulb") ? verses(this.state.defaultRefTwo, ulb):verses(this.state.defaultRefTwo, udb)}
                            </div>
@@ -451,7 +522,7 @@ class View extends React.Component {
                             </div>
                            <div>
 
-                         {this.state.show ? (this.state.defaultRefThree == "ulb" ? diffContent("ulb") : diffContent("udb"))
+                         {this.state.show ? (this.state.defaultRefThree == "ulb" ? diffContent("2") : diffContent("2"))
 
                             : (this.state.defaultRefThree == "ulb") ? verses(this.state.defaultRefThree, ulb):verses(this.state.defaultRefThree, udb)}
                            </div>
