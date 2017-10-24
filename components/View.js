@@ -373,7 +373,7 @@ class View extends React.Component {
 
                 let diffContent = diffArray.map((text, index) => {
                 return (
-                    <div style={{paddingTop: "7px"}} key={index+1}>
+                    <div style={{paddingTop: "10px"}} key={index+1}>
                     	<span className="verseNum" style={style.diffVerseNum}> {index+1}</span>
                     	<span dangerouslySetInnerHTML={{__html: text}} ></span>
                     </div>

@@ -170,7 +170,7 @@ class SearchAndReplace extends React.Component {
         var partial;
         if (this.state.showSearchReplace == 'search') {
         partial = <div> 
-                    <FormGroup>
+                    <FormGroup >
                     <RadioButtonGroup name="SearchAndReplace" style={{display: "flex", marginBottom:"2%"}} defaultSelected={this.state.selection} onChange={this.selectRadioButton.bind(this)}>
                         <RadioButton
                         value="chapter"
@@ -192,10 +192,10 @@ class SearchAndReplace extends React.Component {
                     </FormGroup>
                     <div>
                         <label>Find</label><br />
-                        <TextField hintText="Find" value={this.state.searchVal} onChange={this.handleFindChange.bind(this)}/> <br />
+                        <TextField style={{marginTop: "-12px"}} hintText="Find" value={this.state.searchVal} onChange={this.handleFindChange.bind(this)}/> <br />
                         <label>Replace With</label><br />
-                        <TextField hintText="Replacement" value={this.state.replaceVal} onChange={this.handleReplaceChange.bind(this)}/> <br />
-                        <RaisedButton style={{marginLeft: "474px"}} label="Make Changes" primary={true} onClick={this.findAndReplaceText.bind(this)} />
+                        <TextField style={{marginTop: "-12px"}} hintText="Replacement" value={this.state.replaceVal} onChange={this.handleReplaceChange.bind(this)}/> <br />
+                        <RaisedButton style={{float: "right"}} label="Make Changes" primary={true} onClick={this.findAndReplaceText.bind(this)} />
                     </div>
                 </div>;
         } else if (this.state.showSearchReplace == 'loader') {
@@ -210,7 +210,7 @@ class SearchAndReplace extends React.Component {
                       <Modal.Title id="contained-modal-title-sm"
             style={{ textAlign: "center", color: "var(--reverse-color)" }}>Search and Replace</Modal.Title>
                 </Modal.Header>
-                <Modal.Body >
+                <Modal.Body style={{height: "278px"}}>
                     {partial}  
                 </Modal.Body> 
             </Modal>
