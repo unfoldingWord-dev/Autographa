@@ -167,7 +167,7 @@ class SearchAndReplace extends React.Component {
         const bookName = this.props.allProps.projectDetailsReducer.manifest.project.name
         let { onHide,  show, chapters, pro } = this.props;
 
-        var partial;
+        var partial, initialHeight = '278px';
         if (this.state.showSearchReplace == 'search') {
         partial = <div> 
                     <FormGroup >
@@ -201,8 +201,9 @@ class SearchAndReplace extends React.Component {
         } else if (this.state.showSearchReplace == 'loader') {
             partial = <div key="0"><img src="../tC_apps/Autographa/assets/giphy.gif" style={{marginLeft:"26%"}} /></div>;
         } else if (this.state.showSearchReplace == 'count'){    
-            partial =  <div key="1" style={{fontStyle:"italic   "}}>Book Name &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: {bookName}<br/> Replace Count : {this.state.replaceCount} occurrences<br/><br/>
-            <RaisedButton style={{marginLeft: "474px"}} label="Close" primary={true} onClick={this.closeModal.bind(this)} /></div>
+            initialHeight = '178px';
+            partial =  <div><div key="1" style={{fontStyle:"italic", textAlign: "center"}}>Successfully replaced <b>{this.state.replaceCount} occurrences</b> of {this.state.searchVal} with {this.state.replaceVal} .
+            </div><div><RaisedButton style={{marginLeft: "474px", marginTop: "100px", float: "right"}} label="Done" primary={true} onClick={this.closeModal.bind(this)} /></div></div>
         }        
         return (
             <Modal show={show} onHide={onHide} >
@@ -210,7 +211,7 @@ class SearchAndReplace extends React.Component {
                       <Modal.Title id="contained-modal-title-sm"
             style={{ textAlign: "center", color: "var(--reverse-color)" }}>Search and Replace</Modal.Title>
                 </Modal.Header>
-                <Modal.Body style={{height: "278px"}}>
+                <Modal.Body style={{height: initialHeight}}>
                     {partial}  
                 </Modal.Body> 
             </Modal>
